@@ -59,7 +59,7 @@ class TargetComputeSizesOperations:
 
     @distributed_trace
     def list_by_replication_protected_items(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> AsyncIterable["_models.TargetComputeSize"]:
         """Gets the list of target compute sizes for the replication protected item.
 
@@ -69,8 +69,8 @@ class TargetComputeSizesOperations:
         :type fabric_name: str
         :param protection_container_name: protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either TargetComputeSize or the result of cls(response)
         :rtype:
@@ -80,7 +80,7 @@ class TargetComputeSizesOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.TargetComputeSizeCollection] = kwargs.pop("cls", None)
@@ -99,7 +99,7 @@ class TargetComputeSizesOperations:
                 request = build_list_by_replication_protected_items_request(
                     fabric_name=fabric_name,
                     protection_container_name=protection_container_name,
-                    replicated_protected_item_name=replicated_protected_item_name,
+                    replication_protected_item_name=replication_protected_item_name,
                     resource_name=self._config.resource_name,
                     resource_group_name=self._config.resource_group_name,
                     subscription_id=self._config.subscription_id,
@@ -153,5 +153,5 @@ class TargetComputeSizesOperations:
         return AsyncItemPaged(get_next, extract_data)
 
     list_by_replication_protected_items.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/targetComputeSizes"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/targetComputeSizes"
     }

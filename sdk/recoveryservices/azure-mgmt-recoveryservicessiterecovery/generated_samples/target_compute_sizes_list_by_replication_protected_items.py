@@ -34,12 +34,12 @@ def main():
     response = client.target_compute_sizes.list_by_replication_protected_items(
         fabric_name="asr-a2a-default-centraluseuap",
         protection_container_name="asr-a2a-default-centraluseuap-container",
-        replicated_protected_item_name="468c912d-b1ab-4ea2-97eb-4b5095155db2",
+        replication_protected_item_name="468c912d-b1ab-4ea2-97eb-4b5095155db2",
     )
     for item in response:
         print(item)
 
 
-# x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-09-10/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
+# x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
 if __name__ == "__main__":
     main()

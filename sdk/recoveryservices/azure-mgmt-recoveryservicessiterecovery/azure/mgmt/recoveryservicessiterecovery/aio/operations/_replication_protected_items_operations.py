@@ -105,7 +105,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.ReplicationProtectedItemCollection] = kwargs.pop("cls", None)
@@ -182,7 +182,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
 
     @distributed_trace_async
     async def get(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> _models.ReplicationProtectedItem:
         """Gets the details of a Replication protected item.
 
@@ -192,8 +192,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: ReplicationProtectedItem or the result of cls(response)
         :rtype: ~azure.mgmt.recoveryservicessiterecovery.models.ReplicationProtectedItem
@@ -210,7 +210,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.ReplicationProtectedItem] = kwargs.pop("cls", None)
@@ -218,7 +218,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_get_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -248,14 +248,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     get.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     async def _create_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         input: Union[_models.EnableProtectionInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -270,7 +270,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -287,7 +287,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_create_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -322,7 +322,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _create_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     @overload
@@ -330,7 +330,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         input: _models.EnableProtectionInput,
         *,
         content_type: str = "application/json",
@@ -344,8 +344,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: A name for the replication protected item. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: A name for the replication protected item. Required.
+        :type replication_protected_item_name: str
         :param input: Enable Protection Input. Required.
         :type input: ~azure.mgmt.recoveryservicessiterecovery.models.EnableProtectionInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -371,7 +371,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         input: IO,
         *,
         content_type: str = "application/json",
@@ -385,8 +385,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: A name for the replication protected item. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: A name for the replication protected item. Required.
+        :type replication_protected_item_name: str
         :param input: Enable Protection Input. Required.
         :type input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -412,7 +412,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         input: Union[_models.EnableProtectionInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -424,8 +424,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: A name for the replication protected item. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: A name for the replication protected item. Required.
+        :type replication_protected_item_name: str
         :param input: Enable Protection Input. Is either a model type or a IO type. Required.
         :type input: ~azure.mgmt.recoveryservicessiterecovery.models.EnableProtectionInput or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
@@ -448,7 +448,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -460,7 +460,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._create_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 input=input,
                 api_version=api_version,
                 content_type=content_type,
@@ -493,11 +493,11 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_create.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     async def _purge_initial(  # pylint: disable=inconsistent-return-statements
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> None:
         error_map = {
             401: ClientAuthenticationError,
@@ -510,7 +510,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[None] = kwargs.pop("cls", None)
@@ -518,7 +518,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_purge_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -544,12 +544,12 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             return cls(pipeline_response, None, {})
 
     _purge_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     @distributed_trace_async
     async def begin_purge(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> AsyncLROPoller[None]:
         """Purges protection.
 
@@ -561,8 +561,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
@@ -578,7 +578,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[None] = kwargs.pop("cls", None)
@@ -589,7 +589,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._purge_initial(  # type: ignore
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 api_version=api_version,
                 cls=lambda x, y, z: x,
                 headers=_headers,
@@ -618,14 +618,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_purge.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     async def _update_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_protection_input: Union[_models.UpdateReplicationProtectedItemInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -640,7 +640,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -657,7 +657,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_update_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -692,7 +692,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _update_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     @overload
@@ -700,7 +700,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_protection_input: _models.UpdateReplicationProtectedItemInput,
         *,
         content_type: str = "application/json",
@@ -714,8 +714,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param update_protection_input: Update protection input. Required.
         :type update_protection_input:
          ~azure.mgmt.recoveryservicessiterecovery.models.UpdateReplicationProtectedItemInput
@@ -742,7 +742,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_protection_input: IO,
         *,
         content_type: str = "application/json",
@@ -756,8 +756,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param update_protection_input: Update protection input. Required.
         :type update_protection_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -783,7 +783,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_protection_input: Union[_models.UpdateReplicationProtectedItemInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -795,8 +795,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param update_protection_input: Update protection input. Is either a model type or a IO type.
          Required.
         :type update_protection_input:
@@ -821,7 +821,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -833,7 +833,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._update_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 update_protection_input=update_protection_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -866,14 +866,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_update.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}"
     }
 
     async def _add_disks_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         add_disks_input: Union[_models.AddDisksInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -888,7 +888,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -905,7 +905,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_add_disks_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -940,7 +940,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _add_disks_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/addDisks"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/addDisks"
     }
 
     @overload
@@ -948,7 +948,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         add_disks_input: _models.AddDisksInput,
         *,
         content_type: str = "application/json",
@@ -962,8 +962,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param add_disks_input: Add disks input. Required.
         :type add_disks_input: ~azure.mgmt.recoveryservicessiterecovery.models.AddDisksInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -989,7 +989,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         add_disks_input: IO,
         *,
         content_type: str = "application/json",
@@ -1003,8 +1003,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param add_disks_input: Add disks input. Required.
         :type add_disks_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -1030,7 +1030,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         add_disks_input: Union[_models.AddDisksInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -1042,8 +1042,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param add_disks_input: Add disks input. Is either a model type or a IO type. Required.
         :type add_disks_input: ~azure.mgmt.recoveryservicessiterecovery.models.AddDisksInput or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
@@ -1066,7 +1066,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -1078,7 +1078,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._add_disks_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 add_disks_input=add_disks_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -1111,14 +1111,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_add_disks.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/addDisks"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/addDisks"
     }
 
     async def _apply_recovery_point_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         apply_recovery_point_input: Union[_models.ApplyRecoveryPointInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -1133,7 +1133,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -1150,7 +1150,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_apply_recovery_point_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -1185,7 +1185,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _apply_recovery_point_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/applyRecoveryPoint"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/applyRecoveryPoint"
     }
 
     @overload
@@ -1193,7 +1193,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         apply_recovery_point_input: _models.ApplyRecoveryPointInput,
         *,
         content_type: str = "application/json",
@@ -1207,8 +1207,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: The protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The replicated protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: The replicated protected item name. Required.
+        :type replication_protected_item_name: str
         :param apply_recovery_point_input: The ApplyRecoveryPointInput. Required.
         :type apply_recovery_point_input:
          ~azure.mgmt.recoveryservicessiterecovery.models.ApplyRecoveryPointInput
@@ -1235,7 +1235,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         apply_recovery_point_input: IO,
         *,
         content_type: str = "application/json",
@@ -1249,8 +1249,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: The protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The replicated protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: The replicated protected item name. Required.
+        :type replication_protected_item_name: str
         :param apply_recovery_point_input: The ApplyRecoveryPointInput. Required.
         :type apply_recovery_point_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -1276,7 +1276,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         apply_recovery_point_input: Union[_models.ApplyRecoveryPointInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -1288,8 +1288,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: The protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The replicated protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: The replicated protected item name. Required.
+        :type replication_protected_item_name: str
         :param apply_recovery_point_input: The ApplyRecoveryPointInput. Is either a model type or a IO
          type. Required.
         :type apply_recovery_point_input:
@@ -1314,7 +1314,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -1326,7 +1326,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._apply_recovery_point_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 apply_recovery_point_input=apply_recovery_point_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -1359,11 +1359,11 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_apply_recovery_point.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/applyRecoveryPoint"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/applyRecoveryPoint"
     }
 
     async def _failover_cancel_initial(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
         error_map = {
             401: ClientAuthenticationError,
@@ -1376,7 +1376,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[Optional[_models.ReplicationProtectedItem]] = kwargs.pop("cls", None)
@@ -1384,7 +1384,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_failover_cancel_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -1416,12 +1416,12 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _failover_cancel_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/failoverCancel"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/failoverCancel"
     }
 
     @distributed_trace_async
     async def begin_failover_cancel(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
         """Execute cancel failover.
 
@@ -1431,8 +1431,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
@@ -1450,7 +1450,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.ReplicationProtectedItem] = kwargs.pop("cls", None)
@@ -1461,7 +1461,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._failover_cancel_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 api_version=api_version,
                 cls=lambda x, y, z: x,
                 headers=_headers,
@@ -1492,11 +1492,11 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_failover_cancel.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/failoverCancel"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/failoverCancel"
     }
 
     async def _failover_commit_initial(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
         error_map = {
             401: ClientAuthenticationError,
@@ -1509,7 +1509,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[Optional[_models.ReplicationProtectedItem]] = kwargs.pop("cls", None)
@@ -1517,7 +1517,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_failover_commit_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -1549,12 +1549,12 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _failover_commit_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/failoverCommit"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/failoverCommit"
     }
 
     @distributed_trace_async
     async def begin_failover_commit(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
         """Execute commit failover.
 
@@ -1564,8 +1564,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
@@ -1583,7 +1583,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.ReplicationProtectedItem] = kwargs.pop("cls", None)
@@ -1594,7 +1594,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._failover_commit_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 api_version=api_version,
                 cls=lambda x, y, z: x,
                 headers=_headers,
@@ -1625,14 +1625,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_failover_commit.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/failoverCommit"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/failoverCommit"
     }
 
     async def _planned_failover_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: Union[_models.PlannedFailoverInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -1647,7 +1647,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -1664,7 +1664,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_planned_failover_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -1699,7 +1699,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _planned_failover_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/plannedFailover"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/plannedFailover"
     }
 
     @overload
@@ -1707,7 +1707,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: _models.PlannedFailoverInput,
         *,
         content_type: str = "application/json",
@@ -1721,8 +1721,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param failover_input: Planned failover input. Required.
         :type failover_input: ~azure.mgmt.recoveryservicessiterecovery.models.PlannedFailoverInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -1748,7 +1748,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: IO,
         *,
         content_type: str = "application/json",
@@ -1762,8 +1762,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param failover_input: Planned failover input. Required.
         :type failover_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -1789,7 +1789,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: Union[_models.PlannedFailoverInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -1801,8 +1801,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param failover_input: Planned failover input. Is either a model type or a IO type. Required.
         :type failover_input: ~azure.mgmt.recoveryservicessiterecovery.models.PlannedFailoverInput or
          IO
@@ -1826,7 +1826,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -1838,7 +1838,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._planned_failover_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 failover_input=failover_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -1871,14 +1871,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_planned_failover.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/plannedFailover"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/plannedFailover"
     }
 
     async def _delete_initial(  # pylint: disable=inconsistent-return-statements
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         disable_protection_input: Union[_models.DisableProtectionInput, IO],
         **kwargs: Any
     ) -> None:
@@ -1893,7 +1893,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -1910,7 +1910,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_delete_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -1939,7 +1939,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             return cls(pipeline_response, None, {})
 
     _delete_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/remove"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/remove"
     }
 
     @overload
@@ -1947,7 +1947,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         disable_protection_input: _models.DisableProtectionInput,
         *,
         content_type: str = "application/json",
@@ -1962,8 +1962,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param disable_protection_input: Disable protection input. Required.
         :type disable_protection_input:
          ~azure.mgmt.recoveryservicessiterecovery.models.DisableProtectionInput
@@ -1988,7 +1988,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         disable_protection_input: IO,
         *,
         content_type: str = "application/json",
@@ -2003,8 +2003,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param disable_protection_input: Disable protection input. Required.
         :type disable_protection_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -2028,7 +2028,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         disable_protection_input: Union[_models.DisableProtectionInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[None]:
@@ -2041,8 +2041,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param disable_protection_input: Disable protection input. Is either a model type or a IO type.
          Required.
         :type disable_protection_input:
@@ -2065,7 +2065,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2077,7 +2077,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._delete_initial(  # type: ignore
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 disable_protection_input=disable_protection_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -2108,14 +2108,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_delete.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/remove"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/remove"
     }
 
     async def _remove_disks_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         remove_disks_input: Union[_models.RemoveDisksInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -2130,7 +2130,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2147,7 +2147,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_remove_disks_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -2182,7 +2182,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _remove_disks_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/removeDisks"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/removeDisks"
     }
 
     @overload
@@ -2190,7 +2190,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         remove_disks_input: _models.RemoveDisksInput,
         *,
         content_type: str = "application/json",
@@ -2204,8 +2204,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param remove_disks_input: Remove disks input. Required.
         :type remove_disks_input: ~azure.mgmt.recoveryservicessiterecovery.models.RemoveDisksInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -2231,7 +2231,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         remove_disks_input: IO,
         *,
         content_type: str = "application/json",
@@ -2245,8 +2245,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param remove_disks_input: Remove disks input. Required.
         :type remove_disks_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -2272,7 +2272,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         remove_disks_input: Union[_models.RemoveDisksInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -2284,8 +2284,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param remove_disks_input: Remove disks input. Is either a model type or a IO type. Required.
         :type remove_disks_input: ~azure.mgmt.recoveryservicessiterecovery.models.RemoveDisksInput or
          IO
@@ -2309,7 +2309,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2321,7 +2321,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._remove_disks_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 remove_disks_input=remove_disks_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -2354,11 +2354,11 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_remove_disks.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/removeDisks"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/removeDisks"
     }
 
     async def _repair_replication_initial(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
         error_map = {
             401: ClientAuthenticationError,
@@ -2371,7 +2371,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[Optional[_models.ReplicationProtectedItem]] = kwargs.pop("cls", None)
@@ -2379,7 +2379,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_repair_replication_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -2411,12 +2411,12 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _repair_replication_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/repairReplication"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/repairReplication"
     }
 
     @distributed_trace_async
     async def begin_repair_replication(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
         """Resynchronize or repair replication.
 
@@ -2427,8 +2427,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: The name of the container. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The name of the replication protected item. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: The name of the replication protected item. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
@@ -2446,7 +2446,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.ReplicationProtectedItem] = kwargs.pop("cls", None)
@@ -2457,7 +2457,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._repair_replication_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 api_version=api_version,
                 cls=lambda x, y, z: x,
                 headers=_headers,
@@ -2488,14 +2488,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_repair_replication.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/repairReplication"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/repairReplication"
     }
 
     async def _reprotect_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         reprotect_input: Union[_models.ReverseReplicationInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -2510,7 +2510,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2527,7 +2527,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_reprotect_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -2562,7 +2562,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _reprotect_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/reProtect"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/reProtect"
     }
 
     @overload
@@ -2570,7 +2570,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         reprotect_input: _models.ReverseReplicationInput,
         *,
         content_type: str = "application/json",
@@ -2584,8 +2584,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param reprotect_input: Reverse replication input. Required.
         :type reprotect_input: ~azure.mgmt.recoveryservicessiterecovery.models.ReverseReplicationInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -2611,7 +2611,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         reprotect_input: IO,
         *,
         content_type: str = "application/json",
@@ -2625,8 +2625,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param reprotect_input: Reverse replication input. Required.
         :type reprotect_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -2652,7 +2652,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         reprotect_input: Union[_models.ReverseReplicationInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -2664,8 +2664,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param reprotect_input: Reverse replication input. Is either a model type or a IO type.
          Required.
         :type reprotect_input: ~azure.mgmt.recoveryservicessiterecovery.models.ReverseReplicationInput
@@ -2690,7 +2690,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2702,7 +2702,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._reprotect_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 reprotect_input=reprotect_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -2735,14 +2735,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_reprotect.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/reProtect"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/reProtect"
     }
 
     async def _resolve_health_errors_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         resolve_health_input: Union[_models.ResolveHealthInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -2757,7 +2757,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2774,7 +2774,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_resolve_health_errors_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -2809,7 +2809,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _resolve_health_errors_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/resolveHealthErrors"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/resolveHealthErrors"
     }
 
     @overload
@@ -2817,7 +2817,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         resolve_health_input: _models.ResolveHealthInput,
         *,
         content_type: str = "application/json",
@@ -2831,8 +2831,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param resolve_health_input: Health issue input object. Required.
         :type resolve_health_input: ~azure.mgmt.recoveryservicessiterecovery.models.ResolveHealthInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -2858,7 +2858,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         resolve_health_input: IO,
         *,
         content_type: str = "application/json",
@@ -2872,8 +2872,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param resolve_health_input: Health issue input object. Required.
         :type resolve_health_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -2899,7 +2899,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         resolve_health_input: Union[_models.ResolveHealthInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -2911,8 +2911,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param resolve_health_input: Health issue input object. Is either a model type or a IO type.
          Required.
         :type resolve_health_input: ~azure.mgmt.recoveryservicessiterecovery.models.ResolveHealthInput
@@ -2937,7 +2937,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -2949,7 +2949,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._resolve_health_errors_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 resolve_health_input=resolve_health_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -2982,14 +2982,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_resolve_health_errors.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/resolveHealthErrors"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/resolveHealthErrors"
     }
 
     async def _switch_provider_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         switch_provider_input: Union[_models.SwitchProviderInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -3004,7 +3004,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3021,7 +3021,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_switch_provider_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -3056,7 +3056,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _switch_provider_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/switchProvider"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/switchProvider"
     }
 
     @overload
@@ -3064,7 +3064,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         switch_provider_input: _models.SwitchProviderInput,
         *,
         content_type: str = "application/json",
@@ -3078,8 +3078,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param switch_provider_input: Switch provider input. Required.
         :type switch_provider_input:
          ~azure.mgmt.recoveryservicessiterecovery.models.SwitchProviderInput
@@ -3106,7 +3106,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         switch_provider_input: IO,
         *,
         content_type: str = "application/json",
@@ -3120,8 +3120,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param switch_provider_input: Switch provider input. Required.
         :type switch_provider_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -3147,7 +3147,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         switch_provider_input: Union[_models.SwitchProviderInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -3159,8 +3159,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param switch_provider_input: Switch provider input. Is either a model type or a IO type.
          Required.
         :type switch_provider_input:
@@ -3185,7 +3185,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3197,7 +3197,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._switch_provider_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 switch_provider_input=switch_provider_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -3233,14 +3233,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_switch_provider.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/switchProvider"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/switchProvider"
     }
 
     async def _test_failover_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         testfailover_input: Union[_models.TestFailoverInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -3255,7 +3255,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3272,7 +3272,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_test_failover_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -3307,7 +3307,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _test_failover_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/testFailover"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/testFailover"
     }
 
     @overload
@@ -3315,7 +3315,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         testfailover_input: _models.TestFailoverInput,
         *,
         content_type: str = "application/json",
@@ -3329,8 +3329,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param testfailover_input: Test failover input. Required.
         :type testfailover_input: ~azure.mgmt.recoveryservicessiterecovery.models.TestFailoverInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -3356,7 +3356,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         testfailover_input: IO,
         *,
         content_type: str = "application/json",
@@ -3370,8 +3370,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param testfailover_input: Test failover input. Required.
         :type testfailover_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -3397,7 +3397,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         testfailover_input: Union[_models.TestFailoverInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -3409,8 +3409,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param testfailover_input: Test failover input. Is either a model type or a IO type. Required.
         :type testfailover_input: ~azure.mgmt.recoveryservicessiterecovery.models.TestFailoverInput or
          IO
@@ -3434,7 +3434,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3446,7 +3446,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._test_failover_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 testfailover_input=testfailover_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -3479,14 +3479,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_test_failover.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/testFailover"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/testFailover"
     }
 
     async def _test_failover_cleanup_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         cleanup_input: Union[_models.TestFailoverCleanupInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -3501,7 +3501,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3518,7 +3518,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_test_failover_cleanup_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -3553,7 +3553,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _test_failover_cleanup_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/testFailoverCleanup"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/testFailoverCleanup"
     }
 
     @overload
@@ -3561,7 +3561,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         cleanup_input: _models.TestFailoverCleanupInput,
         *,
         content_type: str = "application/json",
@@ -3575,8 +3575,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param cleanup_input: Test failover cleanup input. Required.
         :type cleanup_input: ~azure.mgmt.recoveryservicessiterecovery.models.TestFailoverCleanupInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -3602,7 +3602,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         cleanup_input: IO,
         *,
         content_type: str = "application/json",
@@ -3616,8 +3616,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param cleanup_input: Test failover cleanup input. Required.
         :type cleanup_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -3643,7 +3643,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         cleanup_input: Union[_models.TestFailoverCleanupInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -3655,8 +3655,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param cleanup_input: Test failover cleanup input. Is either a model type or a IO type.
          Required.
         :type cleanup_input: ~azure.mgmt.recoveryservicessiterecovery.models.TestFailoverCleanupInput
@@ -3681,7 +3681,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3693,7 +3693,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._test_failover_cleanup_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 cleanup_input=cleanup_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -3726,14 +3726,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_test_failover_cleanup.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/testFailoverCleanup"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/testFailoverCleanup"
     }
 
     async def _unplanned_failover_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: Union[_models.UnplannedFailoverInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -3748,7 +3748,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3765,7 +3765,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_unplanned_failover_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -3800,7 +3800,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _unplanned_failover_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/unplannedFailover"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/unplannedFailover"
     }
 
     @overload
@@ -3808,7 +3808,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: _models.UnplannedFailoverInput,
         *,
         content_type: str = "application/json",
@@ -3822,8 +3822,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param failover_input: Failover input. Required.
         :type failover_input: ~azure.mgmt.recoveryservicessiterecovery.models.UnplannedFailoverInput
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -3849,7 +3849,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: IO,
         *,
         content_type: str = "application/json",
@@ -3863,8 +3863,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param failover_input: Failover input. Required.
         :type failover_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -3890,7 +3890,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         failover_input: Union[_models.UnplannedFailoverInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -3902,8 +3902,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param failover_input: Failover input. Is either a model type or a IO type. Required.
         :type failover_input: ~azure.mgmt.recoveryservicessiterecovery.models.UnplannedFailoverInput or
          IO
@@ -3927,7 +3927,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -3939,7 +3939,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._unplanned_failover_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 failover_input=failover_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -3972,14 +3972,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_unplanned_failover.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/unplannedFailover"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/unplannedFailover"
     }
 
     async def _update_appliance_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         appliance_update_input: Union[_models.UpdateApplianceForReplicationProtectedItemInput, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -3994,7 +3994,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -4011,7 +4011,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_update_appliance_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -4046,7 +4046,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return deserialized
 
     _update_appliance_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/updateAppliance"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/updateAppliance"
     }
 
     @overload
@@ -4054,7 +4054,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         appliance_update_input: _models.UpdateApplianceForReplicationProtectedItemInput,
         *,
         content_type: str = "application/json",
@@ -4068,8 +4068,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param appliance_update_input: Appliance update protection input. Required.
         :type appliance_update_input:
          ~azure.mgmt.recoveryservicessiterecovery.models.UpdateApplianceForReplicationProtectedItemInput
@@ -4096,7 +4096,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         appliance_update_input: IO,
         *,
         content_type: str = "application/json",
@@ -4110,8 +4110,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param appliance_update_input: Appliance update protection input. Required.
         :type appliance_update_input: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
@@ -4137,7 +4137,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         appliance_update_input: Union[_models.UpdateApplianceForReplicationProtectedItemInput, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -4149,8 +4149,8 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :type fabric_name: str
         :param protection_container_name: Protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: Replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: Replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param appliance_update_input: Appliance update protection input. Is either a model type or a
          IO type. Required.
         :type appliance_update_input:
@@ -4176,7 +4176,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -4188,7 +4188,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._update_appliance_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 appliance_update_input=appliance_update_input,
                 api_version=api_version,
                 content_type=content_type,
@@ -4221,14 +4221,14 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_update_appliance.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/updateAppliance"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/updateAppliance"
     }
 
     async def _update_mobility_service_initial(
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_mobility_service_request: Union[_models.UpdateMobilityServiceRequest, IO],
         **kwargs: Any
     ) -> Optional[_models.ReplicationProtectedItem]:
@@ -4243,7 +4243,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -4260,7 +4260,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         request = build_update_mobility_service_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
             subscription_id=self._config.subscription_id,
@@ -4286,16 +4286,20 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
         deserialized = None
+        response_headers = {}
         if response.status_code == 200:
             deserialized = self._deserialize("ReplicationProtectedItem", pipeline_response)
 
+        if response.status_code == 202:
+            response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
+
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, response_headers)
 
         return deserialized
 
     _update_mobility_service_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/updateMobilityService"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/updateMobilityService"
     }
 
     @overload
@@ -4303,7 +4307,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_mobility_service_request: _models.UpdateMobilityServiceRequest,
         *,
         content_type: str = "application/json",
@@ -4319,9 +4323,9 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :param protection_container_name: The name of the container containing the protected item.
          Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The name of the protected item on which the agent is to
+        :param replication_protected_item_name: The name of the protected item on which the agent is to
          be updated. Required.
-        :type replicated_protected_item_name: str
+        :type replication_protected_item_name: str
         :param update_mobility_service_request: Request to update the mobility service on the protected
          item. Required.
         :type update_mobility_service_request:
@@ -4349,7 +4353,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_mobility_service_request: IO,
         *,
         content_type: str = "application/json",
@@ -4365,9 +4369,9 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :param protection_container_name: The name of the container containing the protected item.
          Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The name of the protected item on which the agent is to
+        :param replication_protected_item_name: The name of the protected item on which the agent is to
          be updated. Required.
-        :type replicated_protected_item_name: str
+        :type replication_protected_item_name: str
         :param update_mobility_service_request: Request to update the mobility service on the protected
          item. Required.
         :type update_mobility_service_request: IO
@@ -4394,7 +4398,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         update_mobility_service_request: Union[_models.UpdateMobilityServiceRequest, IO],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.ReplicationProtectedItem]:
@@ -4408,9 +4412,9 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         :param protection_container_name: The name of the container containing the protected item.
          Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The name of the protected item on which the agent is to
+        :param replication_protected_item_name: The name of the protected item on which the agent is to
          be updated. Required.
-        :type replicated_protected_item_name: str
+        :type replication_protected_item_name: str
         :param update_mobility_service_request: Request to update the mobility service on the protected
          item. Is either a model type or a IO type. Required.
         :type update_mobility_service_request:
@@ -4435,7 +4439,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
@@ -4447,7 +4451,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             raw_result = await self._update_mobility_service_initial(
                 fabric_name=fabric_name,
                 protection_container_name=protection_container_name,
-                replicated_protected_item_name=replicated_protected_item_name,
+                replication_protected_item_name=replication_protected_item_name,
                 update_mobility_service_request=update_mobility_service_request,
                 api_version=api_version,
                 content_type=content_type,
@@ -4465,7 +4469,9 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
             return deserialized
 
         if polling is True:
-            polling_method: AsyncPollingMethod = cast(AsyncPollingMethod, AsyncARMPolling(lro_delay, **kwargs))
+            polling_method: AsyncPollingMethod = cast(
+                AsyncPollingMethod, AsyncARMPolling(lro_delay, lro_options={"final-state-via": "location"}, **kwargs)
+            )
         elif polling is False:
             polling_method = cast(AsyncPollingMethod, AsyncNoPolling())
         else:
@@ -4480,7 +4486,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     begin_update_mobility_service.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/updateMobilityService"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/updateMobilityService"
     }
 
     @distributed_trace
@@ -4506,7 +4512,7 @@ class ReplicationProtectedItemsOperations:  # pylint: disable=too-many-public-me
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.ReplicationProtectedItemCollection] = kwargs.pop("cls", None)

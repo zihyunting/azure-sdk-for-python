@@ -63,7 +63,7 @@ class RecoveryPointsOperations:
 
     @distributed_trace
     def list_by_replication_protected_items(
-        self, fabric_name: str, protection_container_name: str, replicated_protected_item_name: str, **kwargs: Any
+        self, fabric_name: str, protection_container_name: str, replication_protected_item_name: str, **kwargs: Any
     ) -> AsyncIterable["_models.RecoveryPoint"]:
         """Gets the list of recovery points for a replication protected item.
 
@@ -73,8 +73,8 @@ class RecoveryPointsOperations:
         :type fabric_name: str
         :param protection_container_name: The protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: The replication protected item name. Required.
+        :type replication_protected_item_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either RecoveryPoint or the result of cls(response)
         :rtype:
@@ -84,7 +84,7 @@ class RecoveryPointsOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.RecoveryPointCollection] = kwargs.pop("cls", None)
@@ -103,7 +103,7 @@ class RecoveryPointsOperations:
                 request = build_list_by_replication_protected_items_request(
                     fabric_name=fabric_name,
                     protection_container_name=protection_container_name,
-                    replicated_protected_item_name=replicated_protected_item_name,
+                    replication_protected_item_name=replication_protected_item_name,
                     resource_name=self._config.resource_name,
                     resource_group_name=self._config.resource_group_name,
                     subscription_id=self._config.subscription_id,
@@ -157,7 +157,7 @@ class RecoveryPointsOperations:
         return AsyncItemPaged(get_next, extract_data)
 
     list_by_replication_protected_items.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/recoveryPoints"
     }
 
     @distributed_trace_async
@@ -165,7 +165,7 @@ class RecoveryPointsOperations:
         self,
         fabric_name: str,
         protection_container_name: str,
-        replicated_protected_item_name: str,
+        replication_protected_item_name: str,
         recovery_point_name: str,
         **kwargs: Any
     ) -> _models.RecoveryPoint:
@@ -177,8 +177,8 @@ class RecoveryPointsOperations:
         :type fabric_name: str
         :param protection_container_name: The protection container name. Required.
         :type protection_container_name: str
-        :param replicated_protected_item_name: The replication protected item name. Required.
-        :type replicated_protected_item_name: str
+        :param replication_protected_item_name: The replication protected item name. Required.
+        :type replication_protected_item_name: str
         :param recovery_point_name: The recovery point name. Required.
         :type recovery_point_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
@@ -197,7 +197,7 @@ class RecoveryPointsOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_version: Literal["2022-09-10"] = kwargs.pop(
+        api_version: Literal["2022-10-01"] = kwargs.pop(
             "api_version", _params.pop("api-version", self._config.api_version)
         )
         cls: ClsType[_models.RecoveryPoint] = kwargs.pop("cls", None)
@@ -205,7 +205,7 @@ class RecoveryPointsOperations:
         request = build_get_request(
             fabric_name=fabric_name,
             protection_container_name=protection_container_name,
-            replicated_protected_item_name=replicated_protected_item_name,
+            replication_protected_item_name=replication_protected_item_name,
             recovery_point_name=recovery_point_name,
             resource_name=self._config.resource_name,
             resource_group_name=self._config.resource_group_name,
@@ -236,5 +236,5 @@ class RecoveryPointsOperations:
         return deserialized
 
     get.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints/{recoveryPointName}"
+        "url": "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/recoveryPoints/{recoveryPointName}"
     }

@@ -34,11 +34,11 @@ def main():
     response = client.replication_protected_items.begin_failover_commit(
         fabric_name="cloud1",
         protection_container_name="cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
-        replicated_protected_item_name="f8491e4f-817a-40dd-a90c-af773978c75b",
+        replication_protected_item_name="f8491e4f-817a-40dd-a90c-af773978c75b",
     ).result()
     print(response)
 
 
-# x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-09-10/examples/ReplicationProtectedItems_FailoverCommit.json
+# x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_FailoverCommit.json
 if __name__ == "__main__":
     main()
