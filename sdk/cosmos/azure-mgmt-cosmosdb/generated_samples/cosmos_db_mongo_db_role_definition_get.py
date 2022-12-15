@@ -14,7 +14,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python graph_api_compute_service_create.py
+    python cosmos_db_mongo_db_role_definition_get.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -26,20 +26,17 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
 def main():
     client = CosmosDBManagementClient(
         credential=DefaultAzureCredential(),
-        subscription_id="subid",
+        subscription_id="mySubscriptionId",
     )
 
-    response = client.service.begin_create(
-        resource_group_name="rg1",
-        account_name="ddb1",
-        service_name="GraphAPICompute",
-        create_update_parameters={
-            "properties": {"instanceCount": 1, "instanceSize": "Cosmos.D4s", "serviceType": "GraphAPICompute"}
-        },
-    ).result()
+    response = client.mongo_db_resources.get_mongo_role_definition(
+        mongo_role_definition_id="myMongoRoleDefinitionId",
+        resource_group_name="myResourceGroupName",
+        account_name="myAccountName",
+    )
     print(response)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBGraphAPIComputeServiceCreate.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBMongoDBRoleDefinitionGet.json
 if __name__ == "__main__":
     main()

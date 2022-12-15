@@ -14,7 +14,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python sql_dedicated_gateway_service_get.py
+    python cosmos_db_collection_partition_get_metrics.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -29,14 +29,17 @@ def main():
         subscription_id="subid",
     )
 
-    response = client.service.get(
+    response = client.collection_partition.list_metrics(
         resource_group_name="rg1",
         account_name="ddb1",
-        service_name="SqlDedicatedGateway",
+        database_rid="databaseRid",
+        collection_rid="collectionRid",
+        filter="$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z",
     )
-    print(response)
+    for item in response:
+        print(item)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBSqlDedicatedGatewayServiceGet.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBCollectionPartitionGetMetrics.json
 if __name__ == "__main__":
     main()

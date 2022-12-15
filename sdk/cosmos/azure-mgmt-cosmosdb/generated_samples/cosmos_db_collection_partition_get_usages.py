@@ -14,7 +14,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python cosmos_db_graph_create_update.py
+    python cosmos_db_collection_partition_get_usages.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -29,19 +29,16 @@ def main():
         subscription_id="subid",
     )
 
-    response = client.graph_resources.begin_create_update_graph(
+    response = client.collection_partition.list_usages(
         resource_group_name="rg1",
         account_name="ddb1",
-        graph_name="graphName",
-        create_update_graph_parameters={
-            "location": "West US",
-            "properties": {"options": {}, "resource": {"id": "graphName"}},
-            "tags": {},
-        },
-    ).result()
-    print(response)
+        database_rid="databaseRid",
+        collection_rid="collectionRid",
+    )
+    for item in response:
+        print(item)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBGraphResourceCreateUpdate.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBCollectionPartitionGetUsages.json
 if __name__ == "__main__":
     main()

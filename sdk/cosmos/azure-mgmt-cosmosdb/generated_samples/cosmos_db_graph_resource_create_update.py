@@ -14,7 +14,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python cosmos_db_client_encryption_key_create_update.py
+    python cosmos_db_graph_resource_create_update.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -26,33 +26,22 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
 def main():
     client = CosmosDBManagementClient(
         credential=DefaultAzureCredential(),
-        subscription_id="subId",
+        subscription_id="subid",
     )
 
-    response = client.sql_resources.begin_create_update_client_encryption_key(
-        resource_group_name="rgName",
-        account_name="accountName",
-        database_name="databaseName",
-        client_encryption_key_name="cekName",
-        create_update_client_encryption_key_parameters={
-            "properties": {
-                "resource": {
-                    "encryptionAlgorithm": "AEAD_AES_256_CBC_HMAC_SHA256",
-                    "id": "cekName",
-                    "keyWrapMetadata": {
-                        "algorithm": "RSA-OAEP",
-                        "name": "customerManagedKey",
-                        "type": "AzureKeyVault",
-                        "value": "AzureKeyVault Key URL",
-                    },
-                    "wrappedDataEncryptionKey": "This is actually an array of bytes. This request/response is being presented as a string for readability in the example",
-                }
-            }
+    response = client.graph_resources.begin_create_update_graph(
+        resource_group_name="rg1",
+        account_name="ddb1",
+        graph_name="graphName",
+        create_update_graph_parameters={
+            "location": "West US",
+            "properties": {"options": {}, "resource": {"id": "graphName"}},
+            "tags": {},
         },
     ).result()
     print(response)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBGraphResourceCreateUpdate.json
 if __name__ == "__main__":
     main()

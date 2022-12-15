@@ -14,7 +14,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python cosmos_db_client_encryption_key_get.py
+    python cosmos_db_private_endpoint_connection_list_get.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -26,18 +26,17 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
 def main():
     client = CosmosDBManagementClient(
         credential=DefaultAzureCredential(),
-        subscription_id="subId",
+        subscription_id="00000000-1111-2222-3333-444444444444",
     )
 
-    response = client.sql_resources.get_client_encryption_key(
-        resource_group_name="rgName",
-        account_name="accountName",
-        database_name="databaseName",
-        client_encryption_key_name="cekName",
+    response = client.private_endpoint_connections.list_by_database_account(
+        resource_group_name="rg1",
+        account_name="ddb1",
     )
-    print(response)
+    for item in response:
+        print(item)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBSqlClientEncryptionKeyGet.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBPrivateEndpointConnectionListGet.json
 if __name__ == "__main__":
     main()

@@ -14,7 +14,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python data_transfer_service_get.py
+    python cosmos_db_sql_client_encryption_key_get.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -26,17 +26,18 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
 def main():
     client = CosmosDBManagementClient(
         credential=DefaultAzureCredential(),
-        subscription_id="subid",
+        subscription_id="subId",
     )
 
-    response = client.service.get(
-        resource_group_name="rg1",
-        account_name="ddb1",
-        service_name="DataTransfer",
+    response = client.sql_resources.get_client_encryption_key(
+        resource_group_name="rgName",
+        account_name="accountName",
+        database_name="databaseName",
+        client_encryption_key_name="cekName",
     )
     print(response)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBDataTransferServiceGet.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBSqlClientEncryptionKeyGet.json
 if __name__ == "__main__":
     main()
