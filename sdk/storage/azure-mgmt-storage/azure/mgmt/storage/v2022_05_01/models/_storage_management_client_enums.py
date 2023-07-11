@@ -293,6 +293,7 @@ class LeaseContainerRequestEnum(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     CHANGE = "Change"
     RELEASE = "Release"
     BREAK = "Break"
+    BREAK_ENUM = "Break"
 
 
 class LeaseDuration(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -312,6 +313,7 @@ class LeaseShareAction(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     CHANGE = "Change"
     RELEASE = "Release"
     BREAK = "Break"
+    BREAK_ENUM = "Break"
 
 
 class LeaseState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -390,6 +392,13 @@ class Permissions(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     C = "c"
     U = "u"
     P = "p"
+
+
+class PermissionScopeServiceName(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The service used by the local user, e.g. blob, file."""
+
+    BLOB = "blob"
+    FILE = "file"
 
 
 class PrivateEndpointConnectionProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
