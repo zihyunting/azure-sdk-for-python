@@ -25,6 +25,7 @@ from .operations import (
     ConnectionTypeOperations,
     CredentialOperations,
     DeletedAutomationAccountsOperations,
+    DeletedRunbooksOperations,
     DscCompilationJobOperations,
     DscCompilationJobStreamOperations,
     DscConfigurationOperations,
@@ -114,6 +115,8 @@ class AutomationClient(
     :vartype usages: azure.mgmt.automation.aio.operations.UsagesOperations
     :ivar keys: KeysOperations operations
     :vartype keys: azure.mgmt.automation.aio.operations.KeysOperations
+    :ivar deleted_runbooks: DeletedRunbooksOperations operations
+    :vartype deleted_runbooks: azure.mgmt.automation.aio.operations.DeletedRunbooksOperations
     :ivar certificate: CertificateOperations operations
     :vartype certificate: azure.mgmt.automation.aio.operations.CertificateOperations
     :ivar connection: ConnectionOperations operations
@@ -201,7 +204,7 @@ class AutomationClient(
         **kwargs: Any
     ) -> None:
         self._config = AutomationClientConfiguration(credential=credential, subscription_id=subscription_id, **kwargs)
-        self._client = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        self._client: AsyncARMPipelineClient = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
 
         client_models = {k: v for k, v in _models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
@@ -241,6 +244,9 @@ class AutomationClient(
         self.statistics = StatisticsOperations(self._client, self._config, self._serialize, self._deserialize)
         self.usages = UsagesOperations(self._client, self._config, self._serialize, self._deserialize)
         self.keys = KeysOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.deleted_runbooks = DeletedRunbooksOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
         self.certificate = CertificateOperations(self._client, self._config, self._serialize, self._deserialize)
         self.connection = ConnectionOperations(self._client, self._config, self._serialize, self._deserialize)
         self.connection_type = ConnectionTypeOperations(self._client, self._config, self._serialize, self._deserialize)
@@ -321,5 +327,5 @@ class AutomationClient(
         await self._client.__aenter__()
         return self
 
-    async def __aexit__(self, *exc_details) -> None:
+    async def __aexit__(self, *exc_details: Any) -> None:
         await self._client.__aexit__(*exc_details)

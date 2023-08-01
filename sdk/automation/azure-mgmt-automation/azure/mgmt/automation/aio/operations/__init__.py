@@ -22,6 +22,7 @@ from ._automation_account_operations import AutomationAccountOperations
 from ._statistics_operations import StatisticsOperations
 from ._usages_operations import UsagesOperations
 from ._keys_operations import KeysOperations
+from ._deleted_runbooks_operations import DeletedRunbooksOperations
 from ._certificate_operations import CertificateOperations
 from ._connection_operations import ConnectionOperations
 from ._connection_type_operations import ConnectionTypeOperations
@@ -75,6 +76,7 @@ __all__ = [
     "StatisticsOperations",
     "UsagesOperations",
     "KeysOperations",
+    "DeletedRunbooksOperations",
     "CertificateOperations",
     "ConnectionOperations",
     "ConnectionTypeOperations",

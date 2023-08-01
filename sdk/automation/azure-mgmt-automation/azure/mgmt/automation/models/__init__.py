@@ -43,6 +43,8 @@ from ._models_py3 import CredentialListResult
 from ._models_py3 import CredentialUpdateParameters
 from ._models_py3 import DeletedAutomationAccount
 from ._models_py3 import DeletedAutomationAccountListResult
+from ._models_py3 import DeletedRunbook
+from ._models_py3 import DeletedRunbookListResult
 from ._models_py3 import Dimension
 from ._models_py3 import DscCompilationJob
 from ._models_py3 import DscCompilationJobCreateParameters
@@ -265,6 +267,8 @@ __all__ = [
     "CredentialUpdateParameters",
     "DeletedAutomationAccount",
     "DeletedAutomationAccountListResult",
+    "DeletedRunbook",
+    "DeletedRunbookListResult",
     "Dimension",
     "DscCompilationJob",
     "DscCompilationJobCreateParameters",
