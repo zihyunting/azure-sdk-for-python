@@ -28,7 +28,7 @@ from azure.mgmt.core.exceptions import ARMErrorFormat
 
 from .. import models as _models
 from ..._serialization import Serializer
-from .._vendor import _convert_request, _format_url_section
+from .._vendor import _convert_request
 
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -53,7 +53,7 @@ def build_get_request(scope: str, role_management_policy_name: str, **kwargs: An
         "roleManagementPolicyName": _SERIALIZER.url("role_management_policy_name", role_management_policy_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -81,7 +81,7 @@ def build_update_request(scope: str, role_management_policy_name: str, **kwargs:
         "roleManagementPolicyName": _SERIALIZER.url("role_management_policy_name", role_management_policy_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -110,7 +110,7 @@ def build_delete_request(scope: str, role_management_policy_name: str, **kwargs:
         "roleManagementPolicyName": _SERIALIZER.url("role_management_policy_name", role_management_policy_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -121,7 +121,7 @@ def build_delete_request(scope: str, role_management_policy_name: str, **kwargs:
     return HttpRequest(method="DELETE", url=_url, params=_params, headers=_headers, **kwargs)
 
 
-def build_list_for_scope_request(scope: str, **kwargs: Any) -> HttpRequest:
+def build_list_for_scope_request(scope: str, *, filter: Optional[str] = None, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
@@ -134,9 +134,11 @@ def build_list_for_scope_request(scope: str, **kwargs: Any) -> HttpRequest:
         "scope": _SERIALIZER.url("scope", scope, "str", skip_quote=True),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
+    if filter is not None:
+        _params["$filter"] = _SERIALIZER.query("filter", filter, "str")
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
 
     # Construct headers
@@ -427,11 +429,17 @@ class RoleManagementPoliciesOperations:
     }
 
     @distributed_trace
-    def list_for_scope(self, scope: str, **kwargs: Any) -> Iterable["_models.RoleManagementPolicy"]:
+    def list_for_scope(
+        self, scope: str, filter: Optional[str] = None, **kwargs: Any
+    ) -> Iterable["_models.RoleManagementPolicy"]:
         """Gets role management policies for a resource scope.
 
         :param scope: The scope of the role management policy. Required.
         :type scope: str
+        :param filter: The filter to apply on the operation. For example
+         '$filter=roleDefinitionId%20eq%20'{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}'.
+         Default value is None.
+        :type filter: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either RoleManagementPolicy or the result of
          cls(response)
@@ -458,6 +466,7 @@ class RoleManagementPoliciesOperations:
 
                 request = build_list_for_scope_request(
                     scope=scope,
+                    filter=filter,
                     api_version=api_version,
                     template_url=self.list_for_scope.metadata["url"],
                     headers=_headers,

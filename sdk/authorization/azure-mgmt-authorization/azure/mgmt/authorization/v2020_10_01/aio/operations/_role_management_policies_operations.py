@@ -322,11 +322,17 @@ class RoleManagementPoliciesOperations:
     }
 
     @distributed_trace
-    def list_for_scope(self, scope: str, **kwargs: Any) -> AsyncIterable["_models.RoleManagementPolicy"]:
+    def list_for_scope(
+        self, scope: str, filter: Optional[str] = None, **kwargs: Any
+    ) -> AsyncIterable["_models.RoleManagementPolicy"]:
         """Gets role management policies for a resource scope.
 
         :param scope: The scope of the role management policy. Required.
         :type scope: str
+        :param filter: The filter to apply on the operation. For example
+         '$filter=roleDefinitionId%20eq%20'{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}'.
+         Default value is None.
+        :type filter: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either RoleManagementPolicy or the result of
          cls(response)
@@ -353,6 +359,7 @@ class RoleManagementPoliciesOperations:
 
                 request = build_list_for_scope_request(
                     scope=scope,
+                    filter=filter,
                     api_version=api_version,
                     template_url=self.list_for_scope.metadata["url"],
                     headers=_headers,
