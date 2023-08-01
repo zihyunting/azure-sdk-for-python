@@ -17,19 +17,14 @@ from .._serialization import Deserializer, Serializer
 from ._configuration import AutomationClientConfiguration
 from .operations import (
     ActivityOperations,
-    AgentRegistrationInformationOperations,
     AutomationAccountOperations,
     AutomationClientOperationsMixin,
     CertificateOperations,
     ConnectionOperations,
     ConnectionTypeOperations,
     CredentialOperations,
-    DeletedAutomationAccountsOperations,
-    DscCompilationJobOperations,
-    DscCompilationJobStreamOperations,
     DscConfigurationOperations,
     DscNodeConfigurationOperations,
-    DscNodeOperations,
     FieldsOperations,
     HybridRunbookWorkerGroupOperations,
     HybridRunbookWorkersOperations,
@@ -39,12 +34,8 @@ from .operations import (
     KeysOperations,
     LinkedWorkspaceOperations,
     ModuleOperations,
-    NodeCountInformationOperations,
-    NodeReportsOperations,
     ObjectDataTypesOperations,
     Operations,
-    PrivateEndpointConnectionsOperations,
-    PrivateLinkResourcesOperations,
     Python2PackageOperations,
     Python3PackageOperations,
     RunbookDraftOperations,
@@ -52,7 +43,6 @@ from .operations import (
     ScheduleOperations,
     SoftwareUpdateConfigurationMachineRunsOperations,
     SoftwareUpdateConfigurationRunsOperations,
-    SoftwareUpdateConfigurationsOperations,
     SourceControlOperations,
     SourceControlSyncJobOperations,
     SourceControlSyncJobStreamsOperations,
@@ -61,8 +51,6 @@ from .operations import (
     TestJobStreamsOperations,
     UsagesOperations,
     VariableOperations,
-    WatcherOperations,
-    WebhookOperations,
 )
 
 if TYPE_CHECKING:
@@ -75,37 +63,6 @@ class AutomationClient(
 ):  # pylint: disable=client-accepts-api-version-keyword,too-many-instance-attributes
     """Automation Client.
 
-    :ivar private_endpoint_connections: PrivateEndpointConnectionsOperations operations
-    :vartype private_endpoint_connections:
-     azure.mgmt.automation.aio.operations.PrivateEndpointConnectionsOperations
-    :ivar private_link_resources: PrivateLinkResourcesOperations operations
-    :vartype private_link_resources:
-     azure.mgmt.automation.aio.operations.PrivateLinkResourcesOperations
-    :ivar agent_registration_information: AgentRegistrationInformationOperations operations
-    :vartype agent_registration_information:
-     azure.mgmt.automation.aio.operations.AgentRegistrationInformationOperations
-    :ivar dsc_node: DscNodeOperations operations
-    :vartype dsc_node: azure.mgmt.automation.aio.operations.DscNodeOperations
-    :ivar node_reports: NodeReportsOperations operations
-    :vartype node_reports: azure.mgmt.automation.aio.operations.NodeReportsOperations
-    :ivar dsc_compilation_job: DscCompilationJobOperations operations
-    :vartype dsc_compilation_job: azure.mgmt.automation.aio.operations.DscCompilationJobOperations
-    :ivar dsc_compilation_job_stream: DscCompilationJobStreamOperations operations
-    :vartype dsc_compilation_job_stream:
-     azure.mgmt.automation.aio.operations.DscCompilationJobStreamOperations
-    :ivar node_count_information: NodeCountInformationOperations operations
-    :vartype node_count_information:
-     azure.mgmt.automation.aio.operations.NodeCountInformationOperations
-    :ivar watcher: WatcherOperations operations
-    :vartype watcher: azure.mgmt.automation.aio.operations.WatcherOperations
-    :ivar software_update_configurations: SoftwareUpdateConfigurationsOperations operations
-    :vartype software_update_configurations:
-     azure.mgmt.automation.aio.operations.SoftwareUpdateConfigurationsOperations
-    :ivar webhook: WebhookOperations operations
-    :vartype webhook: azure.mgmt.automation.aio.operations.WebhookOperations
-    :ivar deleted_automation_accounts: DeletedAutomationAccountsOperations operations
-    :vartype deleted_automation_accounts:
-     azure.mgmt.automation.aio.operations.DeletedAutomationAccountsOperations
     :ivar automation_account: AutomationAccountOperations operations
     :vartype automation_account: azure.mgmt.automation.aio.operations.AutomationAccountOperations
     :ivar statistics: StatisticsOperations operations
@@ -201,40 +158,12 @@ class AutomationClient(
         **kwargs: Any
     ) -> None:
         self._config = AutomationClientConfiguration(credential=credential, subscription_id=subscription_id, **kwargs)
-        self._client = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        self._client: AsyncARMPipelineClient = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
 
         client_models = {k: v for k, v in _models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
         self._serialize.client_side_validation = False
-        self.private_endpoint_connections = PrivateEndpointConnectionsOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.private_link_resources = PrivateLinkResourcesOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.agent_registration_information = AgentRegistrationInformationOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.dsc_node = DscNodeOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.node_reports = NodeReportsOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.dsc_compilation_job = DscCompilationJobOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.dsc_compilation_job_stream = DscCompilationJobStreamOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.node_count_information = NodeCountInformationOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.watcher = WatcherOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.software_update_configurations = SoftwareUpdateConfigurationsOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
-        self.webhook = WebhookOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.deleted_automation_accounts = DeletedAutomationAccountsOperations(
-            self._client, self._config, self._serialize, self._deserialize
-        )
         self.automation_account = AutomationAccountOperations(
             self._client, self._config, self._serialize, self._deserialize
         )
@@ -321,5 +250,5 @@ class AutomationClient(
         await self._client.__aenter__()
         return self
 
-    async def __aexit__(self, *exc_details) -> None:
+    async def __aexit__(self, *exc_details: Any) -> None:
         await self._client.__aexit__(*exc_details)

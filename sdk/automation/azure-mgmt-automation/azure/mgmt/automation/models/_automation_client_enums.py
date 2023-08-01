@@ -10,13 +10,6 @@ from enum import Enum
 from azure.core import CaseInsensitiveEnumMeta
 
 
-class AgentRegistrationKeyName(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Gets or sets the agent registration key name - primary or secondary."""
-
-    PRIMARY = "primary"
-    SECONDARY = "secondary"
-
-
 class AutomationAccountState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Gets status of account."""
 
@@ -44,13 +37,6 @@ class ContentSourceType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     EMBEDDED_CONTENT = "embeddedContent"
     URI = "uri"
-
-
-class CountType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """CountType."""
-
-    STATUS = "status"
-    NODECONFIGURATION = "nodeconfiguration"
 
 
 class CreatedByType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -141,6 +127,7 @@ class HttpStatusCode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     SERVICE_UNAVAILABLE = "ServiceUnavailable"
     GATEWAY_TIMEOUT = "GatewayTimeout"
     HTTP_VERSION_NOT_SUPPORTED = "HttpVersionNotSupported"
+    CONTINUE_ENUM = "Continue"
 
 
 class JobProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -182,15 +169,6 @@ class JobStreamType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     ANY = "Any"
 
 
-class LinuxUpdateClasses(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Update classifications included in the software update configuration."""
-
-    UNCLASSIFIED = "Unclassified"
-    CRITICAL = "Critical"
-    SECURITY = "Security"
-    OTHER = "Other"
-
-
 class ModuleProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Gets or sets the provisioning state of the module."""
 
@@ -210,13 +188,6 @@ class ModuleProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     FAILED = "Failed"
     CANCELLED = "Cancelled"
     UPDATING = "Updating"
-
-
-class OperatingSystemType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Target operating system for the software update configuration."""
-
-    WINDOWS = "Windows"
-    LINUX = "Linux"
 
 
 class ProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -279,8 +250,8 @@ class ScheduleFrequency(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     HOUR = "Hour"
     WEEK = "Week"
     MONTH = "Month"
-    #: The minimum allowed interval for Minute schedules is 15 minutes.
     MINUTE = "Minute"
+    """The minimum allowed interval for Minute schedules is 15 minutes."""
 
 
 class SkuNameEnum(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -312,34 +283,11 @@ class SyncType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     FULL_SYNC = "FullSync"
 
 
-class TagOperators(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Filter VMs by Any or All specified tags."""
-
-    ALL = "All"
-    ANY = "Any"
-
-
 class TokenType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The token type. Must be either PersonalAccessToken or Oauth."""
 
     PERSONAL_ACCESS_TOKEN = "PersonalAccessToken"
     OAUTH = "Oauth"
-
-
-class WindowsUpdateClasses(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Update classification included in the software update configuration. A comma separated string
-    with required values.
-    """
-
-    UNCLASSIFIED = "Unclassified"
-    CRITICAL = "Critical"
-    SECURITY = "Security"
-    UPDATE_ROLLUP = "UpdateRollup"
-    FEATURE_PACK = "FeaturePack"
-    SERVICE_PACK = "ServicePack"
-    DEFINITION = "Definition"
-    TOOLS = "Tools"
-    UPDATES = "Updates"
 
 
 class WorkerType(str, Enum, metaclass=CaseInsensitiveEnumMeta):

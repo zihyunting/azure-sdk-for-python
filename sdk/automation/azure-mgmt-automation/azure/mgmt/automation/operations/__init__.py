@@ -6,18 +6,6 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._private_endpoint_connections_operations import PrivateEndpointConnectionsOperations
-from ._private_link_resources_operations import PrivateLinkResourcesOperations
-from ._agent_registration_information_operations import AgentRegistrationInformationOperations
-from ._dsc_node_operations import DscNodeOperations
-from ._node_reports_operations import NodeReportsOperations
-from ._dsc_compilation_job_operations import DscCompilationJobOperations
-from ._dsc_compilation_job_stream_operations import DscCompilationJobStreamOperations
-from ._node_count_information_operations import NodeCountInformationOperations
-from ._watcher_operations import WatcherOperations
-from ._software_update_configurations_operations import SoftwareUpdateConfigurationsOperations
-from ._webhook_operations import WebhookOperations
-from ._deleted_automation_accounts_operations import DeletedAutomationAccountsOperations
 from ._automation_account_operations import AutomationAccountOperations
 from ._statistics_operations import StatisticsOperations
 from ._usages_operations import UsagesOperations
@@ -59,18 +47,6 @@ from ._patch import *  # pylint: disable=unused-wildcard-import
 from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
-    "PrivateEndpointConnectionsOperations",
-    "PrivateLinkResourcesOperations",
-    "AgentRegistrationInformationOperations",
-    "DscNodeOperations",
-    "NodeReportsOperations",
-    "DscCompilationJobOperations",
-    "DscCompilationJobStreamOperations",
-    "NodeCountInformationOperations",
-    "WatcherOperations",
-    "SoftwareUpdateConfigurationsOperations",
-    "WebhookOperations",
-    "DeletedAutomationAccountsOperations",
     "AutomationAccountOperations",
     "StatisticsOperations",
     "UsagesOperations",
