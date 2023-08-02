@@ -45,7 +45,7 @@ def main():
                 "eventHubEndpointUri": "sb://myeh.servicebus.windows.net/",
                 "eventHubEntityPath": "myeh",
                 "eventHubNamespaceResourceId": "/subscriptions/c493073e-2460-45ba-a403-f3e0df1e9feg/resourceGroups/testrg/providers/Microsoft.EventHub/namespaces/myeh",
-                "recordPropertyAndItemRemovals": "true",
+                "recordPropertyAndItemRemovals": True,
             }
         },
     ).result()

@@ -116,9 +116,7 @@ class AzureDataExplorerConnectionProperties(
      property and item removals, including removals of indexed or keyed values (such as map entries,
      array elements, etc.). This feature is de-activated unless explicitly set to 'true'. Setting
      this property to 'true' will generate an additional column in the property events table in ADX.
-     Known values are: "true" and "false".
-    :vartype record_property_and_item_removals: str or
-     ~azure.mgmt.digitaltwins.v2023_01_31.models.RecordPropertyAndItemRemovals
+    :vartype record_property_and_item_removals: bool
     """
 
     _validation = {
@@ -149,7 +147,7 @@ class AzureDataExplorerConnectionProperties(
         "event_hub_entity_path": {"key": "eventHubEntityPath", "type": "str"},
         "event_hub_namespace_resource_id": {"key": "eventHubNamespaceResourceId", "type": "str"},
         "event_hub_consumer_group": {"key": "eventHubConsumerGroup", "type": "str"},
-        "record_property_and_item_removals": {"key": "recordPropertyAndItemRemovals", "type": "str"},
+        "record_property_and_item_removals": {"key": "recordPropertyAndItemRemovals", "type": "bool"},
     }
 
     def __init__(
@@ -166,7 +164,7 @@ class AzureDataExplorerConnectionProperties(
         adx_twin_lifecycle_events_table_name: Optional[str] = None,
         adx_relationship_lifecycle_events_table_name: Optional[str] = None,
         event_hub_consumer_group: str = "$Default",
-        record_property_and_item_removals: Union[str, "_models.RecordPropertyAndItemRemovals"] = "false",
+        record_property_and_item_removals: Optional[bool] = None,
         **kwargs: Any
     ) -> None:
         """
@@ -205,9 +203,8 @@ class AzureDataExplorerConnectionProperties(
          relationship property and item removals, including removals of indexed or keyed values (such as
          map entries, array elements, etc.). This feature is de-activated unless explicitly set to
          'true'. Setting this property to 'true' will generate an additional column in the property
-         events table in ADX. Known values are: "true" and "false".
-        :paramtype record_property_and_item_removals: str or
-         ~azure.mgmt.digitaltwins.v2023_01_31.models.RecordPropertyAndItemRemovals
+         events table in ADX.
+        :paramtype record_property_and_item_removals: bool
         """
         super().__init__(identity=identity, **kwargs)
         self.connection_type: str = "AzureDataExplorer"

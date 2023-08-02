@@ -56,7 +56,6 @@ from ._azure_digital_twins_management_client_enums import PrivateLinkServiceConn
 from ._azure_digital_twins_management_client_enums import ProvisioningState
 from ._azure_digital_twins_management_client_enums import PublicNetworkAccess
 from ._azure_digital_twins_management_client_enums import Reason
-from ._azure_digital_twins_management_client_enums import RecordPropertyAndItemRemovals
 from ._azure_digital_twins_management_client_enums import TimeSeriesDatabaseConnectionState
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
@@ -112,7 +111,6 @@ __all__ = [
     "ProvisioningState",
     "PublicNetworkAccess",
     "Reason",
-    "RecordPropertyAndItemRemovals",
     "TimeSeriesDatabaseConnectionState",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])

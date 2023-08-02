@@ -1,11 +1,18 @@
 {
-  "commit": "d1b57073903fc64486bf53a37f061e5c7ab9ca31",
+  "commit": "9c2f95b137de57b30136addd52ae85e1e989ecc3",
   "repository_url": "https://github.com/Azure/azure-rest-api-specs",
-  "autorest": "3.9.2",
+  "autorest": "3.9.7",
   "use": [
-    "@autorest/python@6.4.0",
-    "@autorest/modelerfour@4.24.3"
+    "@autorest/python@6.7.1",
+    "@autorest/modelerfour@4.26.2"
   ],
-  "autorest_command": "autorest specification/digitaltwins/resource-manager/readme.md --generate-sample=True --include-x-ms-examples-original-file=True --python --python-sdks-folder=/home/vsts/work/1/azure-sdk-for-python/sdk --use=@autorest/python@6.4.0 --use=@autorest/modelerfour@4.24.3 --version=3.9.2 --version-tolerant=False",
-  "readme": "specification/digitaltwins/resource-manager/readme.md"
+  "autorest_command": "autorest specification/digitaltwins/resource-manager/readme.md --generate-sample=True --include-x-ms-examples-original-file=True --python --python-sdks-folder=/mnt/vss/_work/1/s/azure-sdk-for-python/sdk --use=@autorest/python@6.7.1 --use=@autorest/modelerfour@4.26.2 --version=3.9.7 --version-tolerant=False",
+  "readme": "specification/digitaltwins/resource-manager/readme.md",
+  "package-2023-01": "2023-08-02 17:17:04 +0200 9d1dd701de06e1ec8393b21b51ae44cdea3c7dce Microsoft.DigitalTwins/stable/2023-01-31/digitaltwins.json",
+  "package-2022-10": "2022-11-21 18:22:40 -0800 fc0c0316bf5187af413a256c484c1e2a259e18b8 Microsoft.DigitalTwins/stable/2022-10-31/digitaltwins.json",
+  "package-2022-05": "2022-09-29 18:34:16 -0700 9a312bb730561b8e8e3c0ea7c224de38a9d05238 Microsoft.DigitalTwins/stable/2022-05-31/digitaltwins.json",
+  "package-2021-06-30-preview": "2022-09-29 03:09:14 -0700 4b5fe2fb0a5066c4ff2bd429dbd5e1afda6afab3 Microsoft.DigitalTwins/preview/2021-06-30-preview/digitaltwins.json",
+  "package-2020-12": "2020-12-15 19:48:10 -0800 47a57f6689a7fd036d909b4957ebce905504f16a Microsoft.DigitalTwins/stable/2020-12-01/digitaltwins.json",
+  "package-2020-10": "2020-10-13 11:21:01 -0700 0182f78f8ae3afdfcc41e23e4ca5c787763597b7 Microsoft.DigitalTwins/stable/2020-10-31/digitaltwins.json",
+  "package-2020-03-01-preview": "2020-06-03 20:37:52 -0700 0d015f7dec0c531bf1b22d6f85de6f64f22c3eae Microsoft.DigitalTwins/preview/2020-03-01-preview/digitaltwins.json"
 }
