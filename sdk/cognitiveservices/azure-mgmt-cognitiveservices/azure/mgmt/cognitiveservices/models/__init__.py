@@ -67,6 +67,19 @@ from ._models_py3 import PrivateLinkResourceProperties
 from ._models_py3 import PrivateLinkServiceConnectionState
 from ._models_py3 import ProxyResource
 from ._models_py3 import QuotaLimit
+from ._models_py3 import RaiBlockListItemsResult
+from ._models_py3 import RaiBlockListResult
+from ._models_py3 import RaiBlocklist
+from ._models_py3 import RaiBlocklistConfig
+from ._models_py3 import RaiBlocklistItem
+from ._models_py3 import RaiBlocklistItemProperties
+from ._models_py3 import RaiBlocklistProperties
+from ._models_py3 import RaiContentFilter
+from ._models_py3 import RaiContentFilterListResult
+from ._models_py3 import RaiPolicy
+from ._models_py3 import RaiPolicyContentFilter
+from ._models_py3 import RaiPolicyListResult
+from ._models_py3 import RaiPolicyProperties
 from ._models_py3 import RegenerateKeyParameters
 from ._models_py3 import RegionSetting
 from ._models_py3 import RequestMatchPattern
@@ -90,6 +103,8 @@ from ._models_py3 import VirtualNetworkRule
 
 from ._cognitive_services_management_client_enums import AbusePenaltyAction
 from ._cognitive_services_management_client_enums import ActionType
+from ._cognitive_services_management_client_enums import AllowedContentLevel
+from ._cognitive_services_management_client_enums import ByPassSelection
 from ._cognitive_services_management_client_enums import CommitmentPlanProvisioningState
 from ._cognitive_services_management_client_enums import CreatedByType
 from ._cognitive_services_management_client_enums import DeploymentModelVersionUpgradeOption
@@ -106,6 +121,10 @@ from ._cognitive_services_management_client_enums import PrivateEndpointServiceC
 from ._cognitive_services_management_client_enums import ProvisioningState
 from ._cognitive_services_management_client_enums import PublicNetworkAccess
 from ._cognitive_services_management_client_enums import QuotaUsageStatus
+from ._cognitive_services_management_client_enums import RaiContentFilterType
+from ._cognitive_services_management_client_enums import RaiPolicyContentSource
+from ._cognitive_services_management_client_enums import RaiPolicyMode
+from ._cognitive_services_management_client_enums import RaiPolicyType
 from ._cognitive_services_management_client_enums import ResourceIdentityType
 from ._cognitive_services_management_client_enums import ResourceSkuRestrictionsReasonCode
 from ._cognitive_services_management_client_enums import ResourceSkuRestrictionsType
@@ -178,6 +197,19 @@ __all__ = [
     "PrivateLinkServiceConnectionState",
     "ProxyResource",
     "QuotaLimit",
+    "RaiBlockListItemsResult",
+    "RaiBlockListResult",
+    "RaiBlocklist",
+    "RaiBlocklistConfig",
+    "RaiBlocklistItem",
+    "RaiBlocklistItemProperties",
+    "RaiBlocklistProperties",
+    "RaiContentFilter",
+    "RaiContentFilterListResult",
+    "RaiPolicy",
+    "RaiPolicyContentFilter",
+    "RaiPolicyListResult",
+    "RaiPolicyProperties",
     "RegenerateKeyParameters",
     "RegionSetting",
     "RequestMatchPattern",
@@ -200,6 +232,8 @@ __all__ = [
     "VirtualNetworkRule",
     "AbusePenaltyAction",
     "ActionType",
+    "AllowedContentLevel",
+    "ByPassSelection",
     "CommitmentPlanProvisioningState",
     "CreatedByType",
     "DeploymentModelVersionUpgradeOption",
@@ -216,6 +250,10 @@ __all__ = [
     "ProvisioningState",
     "PublicNetworkAccess",
     "QuotaUsageStatus",
+    "RaiContentFilterType",
+    "RaiPolicyContentSource",
+    "RaiPolicyMode",
+    "RaiPolicyType",
     "ResourceIdentityType",
     "ResourceSkuRestrictionsReasonCode",
     "ResourceSkuRestrictionsType",

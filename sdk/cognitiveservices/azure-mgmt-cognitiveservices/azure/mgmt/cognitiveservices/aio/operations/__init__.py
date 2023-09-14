@@ -18,6 +18,12 @@ from ._private_endpoint_connections_operations import PrivateEndpointConnections
 from ._private_link_resources_operations import PrivateLinkResourcesOperations
 from ._deployments_operations import DeploymentsOperations
 from ._commitment_plans_operations import CommitmentPlansOperations
+from ._rai_policies_operations import RaiPoliciesOperations
+from ._rai_blocklists_operations import RaiBlocklistsOperations
+from ._rai_blocklist_items_operations import RaiBlocklistItemsOperations
+from ._rai_blocklist_operations import RaiBlocklistOperations
+from ._rai_blocklist_item_operations import RaiBlocklistItemOperations
+from ._rai_content_filters_operations import RaiContentFiltersOperations
 
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
@@ -36,6 +42,12 @@ __all__ = [
     "PrivateLinkResourcesOperations",
     "DeploymentsOperations",
     "CommitmentPlansOperations",
+    "RaiPoliciesOperations",
+    "RaiBlocklistsOperations",
+    "RaiBlocklistItemsOperations",
+    "RaiBlocklistOperations",
+    "RaiBlocklistItemOperations",
+    "RaiContentFiltersOperations",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
 _patch_sdk()

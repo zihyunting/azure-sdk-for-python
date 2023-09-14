@@ -23,6 +23,21 @@ class ActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     INTERNAL = "Internal"
 
 
+class AllowedContentLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Level at which content is filtered."""
+
+    LOW = "Low"
+    MEDIUM = "Medium"
+    HIGH = "High"
+
+
+class ByPassSelection(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Setting for trusted services."""
+
+    NONE = "None"
+    AZURE_SERVICES = "AzureServices"
+
+
 class CommitmentPlanProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Gets the status of the resource at the time the operation was called."""
 
@@ -164,6 +179,35 @@ class QuotaUsageStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     BLOCKED = "Blocked"
     IN_OVERAGE = "InOverage"
     UNKNOWN = "Unknown"
+
+
+class RaiContentFilterType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content Filter type."""
+
+    MULTI_LEVEL = "MultiLevel"
+    SWITCH = "Switch"
+
+
+class RaiPolicyContentSource(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content source to apply the Content Filters."""
+
+    PROMPT = "Prompt"
+    COMPLETION = "Completion"
+
+
+class RaiPolicyMode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content Filters mode."""
+
+    DEFAULT = "Default"
+    DEFERRED = "Deferred"
+    BLOCKING = "Blocking"
+
+
+class RaiPolicyType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content Filters policy type."""
+
+    USER_MANAGED = "UserManaged"
+    SYSTEM_MANAGED = "SystemManaged"
 
 
 class ResourceIdentityType(str, Enum, metaclass=CaseInsensitiveEnumMeta):

@@ -2299,6 +2299,8 @@ class NetworkRuleSet(_serialization.Model):
      match. This is only used after the bypass property has been evaluated. Known values are:
      "Allow" and "Deny".
     :vartype default_action: str or ~azure.mgmt.cognitiveservices.models.NetworkRuleAction
+    :ivar bypass: Setting for trusted services. Known values are: "None" and "AzureServices".
+    :vartype bypass: str or ~azure.mgmt.cognitiveservices.models.ByPassSelection
     :ivar ip_rules: The list of IP address rules.
     :vartype ip_rules: list[~azure.mgmt.cognitiveservices.models.IpRule]
     :ivar virtual_network_rules: The list of virtual network rules.
@@ -2307,6 +2309,7 @@ class NetworkRuleSet(_serialization.Model):
 
     _attribute_map = {
         "default_action": {"key": "defaultAction", "type": "str"},
+        "bypass": {"key": "bypass", "type": "str"},
         "ip_rules": {"key": "ipRules", "type": "[IpRule]"},
         "virtual_network_rules": {"key": "virtualNetworkRules", "type": "[VirtualNetworkRule]"},
     }
@@ -2315,6 +2318,7 @@ class NetworkRuleSet(_serialization.Model):
         self,
         *,
         default_action: Optional[Union[str, "_models.NetworkRuleAction"]] = None,
+        bypass: Optional[Union[str, "_models.ByPassSelection"]] = None,
         ip_rules: Optional[List["_models.IpRule"]] = None,
         virtual_network_rules: Optional[List["_models.VirtualNetworkRule"]] = None,
         **kwargs: Any
@@ -2324,6 +2328,8 @@ class NetworkRuleSet(_serialization.Model):
          virtualNetworkRules match. This is only used after the bypass property has been evaluated.
          Known values are: "Allow" and "Deny".
         :paramtype default_action: str or ~azure.mgmt.cognitiveservices.models.NetworkRuleAction
+        :keyword bypass: Setting for trusted services. Known values are: "None" and "AzureServices".
+        :paramtype bypass: str or ~azure.mgmt.cognitiveservices.models.ByPassSelection
         :keyword ip_rules: The list of IP address rules.
         :paramtype ip_rules: list[~azure.mgmt.cognitiveservices.models.IpRule]
         :keyword virtual_network_rules: The list of virtual network rules.
@@ -2331,6 +2337,7 @@ class NetworkRuleSet(_serialization.Model):
         """
         super().__init__(**kwargs)
         self.default_action = default_action
+        self.bypass = bypass
         self.ip_rules = ip_rules
         self.virtual_network_rules = virtual_network_rules
 
@@ -2850,6 +2857,506 @@ class QuotaLimit(_serialization.Model):
         self.count = count
         self.renewal_period = renewal_period
         self.rules = rules
+
+
+class RaiBlocklist(ProxyResource):
+    """Cognitive Services RaiBlocklist.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Metadata pertaining to creation and last modification of the resource.
+    :vartype system_data: ~azure.mgmt.cognitiveservices.models.SystemData
+    :ivar etag: Resource Etag.
+    :vartype etag: str
+    :ivar properties: Properties of Cognitive Services RaiBlocklist.
+    :vartype properties: ~azure.mgmt.cognitiveservices.models.RaiBlocklistProperties
+    """
+
+    _validation = {
+        "id": {"readonly": True},
+        "name": {"readonly": True},
+        "type": {"readonly": True},
+        "system_data": {"readonly": True},
+        "etag": {"readonly": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "system_data": {"key": "systemData", "type": "SystemData"},
+        "etag": {"key": "etag", "type": "str"},
+        "properties": {"key": "properties", "type": "RaiBlocklistProperties"},
+    }
+
+    def __init__(self, *, properties: Optional["_models.RaiBlocklistProperties"] = None, **kwargs: Any) -> None:
+        """
+        :keyword properties: Properties of Cognitive Services RaiBlocklist.
+        :paramtype properties: ~azure.mgmt.cognitiveservices.models.RaiBlocklistProperties
+        """
+        super().__init__(**kwargs)
+        self.system_data = None
+        self.etag = None
+        self.properties = properties
+
+
+class RaiBlocklistConfig(_serialization.Model):
+    """Azure OpenAI blocklist config.
+
+    :ivar blocklist_name: Name of ContentFilter.
+    :vartype blocklist_name: str
+    :ivar blocking: If blocking would occur.
+    :vartype blocking: bool
+    """
+
+    _attribute_map = {
+        "blocklist_name": {"key": "blocklistName", "type": "str"},
+        "blocking": {"key": "blocking", "type": "bool"},
+    }
+
+    def __init__(self, *, blocklist_name: Optional[str] = None, blocking: Optional[bool] = None, **kwargs: Any) -> None:
+        """
+        :keyword blocklist_name: Name of ContentFilter.
+        :paramtype blocklist_name: str
+        :keyword blocking: If blocking would occur.
+        :paramtype blocking: bool
+        """
+        super().__init__(**kwargs)
+        self.blocklist_name = blocklist_name
+        self.blocking = blocking
+
+
+class RaiBlocklistItem(ProxyResource):
+    """Cognitive Services RaiBlocklist Item.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Metadata pertaining to creation and last modification of the resource.
+    :vartype system_data: ~azure.mgmt.cognitiveservices.models.SystemData
+    :ivar etag: Resource Etag.
+    :vartype etag: str
+    :ivar properties: Properties of Cognitive Services RaiBlocklist Item.
+    :vartype properties: ~azure.mgmt.cognitiveservices.models.RaiBlocklistItemProperties
+    """
+
+    _validation = {
+        "id": {"readonly": True},
+        "name": {"readonly": True},
+        "type": {"readonly": True},
+        "system_data": {"readonly": True},
+        "etag": {"readonly": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "system_data": {"key": "systemData", "type": "SystemData"},
+        "etag": {"key": "etag", "type": "str"},
+        "properties": {"key": "properties", "type": "RaiBlocklistItemProperties"},
+    }
+
+    def __init__(self, *, properties: Optional["_models.RaiBlocklistItemProperties"] = None, **kwargs: Any) -> None:
+        """
+        :keyword properties: Properties of Cognitive Services RaiBlocklist Item.
+        :paramtype properties: ~azure.mgmt.cognitiveservices.models.RaiBlocklistItemProperties
+        """
+        super().__init__(**kwargs)
+        self.system_data = None
+        self.etag = None
+        self.properties = properties
+
+
+class RaiBlocklistItemProperties(_serialization.Model):
+    """RAI Custom Blocklist Item properties.
+
+    :ivar pattern: Pattern to match against.
+    :vartype pattern: str
+    :ivar is_regex: If the pattern is a regex pattern.
+    :vartype is_regex: bool
+    """
+
+    _attribute_map = {
+        "pattern": {"key": "pattern", "type": "str"},
+        "is_regex": {"key": "isRegex", "type": "bool"},
+    }
+
+    def __init__(self, *, pattern: Optional[str] = None, is_regex: Optional[bool] = None, **kwargs: Any) -> None:
+        """
+        :keyword pattern: Pattern to match against.
+        :paramtype pattern: str
+        :keyword is_regex: If the pattern is a regex pattern.
+        :paramtype is_regex: bool
+        """
+        super().__init__(**kwargs)
+        self.pattern = pattern
+        self.is_regex = is_regex
+
+
+class RaiBlockListItemsResult(_serialization.Model):
+    """The list of cognitive services RAI Blocklist Items.
+
+    :ivar next_link: The link used to get the next page of RaiBlocklistItems.
+    :vartype next_link: str
+    :ivar value: The list of RaiBlocklistItems.
+    :vartype value: list[~azure.mgmt.cognitiveservices.models.RaiBlocklistItem]
+    """
+
+    _attribute_map = {
+        "next_link": {"key": "nextLink", "type": "str"},
+        "value": {"key": "value", "type": "[RaiBlocklistItem]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        next_link: Optional[str] = None,
+        value: Optional[List["_models.RaiBlocklistItem"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword next_link: The link used to get the next page of RaiBlocklistItems.
+        :paramtype next_link: str
+        :keyword value: The list of RaiBlocklistItems.
+        :paramtype value: list[~azure.mgmt.cognitiveservices.models.RaiBlocklistItem]
+        """
+        super().__init__(**kwargs)
+        self.next_link = next_link
+        self.value = value
+
+
+class RaiBlocklistProperties(_serialization.Model):
+    """RAI Custom Blocklist properties.
+
+    :ivar description: Description of the block list.
+    :vartype description: str
+    """
+
+    _attribute_map = {
+        "description": {"key": "description", "type": "str"},
+    }
+
+    def __init__(self, *, description: Optional[str] = None, **kwargs: Any) -> None:
+        """
+        :keyword description: Description of the block list.
+        :paramtype description: str
+        """
+        super().__init__(**kwargs)
+        self.description = description
+
+
+class RaiBlockListResult(_serialization.Model):
+    """The list of cognitive services RAI Blocklists.
+
+    :ivar next_link: The link used to get the next page of Raiblocklists.
+    :vartype next_link: str
+    :ivar value: The list of RaiBlocklist.
+    :vartype value: list[~azure.mgmt.cognitiveservices.models.RaiBlocklist]
+    """
+
+    _attribute_map = {
+        "next_link": {"key": "nextLink", "type": "str"},
+        "value": {"key": "value", "type": "[RaiBlocklist]"},
+    }
+
+    def __init__(
+        self, *, next_link: Optional[str] = None, value: Optional[List["_models.RaiBlocklist"]] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword next_link: The link used to get the next page of Raiblocklists.
+        :paramtype next_link: str
+        :keyword value: The list of RaiBlocklist.
+        :paramtype value: list[~azure.mgmt.cognitiveservices.models.RaiBlocklist]
+        """
+        super().__init__(**kwargs)
+        self.next_link = next_link
+        self.value = value
+
+
+class RaiContentFilter(_serialization.Model):
+    """Azure OpenAI Content Filter.
+
+    :ivar policy_name: Name of Content Filter.
+    :vartype policy_name: str
+    :ivar description: Description of Content Filter.
+    :vartype description: str
+    :ivar filter_type: Content Filter type. Known values are: "MultiLevel" and "Switch".
+    :vartype filter_type: str or ~azure.mgmt.cognitiveservices.models.RaiContentFilterType
+    """
+
+    _attribute_map = {
+        "policy_name": {"key": "policyName", "type": "str"},
+        "description": {"key": "description", "type": "str"},
+        "filter_type": {"key": "filterType", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        policy_name: Optional[str] = None,
+        description: Optional[str] = None,
+        filter_type: Optional[Union[str, "_models.RaiContentFilterType"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword policy_name: Name of Content Filter.
+        :paramtype policy_name: str
+        :keyword description: Description of Content Filter.
+        :paramtype description: str
+        :keyword filter_type: Content Filter type. Known values are: "MultiLevel" and "Switch".
+        :paramtype filter_type: str or ~azure.mgmt.cognitiveservices.models.RaiContentFilterType
+        """
+        super().__init__(**kwargs)
+        self.policy_name = policy_name
+        self.description = description
+        self.filter_type = filter_type
+
+
+class RaiContentFilterListResult(_serialization.Model):
+    """The list of Content Filters.
+
+    :ivar next_link: The link used to get the next page of Content Filters.
+    :vartype next_link: str
+    :ivar value: The list of RaiContentFilter.
+    :vartype value: list[~azure.mgmt.cognitiveservices.models.RaiContentFilter]
+    """
+
+    _attribute_map = {
+        "next_link": {"key": "nextLink", "type": "str"},
+        "value": {"key": "value", "type": "[RaiContentFilter]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        next_link: Optional[str] = None,
+        value: Optional[List["_models.RaiContentFilter"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword next_link: The link used to get the next page of Content Filters.
+        :paramtype next_link: str
+        :keyword value: The list of RaiContentFilter.
+        :paramtype value: list[~azure.mgmt.cognitiveservices.models.RaiContentFilter]
+        """
+        super().__init__(**kwargs)
+        self.next_link = next_link
+        self.value = value
+
+
+class RaiPolicy(ProxyResource):
+    """Cognitive Services RaiPolicy.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Metadata pertaining to creation and last modification of the resource.
+    :vartype system_data: ~azure.mgmt.cognitiveservices.models.SystemData
+    :ivar etag: Resource Etag.
+    :vartype etag: str
+    :ivar properties: Properties of Cognitive Services RaiPolicy.
+    :vartype properties: ~azure.mgmt.cognitiveservices.models.RaiPolicyProperties
+    """
+
+    _validation = {
+        "id": {"readonly": True},
+        "name": {"readonly": True},
+        "type": {"readonly": True},
+        "system_data": {"readonly": True},
+        "etag": {"readonly": True},
+    }
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "type": {"key": "type", "type": "str"},
+        "system_data": {"key": "systemData", "type": "SystemData"},
+        "etag": {"key": "etag", "type": "str"},
+        "properties": {"key": "properties", "type": "RaiPolicyProperties"},
+    }
+
+    def __init__(self, *, properties: Optional["_models.RaiPolicyProperties"] = None, **kwargs: Any) -> None:
+        """
+        :keyword properties: Properties of Cognitive Services RaiPolicy.
+        :paramtype properties: ~azure.mgmt.cognitiveservices.models.RaiPolicyProperties
+        """
+        super().__init__(**kwargs)
+        self.system_data = None
+        self.etag = None
+        self.properties = properties
+
+
+class RaiPolicyContentFilter(_serialization.Model):
+    """Azure OpenAI Content Filter.
+
+    :ivar policy_name: Name of ContentFilter.
+    :vartype policy_name: str
+    :ivar enabled: If the ContentFilter is enabled.
+    :vartype enabled: bool
+    :ivar allowed_content_level: Level at which content is filtered. Known values are: "Low",
+     "Medium", and "High".
+    :vartype allowed_content_level: str or ~azure.mgmt.cognitiveservices.models.AllowedContentLevel
+    :ivar blocking: If blocking would occur.
+    :vartype blocking: bool
+    :ivar source: Content source to apply the Content Filters. Known values are: "Prompt" and
+     "Completion".
+    :vartype source: str or ~azure.mgmt.cognitiveservices.models.RaiPolicyContentSource
+    """
+
+    _attribute_map = {
+        "policy_name": {"key": "policyName", "type": "str"},
+        "enabled": {"key": "enabled", "type": "bool"},
+        "allowed_content_level": {"key": "allowedContentLevel", "type": "str"},
+        "blocking": {"key": "blocking", "type": "bool"},
+        "source": {"key": "source", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        policy_name: Optional[str] = None,
+        enabled: Optional[bool] = None,
+        allowed_content_level: Optional[Union[str, "_models.AllowedContentLevel"]] = None,
+        blocking: Optional[bool] = None,
+        source: Optional[Union[str, "_models.RaiPolicyContentSource"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword policy_name: Name of ContentFilter.
+        :paramtype policy_name: str
+        :keyword enabled: If the ContentFilter is enabled.
+        :paramtype enabled: bool
+        :keyword allowed_content_level: Level at which content is filtered. Known values are: "Low",
+         "Medium", and "High".
+        :paramtype allowed_content_level: str or
+         ~azure.mgmt.cognitiveservices.models.AllowedContentLevel
+        :keyword blocking: If blocking would occur.
+        :paramtype blocking: bool
+        :keyword source: Content source to apply the Content Filters. Known values are: "Prompt" and
+         "Completion".
+        :paramtype source: str or ~azure.mgmt.cognitiveservices.models.RaiPolicyContentSource
+        """
+        super().__init__(**kwargs)
+        self.policy_name = policy_name
+        self.enabled = enabled
+        self.allowed_content_level = allowed_content_level
+        self.blocking = blocking
+        self.source = source
+
+
+class RaiPolicyListResult(_serialization.Model):
+    """The list of cognitive services RaiPolicies.
+
+    :ivar next_link: The link used to get the next page of RaiPolicy.
+    :vartype next_link: str
+    :ivar value: The list of RaiPolicy.
+    :vartype value: list[~azure.mgmt.cognitiveservices.models.RaiPolicy]
+    """
+
+    _attribute_map = {
+        "next_link": {"key": "nextLink", "type": "str"},
+        "value": {"key": "value", "type": "[RaiPolicy]"},
+    }
+
+    def __init__(
+        self, *, next_link: Optional[str] = None, value: Optional[List["_models.RaiPolicy"]] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword next_link: The link used to get the next page of RaiPolicy.
+        :paramtype next_link: str
+        :keyword value: The list of RaiPolicy.
+        :paramtype value: list[~azure.mgmt.cognitiveservices.models.RaiPolicy]
+        """
+        super().__init__(**kwargs)
+        self.next_link = next_link
+        self.value = value
+
+
+class RaiPolicyProperties(_serialization.Model):
+    """Azure OpenAI Content Filters properties.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar policy_type: Content Filters policy type. Known values are: "UserManaged" and
+     "SystemManaged".
+    :vartype policy_type: str or ~azure.mgmt.cognitiveservices.models.RaiPolicyType
+    :ivar mode: Content Filters mode. Known values are: "Default", "Deferred", and "Blocking".
+    :vartype mode: str or ~azure.mgmt.cognitiveservices.models.RaiPolicyMode
+    :ivar base_policy_name: Name of the base Content Filters.
+    :vartype base_policy_name: str
+    :ivar prompt_blocklists: The list of blocklists for prompt.
+    :vartype prompt_blocklists: list[~azure.mgmt.cognitiveservices.models.RaiBlocklistConfig]
+    :ivar completion_blocklists: The list of blocklists for completion.
+    :vartype completion_blocklists: list[~azure.mgmt.cognitiveservices.models.RaiBlocklistConfig]
+    :ivar content_filters: The list of Content Filters.
+    :vartype content_filters: list[~azure.mgmt.cognitiveservices.models.RaiPolicyContentFilter]
+    """
+
+    _validation = {
+        "policy_type": {"readonly": True},
+    }
+
+    _attribute_map = {
+        "policy_type": {"key": "policyType", "type": "str"},
+        "mode": {"key": "mode", "type": "str"},
+        "base_policy_name": {"key": "basePolicyName", "type": "str"},
+        "prompt_blocklists": {"key": "promptBlocklists", "type": "[RaiBlocklistConfig]"},
+        "completion_blocklists": {"key": "completionBlocklists", "type": "[RaiBlocklistConfig]"},
+        "content_filters": {"key": "contentFilters", "type": "[RaiPolicyContentFilter]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        mode: Optional[Union[str, "_models.RaiPolicyMode"]] = None,
+        base_policy_name: Optional[str] = None,
+        prompt_blocklists: Optional[List["_models.RaiBlocklistConfig"]] = None,
+        completion_blocklists: Optional[List["_models.RaiBlocklistConfig"]] = None,
+        content_filters: Optional[List["_models.RaiPolicyContentFilter"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword mode: Content Filters mode. Known values are: "Default", "Deferred", and "Blocking".
+        :paramtype mode: str or ~azure.mgmt.cognitiveservices.models.RaiPolicyMode
+        :keyword base_policy_name: Name of the base Content Filters.
+        :paramtype base_policy_name: str
+        :keyword prompt_blocklists: The list of blocklists for prompt.
+        :paramtype prompt_blocklists: list[~azure.mgmt.cognitiveservices.models.RaiBlocklistConfig]
+        :keyword completion_blocklists: The list of blocklists for completion.
+        :paramtype completion_blocklists: list[~azure.mgmt.cognitiveservices.models.RaiBlocklistConfig]
+        :keyword content_filters: The list of Content Filters.
+        :paramtype content_filters: list[~azure.mgmt.cognitiveservices.models.RaiPolicyContentFilter]
+        """
+        super().__init__(**kwargs)
+        self.policy_type = None
+        self.mode = mode
+        self.base_policy_name = base_policy_name
+        self.prompt_blocklists = prompt_blocklists
+        self.completion_blocklists = completion_blocklists
+        self.content_filters = content_filters
 
 
 class RegenerateKeyParameters(_serialization.Model):
