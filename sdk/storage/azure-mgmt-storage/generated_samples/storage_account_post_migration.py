@@ -36,6 +36,6 @@ def main():
     ).result()
 
 
-# x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPostMigration.json
+# x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-04-01/examples/StorageAccountPostMigration.json
 if __name__ == "__main__":
     main()

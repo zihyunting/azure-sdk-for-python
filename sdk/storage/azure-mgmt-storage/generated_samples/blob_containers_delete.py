@@ -36,6 +36,6 @@ def main():
     )
 
 
-# x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersDelete.json
+# x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-04-01/examples/BlobContainersDelete.json
 if __name__ == "__main__":
     main()
