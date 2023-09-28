@@ -419,6 +419,32 @@ class RuleType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     RATE_LIMIT_RULE = "RateLimitRule"
 
 
+class ScrubbingRuleEntryMatchOperator(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Comparison type to use for matching with the variable value in log."""
+
+    EQUALS_ANY = "EqualsAny"
+    EQUALS = "Equals"
+
+
+class ScrubbingRuleEntryMatchVariable(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The variable to be scrubbed from the logs."""
+
+    REQUEST_HEADER_NAMES = "RequestHeaderNames"
+    REQUEST_COOKIE_NAMES = "RequestCookieNames"
+    QUERY_STRING_ARG_NAMES = "QueryStringArgNames"
+    REQUEST_BODY_POST_ARG_NAMES = "RequestBodyPostArgNames"
+    REQUEST_BODY_JSON_ARG_NAMES = "RequestBodyJsonArgNames"
+    REQUEST_IP_ADDRESS = "RequestIPAddress"
+    REQUEST_URI = "RequestUri"
+
+
+class ScrubbingRuleEntryState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Defines the state of log scrubbing rule. Default value is Enabled."""
+
+    ENABLED = "Enabled"
+    DISABLED = "Disabled"
+
+
 class SessionAffinityEnabledState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'."""
 
@@ -477,3 +503,10 @@ class TransformType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     URL_DECODE = "UrlDecode"
     URL_ENCODE = "UrlEncode"
     REMOVE_NULLS = "RemoveNulls"
+
+
+class WebApplicationFirewallScrubbingState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """State of the log scrub config. Default value is Enabled."""
+
+    ENABLED = "Enabled"
+    DISABLED = "Disabled"

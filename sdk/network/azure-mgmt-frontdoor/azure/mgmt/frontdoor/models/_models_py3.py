@@ -3167,6 +3167,8 @@ class PolicySettings(_serialization.Model):
     :ivar request_body_check: Describes if policy managed rules will inspect the request body
      content. Known values are: "Disabled" and "Enabled".
     :vartype request_body_check: str or ~azure.mgmt.frontdoor.models.PolicyRequestBodyCheck
+    :ivar log_scrubbing: Defines rules to scrub sensitive fields in Web Application Firewall logs.
+    :vartype log_scrubbing: ~azure.mgmt.frontdoor.models.PolicySettingsLogScrubbing
     """
 
     _validation = {
@@ -3182,6 +3184,7 @@ class PolicySettings(_serialization.Model):
         "custom_block_response_status_code": {"key": "customBlockResponseStatusCode", "type": "int"},
         "custom_block_response_body": {"key": "customBlockResponseBody", "type": "str"},
         "request_body_check": {"key": "requestBodyCheck", "type": "str"},
+        "log_scrubbing": {"key": "logScrubbing", "type": "PolicySettingsLogScrubbing"},
     }
 
     def __init__(
@@ -3193,6 +3196,7 @@ class PolicySettings(_serialization.Model):
         custom_block_response_status_code: Optional[int] = None,
         custom_block_response_body: Optional[str] = None,
         request_body_check: Optional[Union[str, "_models.PolicyRequestBodyCheck"]] = None,
+        log_scrubbing: Optional["_models.PolicySettingsLogScrubbing"] = None,
         **kwargs: Any
     ) -> None:
         """
@@ -3214,6 +3218,9 @@ class PolicySettings(_serialization.Model):
         :keyword request_body_check: Describes if policy managed rules will inspect the request body
          content. Known values are: "Disabled" and "Enabled".
         :paramtype request_body_check: str or ~azure.mgmt.frontdoor.models.PolicyRequestBodyCheck
+        :keyword log_scrubbing: Defines rules to scrub sensitive fields in Web Application Firewall
+         logs.
+        :paramtype log_scrubbing: ~azure.mgmt.frontdoor.models.PolicySettingsLogScrubbing
         """
         super().__init__(**kwargs)
         self.enabled_state = enabled_state
@@ -3222,6 +3229,43 @@ class PolicySettings(_serialization.Model):
         self.custom_block_response_status_code = custom_block_response_status_code
         self.custom_block_response_body = custom_block_response_body
         self.request_body_check = request_body_check
+        self.log_scrubbing = log_scrubbing
+
+
+class PolicySettingsLogScrubbing(_serialization.Model):
+    """Defines rules to scrub sensitive fields in Web Application Firewall logs.
+
+    :ivar state: State of the log scrub config. Default value is Enabled. Known values are:
+     "Enabled" and "Disabled".
+    :vartype state: str or ~azure.mgmt.frontdoor.models.WebApplicationFirewallScrubbingState
+    :ivar scrubbing_rules: List of log scrub rules applied to Web Application Firewall logs.
+    :vartype scrubbing_rules:
+     list[~azure.mgmt.frontdoor.models.WebApplicationFirewallScrubbingRules]
+    """
+
+    _attribute_map = {
+        "state": {"key": "state", "type": "str"},
+        "scrubbing_rules": {"key": "scrubbingRules", "type": "[WebApplicationFirewallScrubbingRules]"},
+    }
+
+    def __init__(
+        self,
+        *,
+        state: Optional[Union[str, "_models.WebApplicationFirewallScrubbingState"]] = None,
+        scrubbing_rules: Optional[List["_models.WebApplicationFirewallScrubbingRules"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword state: State of the log scrub config. Default value is Enabled. Known values are:
+         "Enabled" and "Disabled".
+        :paramtype state: str or ~azure.mgmt.frontdoor.models.WebApplicationFirewallScrubbingState
+        :keyword scrubbing_rules: List of log scrub rules applied to Web Application Firewall logs.
+        :paramtype scrubbing_rules:
+         list[~azure.mgmt.frontdoor.models.WebApplicationFirewallScrubbingRules]
+        """
+        super().__init__(**kwargs)
+        self.state = state
+        self.scrubbing_rules = scrubbing_rules
 
 
 class PreconfiguredEndpoint(Resource):
@@ -4654,3 +4698,68 @@ class WebApplicationFirewallPolicyList(_serialization.Model):
         super().__init__(**kwargs)
         self.value = None
         self.next_link = next_link
+
+
+class WebApplicationFirewallScrubbingRules(_serialization.Model):
+    """Defines contents of a log scrub rules.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar match_variable: The variable to be scrubbed from the logs. Required. Known values are:
+     "RequestHeaderNames", "RequestCookieNames", "QueryStringArgNames", "RequestBodyPostArgNames",
+     "RequestBodyJsonArgNames", "RequestIPAddress", and "RequestUri".
+    :vartype match_variable: str or ~azure.mgmt.frontdoor.models.ScrubbingRuleEntryMatchVariable
+    :ivar selector_match_operator: Comparison type to use for matching with the variable value in
+     log. Required. Known values are: "EqualsAny" and "Equals".
+    :vartype selector_match_operator: str or
+     ~azure.mgmt.frontdoor.models.ScrubbingRuleEntryMatchOperator
+    :ivar selector: Match against a specific key from the QueryString, PostArgs, RequestHeader or
+     Cookies variables in the log. Default value is null.
+    :vartype selector: str
+    :ivar state: Defines the state of log scrubbing rule. Default value is Enabled. Known values
+     are: "Enabled" and "Disabled".
+    :vartype state: str or ~azure.mgmt.frontdoor.models.ScrubbingRuleEntryState
+    """
+
+    _validation = {
+        "match_variable": {"required": True},
+        "selector_match_operator": {"required": True},
+    }
+
+    _attribute_map = {
+        "match_variable": {"key": "matchVariable", "type": "str"},
+        "selector_match_operator": {"key": "selectorMatchOperator", "type": "str"},
+        "selector": {"key": "selector", "type": "str"},
+        "state": {"key": "state", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        match_variable: Union[str, "_models.ScrubbingRuleEntryMatchVariable"],
+        selector_match_operator: Union[str, "_models.ScrubbingRuleEntryMatchOperator"],
+        selector: Optional[str] = None,
+        state: Optional[Union[str, "_models.ScrubbingRuleEntryState"]] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword match_variable: The variable to be scrubbed from the logs. Required. Known values are:
+         "RequestHeaderNames", "RequestCookieNames", "QueryStringArgNames", "RequestBodyPostArgNames",
+         "RequestBodyJsonArgNames", "RequestIPAddress", and "RequestUri".
+        :paramtype match_variable: str or ~azure.mgmt.frontdoor.models.ScrubbingRuleEntryMatchVariable
+        :keyword selector_match_operator: Comparison type to use for matching with the variable value
+         in log. Required. Known values are: "EqualsAny" and "Equals".
+        :paramtype selector_match_operator: str or
+         ~azure.mgmt.frontdoor.models.ScrubbingRuleEntryMatchOperator
+        :keyword selector: Match against a specific key from the QueryString, PostArgs, RequestHeader
+         or Cookies variables in the log. Default value is null.
+        :paramtype selector: str
+        :keyword state: Defines the state of log scrubbing rule. Default value is Enabled. Known values
+         are: "Enabled" and "Disabled".
+        :paramtype state: str or ~azure.mgmt.frontdoor.models.ScrubbingRuleEntryState
+        """
+        super().__init__(**kwargs)
+        self.match_variable = match_variable
+        self.selector_match_operator = selector_match_operator
+        self.selector = selector
+        self.state = state
