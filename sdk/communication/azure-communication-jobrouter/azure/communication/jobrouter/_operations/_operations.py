@@ -62,7 +62,7 @@ def build_job_router_administration_upsert_distribution_policy_request(  # pylin
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/distributionPolicies/{distributionPolicyId}"
+    _url = "/distributionPolicies/{distributionPolicyId}"
     path_format_arguments = {
         "distributionPolicyId": _SERIALIZER.url("distribution_policy_id", distribution_policy_id, "str"),
     }
@@ -98,7 +98,7 @@ def build_job_router_administration_get_distribution_policy_request(  # pylint: 
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/distributionPolicies/{distributionPolicyId}"
+    _url = "/distributionPolicies/{distributionPolicyId}"
     path_format_arguments = {
         "distributionPolicyId": _SERIALIZER.url("distribution_policy_id", distribution_policy_id, "str"),
     }
@@ -124,7 +124,7 @@ def build_job_router_administration_list_distribution_policies_request(  # pylin
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/distributionPolicies"
+    _url = "/distributionPolicies"
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -144,7 +144,7 @@ def build_job_router_administration_delete_distribution_policy_request(  # pylin
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/distributionPolicies/{distributionPolicyId}"
+    _url = "/distributionPolicies/{distributionPolicyId}"
     path_format_arguments = {
         "distributionPolicyId": _SERIALIZER.url("distribution_policy_id", distribution_policy_id, "str"),
     }
@@ -173,7 +173,7 @@ def build_job_router_administration_upsert_classification_policy_request(  # pyl
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/classificationPolicies/{classificationPolicyId}"
+    _url = "/classificationPolicies/{classificationPolicyId}"
     path_format_arguments = {
         "classificationPolicyId": _SERIALIZER.url("classification_policy_id", classification_policy_id, "str"),
     }
@@ -209,7 +209,7 @@ def build_job_router_administration_get_classification_policy_request(  # pylint
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/classificationPolicies/{classificationPolicyId}"
+    _url = "/classificationPolicies/{classificationPolicyId}"
     path_format_arguments = {
         "classificationPolicyId": _SERIALIZER.url("classification_policy_id", classification_policy_id, "str"),
     }
@@ -235,7 +235,7 @@ def build_job_router_administration_list_classification_policies_request(  # pyl
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/classificationPolicies"
+    _url = "/classificationPolicies"
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -255,7 +255,7 @@ def build_job_router_administration_delete_classification_policy_request(  # pyl
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/classificationPolicies/{classificationPolicyId}"
+    _url = "/classificationPolicies/{classificationPolicyId}"
     path_format_arguments = {
         "classificationPolicyId": _SERIALIZER.url("classification_policy_id", classification_policy_id, "str"),
     }
@@ -284,7 +284,7 @@ def build_job_router_administration_upsert_exception_policy_request(  # pylint: 
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/exceptionPolicies/{exceptionPolicyId}"
+    _url = "/exceptionPolicies/{exceptionPolicyId}"
     path_format_arguments = {
         "exceptionPolicyId": _SERIALIZER.url("exception_policy_id", exception_policy_id, "str"),
     }
@@ -320,7 +320,7 @@ def build_job_router_administration_get_exception_policy_request(  # pylint: dis
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/exceptionPolicies/{exceptionPolicyId}"
+    _url = "/exceptionPolicies/{exceptionPolicyId}"
     path_format_arguments = {
         "exceptionPolicyId": _SERIALIZER.url("exception_policy_id", exception_policy_id, "str"),
     }
@@ -346,7 +346,7 @@ def build_job_router_administration_list_exception_policies_request(  # pylint: 
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/exceptionPolicies"
+    _url = "/exceptionPolicies"
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -366,7 +366,7 @@ def build_job_router_administration_delete_exception_policy_request(  # pylint: 
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/exceptionPolicies/{exceptionPolicyId}"
+    _url = "/exceptionPolicies/{exceptionPolicyId}"
     path_format_arguments = {
         "exceptionPolicyId": _SERIALIZER.url("exception_policy_id", exception_policy_id, "str"),
     }
@@ -395,7 +395,7 @@ def build_job_router_administration_upsert_queue_request(  # pylint: disable=nam
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/queues/{queueId}"
+    _url = "/queues/{queueId}"
     path_format_arguments = {
         "queueId": _SERIALIZER.url("queue_id", queue_id, "str"),
     }
@@ -431,7 +431,7 @@ def build_job_router_administration_get_queue_request(  # pylint: disable=name-t
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/queues/{queueId}"
+    _url = "/queues/{queueId}"
     path_format_arguments = {
         "queueId": _SERIALIZER.url("queue_id", queue_id, "str"),
     }
@@ -457,7 +457,7 @@ def build_job_router_administration_list_queues_request(  # pylint: disable=name
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/queues"
+    _url = "/queues"
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -477,7 +477,7 @@ def build_job_router_administration_delete_queue_request(  # pylint: disable=nam
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/queues/{queueId}"
+    _url = "/queues/{queueId}"
     path_format_arguments = {
         "queueId": _SERIALIZER.url("queue_id", queue_id, "str"),
     }
@@ -506,7 +506,7 @@ def build_job_router_upsert_job_request(
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/jobs/{jobId}"
+    _url = "/jobs/{jobId}"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -540,7 +540,7 @@ def build_job_router_get_job_request(job_id: str, **kwargs: Any) -> HttpRequest:
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/jobs/{jobId}"
+    _url = "/jobs/{jobId}"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -561,7 +561,7 @@ def build_job_router_delete_job_request(job_id: str, **kwargs: Any) -> HttpReque
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/jobs/{jobId}"
+    _url = "/jobs/{jobId}"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -581,7 +581,7 @@ def build_job_router_reclassify_job_request(job_id: str, **kwargs: Any) -> HttpR
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/jobs/{jobId}:reclassify"
+    _url = "/jobs/{jobId}:reclassify"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -605,7 +605,7 @@ def build_job_router_cancel_job_request(job_id: str, **kwargs: Any) -> HttpReque
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/jobs/{jobId}:cancel"
+    _url = "/jobs/{jobId}:cancel"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -629,7 +629,7 @@ def build_job_router_complete_job_request(job_id: str, **kwargs: Any) -> HttpReq
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/jobs/{jobId}:complete"
+    _url = "/jobs/{jobId}:complete"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -653,7 +653,7 @@ def build_job_router_close_job_request(job_id: str, **kwargs: Any) -> HttpReques
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/jobs/{jobId}:close"
+    _url = "/jobs/{jobId}:close"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -688,7 +688,7 @@ def build_job_router_list_jobs_request(
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/jobs"
+    _url = "/jobs"
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -725,7 +725,7 @@ def build_job_router_get_queue_position_request(  # pylint: disable=name-too-lon
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/jobs/{jobId}/position"
+    _url = "/jobs/{jobId}/position"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
     }
@@ -750,7 +750,7 @@ def build_job_router_unassign_job_request(job_id: str, assignment_id: str, **kwa
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/jobs/{jobId}/assignments/{assignmentId}:unassign"
+    _url = "/jobs/{jobId}/assignments/{assignmentId}:unassign"
     path_format_arguments = {
         "jobId": _SERIALIZER.url("job_id", job_id, "str"),
         "assignmentId": _SERIALIZER.url("assignment_id", assignment_id, "str"),
@@ -779,7 +779,7 @@ def build_job_router_accept_job_offer_request(  # pylint: disable=name-too-long
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/workers/{workerId}/offers/{offerId}:accept"
+    _url = "/workers/{workerId}/offers/{offerId}:accept"
     path_format_arguments = {
         "workerId": _SERIALIZER.url("worker_id", worker_id, "str"),
         "offerId": _SERIALIZER.url("offer_id", offer_id, "str"),
@@ -805,7 +805,7 @@ def build_job_router_decline_job_offer_request(  # pylint: disable=name-too-long
     content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/workers/{workerId}/offers/{offerId}:decline"
+    _url = "/workers/{workerId}/offers/{offerId}:decline"
     path_format_arguments = {
         "workerId": _SERIALIZER.url("worker_id", worker_id, "str"),
         "offerId": _SERIALIZER.url("offer_id", offer_id, "str"),
@@ -833,7 +833,7 @@ def build_job_router_get_queue_statistics_request(  # pylint: disable=name-too-l
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/queues/{queueId}/statistics"
+    _url = "/queues/{queueId}/statistics"
     path_format_arguments = {
         "queueId": _SERIALIZER.url("queue_id", queue_id, "str"),
     }
@@ -865,7 +865,7 @@ def build_job_router_upsert_worker_request(
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/workers/{workerId}"
+    _url = "/workers/{workerId}"
     path_format_arguments = {
         "workerId": _SERIALIZER.url("worker_id", worker_id, "str"),
     }
@@ -899,7 +899,7 @@ def build_job_router_get_worker_request(worker_id: str, **kwargs: Any) -> HttpRe
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/workers/{workerId}"
+    _url = "/workers/{workerId}"
     path_format_arguments = {
         "workerId": _SERIALIZER.url("worker_id", worker_id, "str"),
     }
@@ -920,7 +920,7 @@ def build_job_router_delete_worker_request(worker_id: str, **kwargs: Any) -> Htt
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-11-01"))
     # Construct URL
-    _url = "/routing/workers/{workerId}"
+    _url = "/workers/{workerId}"
     path_format_arguments = {
         "workerId": _SERIALIZER.url("worker_id", worker_id, "str"),
     }
@@ -949,7 +949,7 @@ def build_job_router_list_workers_request(
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
-    _url = "/routing/workers"
+    _url = "/workers"
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
