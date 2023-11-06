@@ -5697,6 +5697,90 @@ class RequestRateByIntervalInput(LogAnalyticsInputBase):
         self.interval_length = interval_length
 
 
+class ResiliencyPolicy(_serialization.Model):
+    """Describes an resiliency policy - resilientVMCreationPolicy and/or resilientVMDeletionPolicy.
+
+    :ivar resilient_vm_creation_policy: The configuration parameters used while performing
+     resilient VM creation.
+    :vartype resilient_vm_creation_policy:
+     ~azure.mgmt.compute.v2023_07_01.models.ResilientVMCreationPolicy
+    :ivar resilient_vm_deletion_policy: The configuration parameters used while performing
+     resilient VM deletion.
+    :vartype resilient_vm_deletion_policy:
+     ~azure.mgmt.compute.v2023_07_01.models.ResilientVMDeletionPolicy
+    """
+
+    _attribute_map = {
+        "resilient_vm_creation_policy": {"key": "resilientVMCreationPolicy", "type": "ResilientVMCreationPolicy"},
+        "resilient_vm_deletion_policy": {"key": "resilientVMDeletionPolicy", "type": "ResilientVMDeletionPolicy"},
+    }
+
+    def __init__(
+        self,
+        *,
+        resilient_vm_creation_policy: Optional["_models.ResilientVMCreationPolicy"] = None,
+        resilient_vm_deletion_policy: Optional["_models.ResilientVMDeletionPolicy"] = None,
+        **kwargs: Any
+    ) -> None:
+        """
+        :keyword resilient_vm_creation_policy: The configuration parameters used while performing
+         resilient VM creation.
+        :paramtype resilient_vm_creation_policy:
+         ~azure.mgmt.compute.v2023_07_01.models.ResilientVMCreationPolicy
+        :keyword resilient_vm_deletion_policy: The configuration parameters used while performing
+         resilient VM deletion.
+        :paramtype resilient_vm_deletion_policy:
+         ~azure.mgmt.compute.v2023_07_01.models.ResilientVMDeletionPolicy
+        """
+        super().__init__(**kwargs)
+        self.resilient_vm_creation_policy = resilient_vm_creation_policy
+        self.resilient_vm_deletion_policy = resilient_vm_deletion_policy
+
+
+class ResilientVMCreationPolicy(_serialization.Model):
+    """The configuration parameters used while performing resilient VM creation.
+
+    :ivar enabled: Specifies whether resilient VM creation should be enabled on the virtual machine
+     scale set. The default value is false.
+    :vartype enabled: bool
+    """
+
+    _attribute_map = {
+        "enabled": {"key": "enabled", "type": "bool"},
+    }
+
+    def __init__(self, *, enabled: Optional[bool] = None, **kwargs: Any) -> None:
+        """
+        :keyword enabled: Specifies whether resilient VM creation should be enabled on the virtual
+         machine scale set. The default value is false.
+        :paramtype enabled: bool
+        """
+        super().__init__(**kwargs)
+        self.enabled = enabled
+
+
+class ResilientVMDeletionPolicy(_serialization.Model):
+    """The configuration parameters used while performing resilient VM deletion.
+
+    :ivar enabled: Specifies whether resilient VM deletion should be enabled on the virtual machine
+     scale set. The default value is false.
+    :vartype enabled: bool
+    """
+
+    _attribute_map = {
+        "enabled": {"key": "enabled", "type": "bool"},
+    }
+
+    def __init__(self, *, enabled: Optional[bool] = None, **kwargs: Any) -> None:
+        """
+        :keyword enabled: Specifies whether resilient VM deletion should be enabled on the virtual
+         machine scale set. The default value is false.
+        :paramtype enabled: bool
+        """
+        super().__init__(**kwargs)
+        self.enabled = enabled
+
+
 class ResourceWithOptionalLocation(_serialization.Model):
     """The Resource model definition with location property as optional.
 
@@ -11088,6 +11172,8 @@ class VirtualMachineScaleSet(Resource):  # pylint: disable=too-many-instance-att
     :ivar automatic_repairs_policy: Policy for automatic repairs.
     :vartype automatic_repairs_policy:
      ~azure.mgmt.compute.v2023_07_01.models.AutomaticRepairsPolicy
+    :ivar resiliency_policy: Policy for Resiliency.
+    :vartype resiliency_policy: ~azure.mgmt.compute.v2023_07_01.models.ResiliencyPolicy
     :ivar virtual_machine_profile: The virtual machine profile.
     :vartype virtual_machine_profile:
      ~azure.mgmt.compute.v2023_07_01.models.VirtualMachineScaleSetVMProfile
@@ -11166,6 +11252,7 @@ class VirtualMachineScaleSet(Resource):  # pylint: disable=too-many-instance-att
         "extended_location": {"key": "extendedLocation", "type": "ExtendedLocation"},
         "upgrade_policy": {"key": "properties.upgradePolicy", "type": "UpgradePolicy"},
         "automatic_repairs_policy": {"key": "properties.automaticRepairsPolicy", "type": "AutomaticRepairsPolicy"},
+        "resiliency_policy": {"key": "properties.resiliencyPolicy", "type": "ResiliencyPolicy"},
         "virtual_machine_profile": {
             "key": "properties.virtualMachineProfile",
             "type": "VirtualMachineScaleSetVMProfile",
@@ -11203,6 +11290,7 @@ class VirtualMachineScaleSet(Resource):  # pylint: disable=too-many-instance-att
         extended_location: Optional["_models.ExtendedLocation"] = None,
         upgrade_policy: Optional["_models.UpgradePolicy"] = None,
         automatic_repairs_policy: Optional["_models.AutomaticRepairsPolicy"] = None,
+        resiliency_policy: Optional["_models.ResiliencyPolicy"] = None,
         virtual_machine_profile: Optional["_models.VirtualMachineScaleSetVMProfile"] = None,
         overprovision: Optional[bool] = None,
         do_not_run_extensions_on_overprovisioned_v_ms: Optional[bool] = None,
@@ -11244,6 +11332,8 @@ class VirtualMachineScaleSet(Resource):  # pylint: disable=too-many-instance-att
         :keyword automatic_repairs_policy: Policy for automatic repairs.
         :paramtype automatic_repairs_policy:
          ~azure.mgmt.compute.v2023_07_01.models.AutomaticRepairsPolicy
+        :keyword resiliency_policy: Policy for Resiliency.
+        :paramtype resiliency_policy: ~azure.mgmt.compute.v2023_07_01.models.ResiliencyPolicy
         :keyword virtual_machine_profile: The virtual machine profile.
         :paramtype virtual_machine_profile:
          ~azure.mgmt.compute.v2023_07_01.models.VirtualMachineScaleSetVMProfile
@@ -11301,6 +11391,7 @@ class VirtualMachineScaleSet(Resource):  # pylint: disable=too-many-instance-att
         self.extended_location = extended_location
         self.upgrade_policy = upgrade_policy
         self.automatic_repairs_policy = automatic_repairs_policy
+        self.resiliency_policy = resiliency_policy
         self.virtual_machine_profile = virtual_machine_profile
         self.provisioning_state = None
         self.overprovision = overprovision
@@ -13218,6 +13309,8 @@ class VirtualMachineScaleSetUpdate(UpdateResource):  # pylint: disable=too-many-
     :ivar automatic_repairs_policy: Policy for automatic repairs.
     :vartype automatic_repairs_policy:
      ~azure.mgmt.compute.v2023_07_01.models.AutomaticRepairsPolicy
+    :ivar resiliency_policy: Policy for Resiliency.
+    :vartype resiliency_policy: ~azure.mgmt.compute.v2023_07_01.models.ResiliencyPolicy
     :ivar virtual_machine_profile: The virtual machine profile.
     :vartype virtual_machine_profile:
      ~azure.mgmt.compute.v2023_07_01.models.VirtualMachineScaleSetUpdateVMProfile
@@ -13258,6 +13351,7 @@ class VirtualMachineScaleSetUpdate(UpdateResource):  # pylint: disable=too-many-
         "identity": {"key": "identity", "type": "VirtualMachineScaleSetIdentity"},
         "upgrade_policy": {"key": "properties.upgradePolicy", "type": "UpgradePolicy"},
         "automatic_repairs_policy": {"key": "properties.automaticRepairsPolicy", "type": "AutomaticRepairsPolicy"},
+        "resiliency_policy": {"key": "properties.resiliencyPolicy", "type": "ResiliencyPolicy"},
         "virtual_machine_profile": {
             "key": "properties.virtualMachineProfile",
             "type": "VirtualMachineScaleSetUpdateVMProfile",
@@ -13284,6 +13378,7 @@ class VirtualMachineScaleSetUpdate(UpdateResource):  # pylint: disable=too-many-
         identity: Optional["_models.VirtualMachineScaleSetIdentity"] = None,
         upgrade_policy: Optional["_models.UpgradePolicy"] = None,
         automatic_repairs_policy: Optional["_models.AutomaticRepairsPolicy"] = None,
+        resiliency_policy: Optional["_models.ResiliencyPolicy"] = None,
         virtual_machine_profile: Optional["_models.VirtualMachineScaleSetUpdateVMProfile"] = None,
         overprovision: Optional[bool] = None,
         do_not_run_extensions_on_overprovisioned_v_ms: Optional[bool] = None,
@@ -13310,6 +13405,8 @@ class VirtualMachineScaleSetUpdate(UpdateResource):  # pylint: disable=too-many-
         :keyword automatic_repairs_policy: Policy for automatic repairs.
         :paramtype automatic_repairs_policy:
          ~azure.mgmt.compute.v2023_07_01.models.AutomaticRepairsPolicy
+        :keyword resiliency_policy: Policy for Resiliency.
+        :paramtype resiliency_policy: ~azure.mgmt.compute.v2023_07_01.models.ResiliencyPolicy
         :keyword virtual_machine_profile: The virtual machine profile.
         :paramtype virtual_machine_profile:
          ~azure.mgmt.compute.v2023_07_01.models.VirtualMachineScaleSetUpdateVMProfile
@@ -13350,6 +13447,7 @@ class VirtualMachineScaleSetUpdate(UpdateResource):  # pylint: disable=too-many-
         self.identity = identity
         self.upgrade_policy = upgrade_policy
         self.automatic_repairs_policy = automatic_repairs_policy
+        self.resiliency_policy = resiliency_policy
         self.virtual_machine_profile = virtual_machine_profile
         self.overprovision = overprovision
         self.do_not_run_extensions_on_overprovisioned_v_ms = do_not_run_extensions_on_overprovisioned_v_ms

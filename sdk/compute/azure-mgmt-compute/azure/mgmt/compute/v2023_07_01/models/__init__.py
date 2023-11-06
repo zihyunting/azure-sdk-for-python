@@ -108,6 +108,9 @@ from ._models_py3 import PublicIPAddressSku
 from ._models_py3 import PurchasePlan
 from ._models_py3 import RecoveryWalkResponse
 from ._models_py3 import RequestRateByIntervalInput
+from ._models_py3 import ResiliencyPolicy
+from ._models_py3 import ResilientVMCreationPolicy
+from ._models_py3 import ResilientVMDeletionPolicy
 from ._models_py3 import Resource
 from ._models_py3 import ResourceWithOptionalLocation
 from ._models_py3 import RestorePoint
@@ -454,6 +457,9 @@ __all__ = [
     "PurchasePlan",
     "RecoveryWalkResponse",
     "RequestRateByIntervalInput",
+    "ResiliencyPolicy",
+    "ResilientVMCreationPolicy",
+    "ResilientVMDeletionPolicy",
     "Resource",
     "ResourceWithOptionalLocation",
     "RestorePoint",
