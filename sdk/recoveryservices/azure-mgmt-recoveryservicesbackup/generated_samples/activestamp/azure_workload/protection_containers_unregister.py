@@ -29,14 +29,14 @@ def main():
         subscription_id="00000000-0000-0000-0000-000000000000",
     )
 
-    client.protection_containers.unregister(
+    client.protection_containers.begin_unregister(
         vault_name="testVault",
         resource_group_name="testRg",
         fabric_name="Azure",
         container_name="storagecontainer;Storage;test-rg;teststorage",
-    )
+    ).result()
 
 
-# x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
+# x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
 if __name__ == "__main__":
     main()

@@ -29,7 +29,7 @@ def main():
         subscription_id="00000000-0000-0000-0000-000000000000",
     )
 
-    response = client.protected_items.create_or_update(
+    response = client.protected_items.begin_create_or_update(
         vault_name="NetSDKTestRsVault",
         resource_group_name="SwaggerTestRg",
         fabric_name="Azure",
@@ -42,10 +42,10 @@ def main():
                 "sourceResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1",
             }
         },
-    )
+    ).result()
     print(response)
 
 
-# x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/ConfigureProtection.json
+# x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/ConfigureProtection.json
 if __name__ == "__main__":
     main()

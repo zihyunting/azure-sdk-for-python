@@ -29,15 +29,15 @@ def main():
         subscription_id="00000000-0000-0000-0000-000000000000",
     )
 
-    client.protected_items.delete(
+    client.protected_items.begin_delete(
         vault_name="PySDKBackupTestRsVault",
         resource_group_name="PythonSDKBackupTestRg",
         fabric_name="Azure",
         container_name="iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
         protected_item_name="vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-    )
+    ).result()
 
 
-# x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Common/ProtectedItem_Delete.json
+# x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Common/ProtectedItem_Delete.json
 if __name__ == "__main__":
     main()
