@@ -1284,6 +1284,8 @@ class RedisCommonPropertiesRedisConfiguration(_serialization.Model):  # pylint: 
     :vartype maxmemory_delta: str
     :ivar maxclients: The max clients config.
     :vartype maxclients: str
+    :ivar notify_keyspace_events: The keyspace events which should be monitored.
+    :vartype notify_keyspace_events: str
     :ivar preferred_data_archive_auth_method: Preferred auth method to communicate to storage
      account used for data archive, specify SAS or ManagedIdentity, default value is SAS.
     :vartype preferred_data_archive_auth_method: str
@@ -1323,6 +1325,7 @@ class RedisCommonPropertiesRedisConfiguration(_serialization.Model):  # pylint: 
         "maxmemory_reserved": {"key": "maxmemory-reserved", "type": "str"},
         "maxmemory_delta": {"key": "maxmemory-delta", "type": "str"},
         "maxclients": {"key": "maxclients", "type": "str"},
+        "notify_keyspace_events": {"key": "notify-keyspace-events", "type": "str"},
         "preferred_data_archive_auth_method": {"key": "preferred-data-archive-auth-method", "type": "str"},
         "preferred_data_persistence_auth_method": {"key": "preferred-data-persistence-auth-method", "type": "str"},
         "zonal_configuration": {"key": "zonal-configuration", "type": "str"},
@@ -1346,6 +1349,7 @@ class RedisCommonPropertiesRedisConfiguration(_serialization.Model):  # pylint: 
         maxmemory_policy: Optional[str] = None,
         maxmemory_reserved: Optional[str] = None,
         maxmemory_delta: Optional[str] = None,
+        notify_keyspace_events: Optional[str] = None,
         preferred_data_persistence_auth_method: Optional[str] = None,
         authnotrequired: Optional[str] = None,
         storage_subscription_id: Optional[str] = None,
@@ -1385,6 +1389,8 @@ class RedisCommonPropertiesRedisConfiguration(_serialization.Model):  # pylint: 
         :keyword maxmemory_delta: Value in megabytes reserved for non-cache usage per shard e.g.
          failover.
         :paramtype maxmemory_delta: str
+        :keyword notify_keyspace_events: The keyspace events which should be monitored.
+        :paramtype notify_keyspace_events: str
         :keyword preferred_data_persistence_auth_method: Preferred auth method to communicate to
          storage account used for data persistence, specify SAS or ManagedIdentity, default value is
          SAS.
@@ -1413,6 +1419,7 @@ class RedisCommonPropertiesRedisConfiguration(_serialization.Model):  # pylint: 
         self.maxmemory_reserved = maxmemory_reserved
         self.maxmemory_delta = maxmemory_delta
         self.maxclients = None
+        self.notify_keyspace_events = notify_keyspace_events
         self.preferred_data_archive_auth_method = None
         self.preferred_data_persistence_auth_method = preferred_data_persistence_auth_method
         self.zonal_configuration = None
