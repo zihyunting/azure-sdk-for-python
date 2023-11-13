@@ -143,19 +143,56 @@ class CertificateRequest(_serialization.Model):
 
     :ivar properties: Raw certificate data.
     :vartype properties: ~azure.mgmt.recoveryservices.models.RawCertificateData
+    :ivar certificate_create_options:
+    :vartype certificate_create_options:
+     ~azure.mgmt.recoveryservices.models.CertificateRequestCertificateCreateOptions
     """
 
     _attribute_map = {
         "properties": {"key": "properties", "type": "RawCertificateData"},
+        "certificate_create_options": {
+            "key": "certificateCreateOptions",
+            "type": "CertificateRequestCertificateCreateOptions",
+        },
     }
 
-    def __init__(self, *, properties: Optional["_models.RawCertificateData"] = None, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        *,
+        properties: Optional["_models.RawCertificateData"] = None,
+        certificate_create_options: Optional["_models.CertificateRequestCertificateCreateOptions"] = None,
+        **kwargs: Any
+    ) -> None:
         """
         :keyword properties: Raw certificate data.
         :paramtype properties: ~azure.mgmt.recoveryservices.models.RawCertificateData
+        :keyword certificate_create_options:
+        :paramtype certificate_create_options:
+         ~azure.mgmt.recoveryservices.models.CertificateRequestCertificateCreateOptions
         """
         super().__init__(**kwargs)
         self.properties = properties
+        self.certificate_create_options = certificate_create_options
+
+
+class CertificateRequestCertificateCreateOptions(_serialization.Model):
+    """CertificateRequestCertificateCreateOptions.
+
+    :ivar validity_in_hours:
+    :vartype validity_in_hours: int
+    """
+
+    _attribute_map = {
+        "validity_in_hours": {"key": "validityInHours", "type": "int"},
+    }
+
+    def __init__(self, *, validity_in_hours: Optional[int] = None, **kwargs: Any) -> None:
+        """
+        :keyword validity_in_hours:
+        :paramtype validity_in_hours: int
+        """
+        super().__init__(**kwargs)
+        self.validity_in_hours = validity_in_hours
 
 
 class CheckNameAvailabilityParameters(_serialization.Model):

@@ -11,6 +11,7 @@ from ._models_py3 import CapabilitiesProperties
 from ._models_py3 import CapabilitiesResponse
 from ._models_py3 import CapabilitiesResponseProperties
 from ._models_py3 import CertificateRequest
+from ._models_py3 import CertificateRequestCertificateCreateOptions
 from ._models_py3 import CheckNameAvailabilityParameters
 from ._models_py3 import CheckNameAvailabilityResult
 from ._models_py3 import ClassicAlertSettings
@@ -103,6 +104,7 @@ __all__ = [
     "CapabilitiesResponse",
     "CapabilitiesResponseProperties",
     "CertificateRequest",
+    "CertificateRequestCertificateCreateOptions",
     "CheckNameAvailabilityParameters",
     "CheckNameAvailabilityResult",
     "ClassicAlertSettings",
