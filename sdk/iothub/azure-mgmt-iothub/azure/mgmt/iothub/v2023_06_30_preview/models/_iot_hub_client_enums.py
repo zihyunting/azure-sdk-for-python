@@ -210,16 +210,14 @@ class RouteErrorSeverity(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class RoutingSource(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """The source that the routing rule is to be applied to, such as DeviceMessages."""
+    """The source to which the routing rule is to be applied to. For example, DeviceMessages."""
 
-    INVALID = "Invalid"
     DEVICE_MESSAGES = "DeviceMessages"
+    INVALID = "Invalid"
     TWIN_CHANGE_EVENTS = "TwinChangeEvents"
     DEVICE_LIFECYCLE_EVENTS = "DeviceLifecycleEvents"
     DEVICE_JOB_LIFECYCLE_EVENTS = "DeviceJobLifecycleEvents"
-    DIGITAL_TWIN_CHANGE_EVENTS = "DigitalTwinChangeEvents"
     DEVICE_CONNECTION_STATE_EVENTS = "DeviceConnectionStateEvents"
-    MQTT_BROKER_MESSAGES = "MqttBrokerMessages"
 
 
 class RoutingStorageContainerPropertiesEncoding(str, Enum, metaclass=CaseInsensitiveEnumMeta):

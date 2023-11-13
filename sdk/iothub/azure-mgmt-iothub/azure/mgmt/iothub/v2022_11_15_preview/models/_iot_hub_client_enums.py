@@ -210,7 +210,7 @@ class RouteErrorSeverity(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class RoutingSource(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """The source that the routing rule is to be applied to, such as DeviceMessages."""
+    """RoutingSource."""
 
     INVALID = "Invalid"
     DEVICE_MESSAGES = "DeviceMessages"
