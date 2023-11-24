@@ -117,6 +117,7 @@ from ._models_py3 import VmSizeCompatibilityFilterV2
 from ._models_py3 import VmSizeProperty
 
 from ._hd_insight_management_client_enums import AsyncOperationState
+from ._hd_insight_management_client_enums import ClusterKind
 from ._hd_insight_management_client_enums import CreatedByType
 from ._hd_insight_management_client_enums import DaysOfWeek
 from ._hd_insight_management_client_enums import DirectoryType
@@ -124,6 +125,7 @@ from ._hd_insight_management_client_enums import FilterMode
 from ._hd_insight_management_client_enums import HDInsightClusterProvisioningState
 from ._hd_insight_management_client_enums import JsonWebKeyEncryptionAlgorithm
 from ._hd_insight_management_client_enums import OSType
+from ._hd_insight_management_client_enums import OutboundDependenciesManagedType
 from ._hd_insight_management_client_enums import PrivateEndpointConnectionProvisioningState
 from ._hd_insight_management_client_enums import PrivateIPAllocationMethod
 from ._hd_insight_management_client_enums import PrivateLink
@@ -248,6 +250,7 @@ __all__ = [
     "VmSizeCompatibilityFilterV2",
     "VmSizeProperty",
     "AsyncOperationState",
+    "ClusterKind",
     "CreatedByType",
     "DaysOfWeek",
     "DirectoryType",
@@ -255,6 +258,7 @@ __all__ = [
     "HDInsightClusterProvisioningState",
     "JsonWebKeyEncryptionAlgorithm",
     "OSType",
+    "OutboundDependenciesManagedType",
     "PrivateEndpointConnectionProvisioningState",
     "PrivateIPAllocationMethod",
     "PrivateLink",

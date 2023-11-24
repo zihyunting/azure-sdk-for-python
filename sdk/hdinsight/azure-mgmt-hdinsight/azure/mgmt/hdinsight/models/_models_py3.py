@@ -1534,8 +1534,9 @@ class ClusterDefinition(_serialization.Model):
 
     :ivar blueprint: The link to the blueprint.
     :vartype blueprint: str
-    :ivar kind: The type of cluster.
-    :vartype kind: str
+    :ivar kind: The type of cluster. Known values are: "HADOOP", "HBASE", "KAFKA",
+     "INTERACTIVEHIVE", and "SPARK".
+    :vartype kind: str or ~azure.mgmt.hdinsight.models.ClusterKind
     :ivar component_version: The versions of different services in the cluster.
     :vartype component_version: dict[str, str]
     :ivar configurations: The cluster configurations.
@@ -1553,7 +1554,7 @@ class ClusterDefinition(_serialization.Model):
         self,
         *,
         blueprint: Optional[str] = None,
-        kind: Optional[str] = None,
+        kind: Optional[Union[str, "_models.ClusterKind"]] = None,
         component_version: Optional[Dict[str, str]] = None,
         configurations: Optional[JSON] = None,
         **kwargs: Any
@@ -1561,8 +1562,9 @@ class ClusterDefinition(_serialization.Model):
         """
         :keyword blueprint: The link to the blueprint.
         :paramtype blueprint: str
-        :keyword kind: The type of cluster.
-        :paramtype kind: str
+        :keyword kind: The type of cluster. Known values are: "HADOOP", "HBASE", "KAFKA",
+         "INTERACTIVEHIVE", and "SPARK".
+        :paramtype kind: str or ~azure.mgmt.hdinsight.models.ClusterKind
         :keyword component_version: The versions of different services in the cluster.
         :paramtype component_version: dict[str, str]
         :keyword configurations: The cluster configurations.
@@ -2975,6 +2977,12 @@ class NameAvailabilityCheckResult(_serialization.Model):
 class NetworkProperties(_serialization.Model):
     """The network properties.
 
+    :ivar outbound_dependencies_managed_type: A value to describe how the outbound dependencies of
+     a HDInsight cluster are managed. 'Managed' means that the outbound dependencies are managed by
+     the HDInsight service. 'External' means that the outbound dependencies are managed by a
+     customer specific solution. Known values are: "Managed" and "External".
+    :vartype outbound_dependencies_managed_type: str or
+     ~azure.mgmt.hdinsight.models.OutboundDependenciesManagedType
     :ivar resource_provider_connection: The direction for the resource provider connection. Known
      values are: "Inbound" and "Outbound".
     :vartype resource_provider_connection: str or
@@ -2985,6 +2993,7 @@ class NetworkProperties(_serialization.Model):
     """
 
     _attribute_map = {
+        "outbound_dependencies_managed_type": {"key": "outboundDependenciesManagedType", "type": "str"},
         "resource_provider_connection": {"key": "resourceProviderConnection", "type": "str"},
         "private_link": {"key": "privateLink", "type": "str"},
     }
@@ -2992,11 +3001,18 @@ class NetworkProperties(_serialization.Model):
     def __init__(
         self,
         *,
+        outbound_dependencies_managed_type: Optional[Union[str, "_models.OutboundDependenciesManagedType"]] = None,
         resource_provider_connection: Optional[Union[str, "_models.ResourceProviderConnection"]] = None,
         private_link: Optional[Union[str, "_models.PrivateLink"]] = None,
         **kwargs: Any
     ) -> None:
         """
+        :keyword outbound_dependencies_managed_type: A value to describe how the outbound dependencies
+         of a HDInsight cluster are managed. 'Managed' means that the outbound dependencies are managed
+         by the HDInsight service. 'External' means that the outbound dependencies are managed by a
+         customer specific solution. Known values are: "Managed" and "External".
+        :paramtype outbound_dependencies_managed_type: str or
+         ~azure.mgmt.hdinsight.models.OutboundDependenciesManagedType
         :keyword resource_provider_connection: The direction for the resource provider connection.
          Known values are: "Inbound" and "Outbound".
         :paramtype resource_provider_connection: str or
@@ -3006,6 +3022,7 @@ class NetworkProperties(_serialization.Model):
         :paramtype private_link: str or ~azure.mgmt.hdinsight.models.PrivateLink
         """
         super().__init__(**kwargs)
+        self.outbound_dependencies_managed_type = outbound_dependencies_managed_type
         self.resource_provider_connection = resource_provider_connection
         self.private_link = private_link
 
