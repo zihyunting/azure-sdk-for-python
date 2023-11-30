@@ -17,7 +17,7 @@ class ActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class AllowCrashDumpCollection(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Allow crash dumps values."""
+    """AllowCrashDumpCollection."""
 
     ENABLED = "Enabled"
     """Crash dump collection enabled"""
@@ -26,7 +26,7 @@ class AllowCrashDumpCollection(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class CapabilityType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Capability image type."""
+    """CapabilityType."""
 
     APPLICATION_DEVELOPMENT = "ApplicationDevelopment"
     """Application development capability"""
@@ -35,7 +35,7 @@ class CapabilityType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class CertificateStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Certificate status values."""
+    """CertificateStatus."""
 
     ACTIVE = "Active"
     """Certificate is active"""
@@ -57,7 +57,7 @@ class CreatedByType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ImageType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Image type values."""
+    """ImageType."""
 
     INVALID_IMAGE_TYPE = "InvalidImageType"
     """Invalid image."""
@@ -120,7 +120,7 @@ class Origin(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class OSFeedType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """OS feed type values."""
+    """OSFeedType."""
 
     RETAIL = "Retail"
     """Retail OS feed type."""
@@ -129,7 +129,7 @@ class OSFeedType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Provisioning state of the resource."""
+    """ProvisioningState."""
 
     SUCCEEDED = "Succeeded"
     """Resource has been created."""
@@ -148,7 +148,7 @@ class ProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class RegionalDataBoundary(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Regional data boundary values."""
+    """RegionalDataBoundary."""
 
     NONE = "None"
     """No data boundary"""
@@ -157,9 +157,15 @@ class RegionalDataBoundary(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class UpdatePolicy(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Update policy values."""
+    """UpdatePolicy."""
 
     UPDATE_ALL = "UpdateAll"
     """Update all policy."""
     NO3_RD_PARTY_APP_UPDATES = "No3rdPartyAppUpdates"
     """No update for 3rd party app policy."""
+
+
+class Versions(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The available API versions."""
+
+    V2022_09_01_PREVIEW = "2022-09-01-preview"

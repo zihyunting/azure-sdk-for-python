@@ -7,6 +7,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 from io import IOBase
+import sys
 from typing import Any, Callable, Dict, IO, Iterable, Optional, TypeVar, Union, overload
 import urllib.parse
 
@@ -28,8 +29,13 @@ from azure.mgmt.core.exceptions import ARMErrorFormat
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _convert_request, _format_url_section
+from .._vendor import _convert_request
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
+JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
@@ -67,9 +73,10 @@ def build_list_by_catalog_request(
         "catalogName": _SERIALIZER.url("catalog_name", catalog_name, "str", pattern=r"^[A-Za-z0-9_-]{1,50}$"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
+    _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
     if filter is not None:
         _params["$filter"] = _SERIALIZER.query("filter", filter, "str")
     if top is not None:
@@ -78,7 +85,6 @@ def build_list_by_catalog_request(
         _params["$skip"] = _SERIALIZER.query("skip", skip, "int")
     if maxpagesize is not None:
         _params["$maxpagesize"] = _SERIALIZER.query("maxpagesize", maxpagesize, "int")
-    _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -109,7 +115,7 @@ def build_get_request(
         "serialNumber": _SERIALIZER.url("serial_number", serial_number, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -121,12 +127,13 @@ def build_get_request(
 
 
 def build_retrieve_cert_chain_request(
-    resource_group_name: str, catalog_name: str, serial_number: str, subscription_id: str, **kwargs: Any
+    resource_group_name: str, catalog_name: str, serial_number: str, subscription_id: str, *, json: JSON, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2022-09-01-preview"))
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -143,15 +150,17 @@ def build_retrieve_cert_chain_request(
         "serialNumber": _SERIALIZER.url("serial_number", serial_number, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
 
     # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, json=json, **kwargs)
 
 
 def build_retrieve_proof_of_possession_nonce_request(
@@ -178,7 +187,7 @@ def build_retrieve_proof_of_possession_nonce_request(
         "serialNumber": _SERIALIZER.url("serial_number", serial_number, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -392,7 +401,7 @@ class CertificatesOperations:
 
     @distributed_trace
     def retrieve_cert_chain(
-        self, resource_group_name: str, catalog_name: str, serial_number: str, **kwargs: Any
+        self, resource_group_name: str, catalog_name: str, serial_number: str, body: JSON, **kwargs: Any
     ) -> _models.CertificateChainResponse:
         """Retrieves cert chain.
 
@@ -404,6 +413,8 @@ class CertificatesOperations:
         :param serial_number: Serial number of the certificate. Use '.default' to get current active
          certificate. Required.
         :type serial_number: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: CertificateChainResponse or the result of cls(response)
         :rtype: ~azure.mgmt.sphere.models.CertificateChainResponse
@@ -417,11 +428,14 @@ class CertificatesOperations:
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.CertificateChainResponse] = kwargs.pop("cls", None)
+
+        _json = self._serialize.body(body, "object")
 
         request = build_retrieve_cert_chain_request(
             resource_group_name=resource_group_name,
@@ -429,6 +443,8 @@ class CertificatesOperations:
             serial_number=serial_number,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
+            content_type=content_type,
+            json=_json,
             template_url=self.retrieve_cert_chain.metadata["url"],
             headers=_headers,
             params=_params,
@@ -465,7 +481,7 @@ class CertificatesOperations:
         resource_group_name: str,
         catalog_name: str,
         serial_number: str,
-        proof_of_possession_nonce_request: _models.ProofOfPossessionNonceRequest,
+        body: _models.ProofOfPossessionNonceRequest,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -480,9 +496,8 @@ class CertificatesOperations:
         :param serial_number: Serial number of the certificate. Use '.default' to get current active
          certificate. Required.
         :type serial_number: str
-        :param proof_of_possession_nonce_request: Proof of possession nonce request body. Required.
-        :type proof_of_possession_nonce_request:
-         ~azure.mgmt.sphere.models.ProofOfPossessionNonceRequest
+        :param body: The content of the action request. Required.
+        :type body: ~azure.mgmt.sphere.models.ProofOfPossessionNonceRequest
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -498,7 +513,7 @@ class CertificatesOperations:
         resource_group_name: str,
         catalog_name: str,
         serial_number: str,
-        proof_of_possession_nonce_request: IO,
+        body: IO,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -513,8 +528,8 @@ class CertificatesOperations:
         :param serial_number: Serial number of the certificate. Use '.default' to get current active
          certificate. Required.
         :type serial_number: str
-        :param proof_of_possession_nonce_request: Proof of possession nonce request body. Required.
-        :type proof_of_possession_nonce_request: IO
+        :param body: The content of the action request. Required.
+        :type body: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -530,7 +545,7 @@ class CertificatesOperations:
         resource_group_name: str,
         catalog_name: str,
         serial_number: str,
-        proof_of_possession_nonce_request: Union[_models.ProofOfPossessionNonceRequest, IO],
+        body: Union[_models.ProofOfPossessionNonceRequest, IO],
         **kwargs: Any
     ) -> _models.ProofOfPossessionNonceResponse:
         """Gets the proof of possession nonce.
@@ -543,10 +558,9 @@ class CertificatesOperations:
         :param serial_number: Serial number of the certificate. Use '.default' to get current active
          certificate. Required.
         :type serial_number: str
-        :param proof_of_possession_nonce_request: Proof of possession nonce request body. Is either a
-         ProofOfPossessionNonceRequest type or a IO type. Required.
-        :type proof_of_possession_nonce_request:
-         ~azure.mgmt.sphere.models.ProofOfPossessionNonceRequest or IO
+        :param body: The content of the action request. Is either a ProofOfPossessionNonceRequest type
+         or a IO type. Required.
+        :type body: ~azure.mgmt.sphere.models.ProofOfPossessionNonceRequest or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -573,10 +587,10 @@ class CertificatesOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(proof_of_possession_nonce_request, (IOBase, bytes)):
-            _content = proof_of_possession_nonce_request
+        if isinstance(body, (IOBase, bytes)):
+            _content = body
         else:
-            _json = self._serialize.body(proof_of_possession_nonce_request, "ProofOfPossessionNonceRequest")
+            _json = self._serialize.body(body, "ProofOfPossessionNonceRequest")
 
         request = build_retrieve_proof_of_possession_nonce_request(
             resource_group_name=resource_group_name,

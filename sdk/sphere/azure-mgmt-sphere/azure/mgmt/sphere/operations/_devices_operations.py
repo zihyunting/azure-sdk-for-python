@@ -7,6 +7,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 from io import IOBase
+import sys
 from typing import Any, Callable, Dict, IO, Iterable, Optional, TypeVar, Union, cast, overload
 import urllib.parse
 
@@ -30,8 +31,13 @@ from azure.mgmt.core.polling.arm_polling import ARMPolling
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _convert_request, _format_url_section
+from .._vendor import _convert_request
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
+JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
@@ -75,7 +81,7 @@ def build_list_by_device_group_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -124,7 +130,7 @@ def build_get_request(
         "deviceName": _SERIALIZER.url("device_name", device_name, "str", pattern=r"^[a-zA-Z0-9-]{128}$"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -174,7 +180,7 @@ def build_create_or_update_request(
         "deviceName": _SERIALIZER.url("device_name", device_name, "str", pattern=r"^[a-zA-Z0-9-]{128}$"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -194,6 +200,8 @@ def build_update_request(
     device_group_name: str,
     device_name: str,
     subscription_id: str,
+    *,
+    json: JSON,
     **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -226,7 +234,7 @@ def build_update_request(
         "deviceName": _SERIALIZER.url("device_name", device_name, "str", pattern=r"^[a-zA-Z0-9-]{128}$"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -236,7 +244,7 @@ def build_update_request(
         _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="PATCH", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(method="PATCH", url=_url, params=_params, headers=_headers, json=json, **kwargs)
 
 
 def build_delete_request(
@@ -277,7 +285,7 @@ def build_delete_request(
         "deviceName": _SERIALIZER.url("device_name", device_name, "str", pattern=r"^[a-zA-Z0-9-]{128}$"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -327,7 +335,7 @@ def build_generate_capability_image_request(
         "deviceName": _SERIALIZER.url("device_name", device_name, "str", pattern=r"^[a-zA-Z0-9-]{128}$"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -812,7 +820,7 @@ class DevicesOperations:
         product_name: str,
         device_group_name: str,
         device_name: str,
-        properties: Union[_models.DeviceUpdate, IO],
+        properties: JSON,
         **kwargs: Any
     ) -> Optional[_models.Device]:
         error_map = {
@@ -827,16 +835,10 @@ class DevicesOperations:
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[Optional[_models.Device]] = kwargs.pop("cls", None)
 
-        content_type = content_type or "application/json"
-        _json = None
-        _content = None
-        if isinstance(properties, (IOBase, bytes)):
-            _content = properties
-        else:
-            _json = self._serialize.body(properties, "DeviceUpdate")
+        _json = self._serialize.body(properties, "object")
 
         request = build_update_request(
             resource_group_name=resource_group_name,
@@ -848,7 +850,6 @@ class DevicesOperations:
             api_version=api_version,
             content_type=content_type,
             json=_json,
-            content=_content,
             template_url=self._update_initial.metadata["url"],
             headers=_headers,
             params=_params,
@@ -875,6 +876,7 @@ class DevicesOperations:
 
         if response.status_code == 202:
             response_headers["Retry-After"] = self._deserialize("int", response.headers.get("Retry-After"))
+            response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
             return cls(pipeline_response, deserialized, response_headers)
@@ -885,96 +887,6 @@ class DevicesOperations:
         "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}"
     }
 
-    @overload
-    def begin_update(
-        self,
-        resource_group_name: str,
-        catalog_name: str,
-        product_name: str,
-        device_group_name: str,
-        device_name: str,
-        properties: _models.DeviceUpdate,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any
-    ) -> LROPoller[_models.Device]:
-        """Update a Device. Use '.unassigned' or '.default' for the device group and product names to move
-        a device to the catalog level.
-
-        :param resource_group_name: The name of the resource group. The name is case insensitive.
-         Required.
-        :type resource_group_name: str
-        :param catalog_name: Name of catalog. Required.
-        :type catalog_name: str
-        :param product_name: Name of product. Required.
-        :type product_name: str
-        :param device_group_name: Name of device group. Required.
-        :type device_group_name: str
-        :param device_name: Device name. Required.
-        :type device_name: str
-        :param properties: The resource properties to be updated. Required.
-        :type properties: ~azure.mgmt.sphere.models.DeviceUpdate
-        :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
-        :return: An instance of LROPoller that returns either Device or the result of cls(response)
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.sphere.models.Device]
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
-    @overload
-    def begin_update(
-        self,
-        resource_group_name: str,
-        catalog_name: str,
-        product_name: str,
-        device_group_name: str,
-        device_name: str,
-        properties: IO,
-        *,
-        content_type: str = "application/json",
-        **kwargs: Any
-    ) -> LROPoller[_models.Device]:
-        """Update a Device. Use '.unassigned' or '.default' for the device group and product names to move
-        a device to the catalog level.
-
-        :param resource_group_name: The name of the resource group. The name is case insensitive.
-         Required.
-        :type resource_group_name: str
-        :param catalog_name: Name of catalog. Required.
-        :type catalog_name: str
-        :param product_name: Name of product. Required.
-        :type product_name: str
-        :param device_group_name: Name of device group. Required.
-        :type device_group_name: str
-        :param device_name: Device name. Required.
-        :type device_name: str
-        :param properties: The resource properties to be updated. Required.
-        :type properties: IO
-        :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
-         Default value is "application/json".
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
-        :return: An instance of LROPoller that returns either Device or the result of cls(response)
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.sphere.models.Device]
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-
     @distributed_trace
     def begin_update(
         self,
@@ -983,7 +895,7 @@ class DevicesOperations:
         product_name: str,
         device_group_name: str,
         device_name: str,
-        properties: Union[_models.DeviceUpdate, IO],
+        properties: JSON,
         **kwargs: Any
     ) -> LROPoller[_models.Device]:
         """Update a Device. Use '.unassigned' or '.default' for the device group and product names to move
@@ -1000,12 +912,8 @@ class DevicesOperations:
         :type device_group_name: str
         :param device_name: Device name. Required.
         :type device_name: str
-        :param properties: The resource properties to be updated. Is either a DeviceUpdate type or a IO
-         type. Required.
-        :type properties: ~azure.mgmt.sphere.models.DeviceUpdate or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
+        :param properties: The resource properties to be updated. Required.
+        :type properties: JSON
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
@@ -1022,7 +930,7 @@ class DevicesOperations:
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
-        content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.Device] = kwargs.pop("cls", None)
         polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
         lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
@@ -1223,7 +1131,7 @@ class DevicesOperations:
         product_name: str,
         device_group_name: str,
         device_name: str,
-        generate_device_capability_request: Union[_models.GenerateCapabilityImageRequest, IO],
+        body: Union[_models.GenerateCapabilityImageRequest, IO],
         **kwargs: Any
     ) -> Optional[_models.SignedCapabilityImageResponse]:
         error_map = {
@@ -1244,10 +1152,10 @@ class DevicesOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(generate_device_capability_request, (IOBase, bytes)):
-            _content = generate_device_capability_request
+        if isinstance(body, (IOBase, bytes)):
+            _content = body
         else:
-            _json = self._serialize.body(generate_device_capability_request, "GenerateCapabilityImageRequest")
+            _json = self._serialize.body(body, "GenerateCapabilityImageRequest")
 
         request = build_generate_capability_image_request(
             resource_group_name=resource_group_name,
@@ -1286,6 +1194,7 @@ class DevicesOperations:
 
         if response.status_code == 202:
             response_headers["Retry-After"] = self._deserialize("int", response.headers.get("Retry-After"))
+            response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
             return cls(pipeline_response, deserialized, response_headers)
@@ -1304,7 +1213,7 @@ class DevicesOperations:
         product_name: str,
         device_group_name: str,
         device_name: str,
-        generate_device_capability_request: _models.GenerateCapabilityImageRequest,
+        body: _models.GenerateCapabilityImageRequest,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1324,9 +1233,8 @@ class DevicesOperations:
         :type device_group_name: str
         :param device_name: Device name. Required.
         :type device_name: str
-        :param generate_device_capability_request: Generate capability image request body. Required.
-        :type generate_device_capability_request:
-         ~azure.mgmt.sphere.models.GenerateCapabilityImageRequest
+        :param body: The content of the action request. Required.
+        :type body: ~azure.mgmt.sphere.models.GenerateCapabilityImageRequest
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1352,7 +1260,7 @@ class DevicesOperations:
         product_name: str,
         device_group_name: str,
         device_name: str,
-        generate_device_capability_request: IO,
+        body: IO,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1372,8 +1280,8 @@ class DevicesOperations:
         :type device_group_name: str
         :param device_name: Device name. Required.
         :type device_name: str
-        :param generate_device_capability_request: Generate capability image request body. Required.
-        :type generate_device_capability_request: IO
+        :param body: The content of the action request. Required.
+        :type body: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1399,7 +1307,7 @@ class DevicesOperations:
         product_name: str,
         device_group_name: str,
         device_name: str,
-        generate_device_capability_request: Union[_models.GenerateCapabilityImageRequest, IO],
+        body: Union[_models.GenerateCapabilityImageRequest, IO],
         **kwargs: Any
     ) -> LROPoller[_models.SignedCapabilityImageResponse]:
         """Generates the capability image for the device. Use '.unassigned' or '.default' for the device
@@ -1417,10 +1325,9 @@ class DevicesOperations:
         :type device_group_name: str
         :param device_name: Device name. Required.
         :type device_name: str
-        :param generate_device_capability_request: Generate capability image request body. Is either a
-         GenerateCapabilityImageRequest type or a IO type. Required.
-        :type generate_device_capability_request:
-         ~azure.mgmt.sphere.models.GenerateCapabilityImageRequest or IO
+        :param body: The content of the action request. Is either a GenerateCapabilityImageRequest type
+         or a IO type. Required.
+        :type body: ~azure.mgmt.sphere.models.GenerateCapabilityImageRequest or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -1453,7 +1360,7 @@ class DevicesOperations:
                 product_name=product_name,
                 device_group_name=device_group_name,
                 device_name=device_name,
-                generate_device_capability_request=generate_device_capability_request,
+                body=body,
                 api_version=api_version,
                 content_type=content_type,
                 cls=lambda x, y, z: x,

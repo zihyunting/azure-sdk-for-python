@@ -7,6 +7,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 from io import IOBase
+import sys
 from typing import Any, AsyncIterable, Callable, Dict, IO, Optional, TypeVar, Union, cast, overload
 import urllib.parse
 
@@ -41,6 +42,11 @@ from ...operations._products_operations import (
     build_update_request,
 )
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
+JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
@@ -845,7 +851,7 @@ class ProductsOperations:
 
     @distributed_trace_async
     async def count_devices(
-        self, resource_group_name: str, catalog_name: str, product_name: str, **kwargs: Any
+        self, resource_group_name: str, catalog_name: str, product_name: str, body: JSON, **kwargs: Any
     ) -> _models.CountDeviceResponse:
         """Counts devices in product. '.default' and '.unassigned' are system defined values and cannot be
         used for product name.
@@ -857,6 +863,8 @@ class ProductsOperations:
         :type catalog_name: str
         :param product_name: Name of product. Required.
         :type product_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: CountDeviceResponse or the result of cls(response)
         :rtype: ~azure.mgmt.sphere.models.CountDeviceResponse
@@ -870,11 +878,14 @@ class ProductsOperations:
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.CountDeviceResponse] = kwargs.pop("cls", None)
+
+        _json = self._serialize.body(body, "object")
 
         request = build_count_devices_request(
             resource_group_name=resource_group_name,
@@ -882,6 +893,8 @@ class ProductsOperations:
             product_name=product_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
+            content_type=content_type,
+            json=_json,
             template_url=self.count_devices.metadata["url"],
             headers=_headers,
             params=_params,
@@ -914,7 +927,7 @@ class ProductsOperations:
 
     @distributed_trace
     def generate_default_device_groups(
-        self, resource_group_name: str, catalog_name: str, product_name: str, **kwargs: Any
+        self, resource_group_name: str, catalog_name: str, product_name: str, body: JSON, **kwargs: Any
     ) -> AsyncIterable["_models.DeviceGroup"]:
         """Generates default device groups for the product. '.default' and '.unassigned' are system
         defined values and cannot be used for product name.
@@ -926,15 +939,18 @@ class ProductsOperations:
         :type catalog_name: str
         :param product_name: Name of product. Required.
         :type product_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either DeviceGroup or the result of cls(response)
         :rtype: ~azure.core.async_paging.AsyncItemPaged[~azure.mgmt.sphere.models.DeviceGroup]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.DeviceGroupListResult] = kwargs.pop("cls", None)
 
         error_map = {
@@ -947,6 +963,7 @@ class ProductsOperations:
 
         def prepare_request(next_link=None):
             if not next_link:
+                _json = self._serialize.body(body, "object")
 
                 request = build_generate_default_device_groups_request(
                     resource_group_name=resource_group_name,
@@ -954,6 +971,8 @@ class ProductsOperations:
                     product_name=product_name,
                     subscription_id=self._config.subscription_id,
                     api_version=api_version,
+                    content_type=content_type,
+                    json=_json,
                     template_url=self.generate_default_device_groups.metadata["url"],
                     headers=_headers,
                     params=_params,

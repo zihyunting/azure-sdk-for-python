@@ -7,6 +7,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 from io import IOBase
+import sys
 from typing import Any, AsyncIterable, Callable, Dict, IO, Optional, TypeVar, Union, cast, overload
 import urllib.parse
 
@@ -45,6 +46,11 @@ from ...operations._catalogs_operations import (
     build_update_request,
 )
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
+JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
@@ -527,7 +533,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
-        properties: _models.CatalogUpdate,
+        properties: _models.CatalogTagsUpdate,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -540,7 +546,7 @@ class CatalogsOperations:
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
         :param properties: The resource properties to be updated. Required.
-        :type properties: ~azure.mgmt.sphere.models.CatalogUpdate
+        :type properties: ~azure.mgmt.sphere.models.CatalogTagsUpdate
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -580,7 +586,11 @@ class CatalogsOperations:
 
     @distributed_trace_async
     async def update(
-        self, resource_group_name: str, catalog_name: str, properties: Union[_models.CatalogUpdate, IO], **kwargs: Any
+        self,
+        resource_group_name: str,
+        catalog_name: str,
+        properties: Union[_models.CatalogTagsUpdate, IO],
+        **kwargs: Any
     ) -> _models.Catalog:
         """Update a Catalog.
 
@@ -589,9 +599,9 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
-        :param properties: The resource properties to be updated. Is either a CatalogUpdate type or a
-         IO type. Required.
-        :type properties: ~azure.mgmt.sphere.models.CatalogUpdate or IO
+        :param properties: The resource properties to be updated. Is either a CatalogTagsUpdate type or
+         a IO type. Required.
+        :type properties: ~azure.mgmt.sphere.models.CatalogTagsUpdate or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -621,7 +631,7 @@ class CatalogsOperations:
         if isinstance(properties, (IOBase, bytes)):
             _content = properties
         else:
-            _json = self._serialize.body(properties, "CatalogUpdate")
+            _json = self._serialize.body(properties, "CatalogTagsUpdate")
 
         request = build_update_request(
             resource_group_name=resource_group_name,
@@ -782,7 +792,7 @@ class CatalogsOperations:
 
     @distributed_trace_async
     async def count_devices(
-        self, resource_group_name: str, catalog_name: str, **kwargs: Any
+        self, resource_group_name: str, catalog_name: str, body: JSON, **kwargs: Any
     ) -> _models.CountDeviceResponse:
         """Counts devices in catalog.
 
@@ -791,6 +801,8 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: CountDeviceResponse or the result of cls(response)
         :rtype: ~azure.mgmt.sphere.models.CountDeviceResponse
@@ -804,17 +816,22 @@ class CatalogsOperations:
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.CountDeviceResponse] = kwargs.pop("cls", None)
+
+        _json = self._serialize.body(body, "object")
 
         request = build_count_devices_request(
             resource_group_name=resource_group_name,
             catalog_name=catalog_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
+            content_type=content_type,
+            json=_json,
             template_url=self.count_devices.metadata["url"],
             headers=_headers,
             params=_params,
@@ -850,6 +867,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
+        body: JSON,
         filter: Optional[str] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
@@ -863,6 +881,8 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :param filter: Filter the result list using the given expression. Default value is None.
         :type filter: str
         :param top: The number of result items to return. Default value is None.
@@ -876,10 +896,11 @@ class CatalogsOperations:
         :rtype: ~azure.core.async_paging.AsyncItemPaged[~azure.mgmt.sphere.models.Deployment]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.DeploymentListResult] = kwargs.pop("cls", None)
 
         error_map = {
@@ -892,6 +913,7 @@ class CatalogsOperations:
 
         def prepare_request(next_link=None):
             if not next_link:
+                _json = self._serialize.body(body, "object")
 
                 request = build_list_deployments_request(
                     resource_group_name=resource_group_name,
@@ -902,6 +924,8 @@ class CatalogsOperations:
                     skip=skip,
                     maxpagesize=maxpagesize,
                     api_version=api_version,
+                    content_type=content_type,
+                    json=_json,
                     template_url=self.list_deployments.metadata["url"],
                     headers=_headers,
                     params=_params,
@@ -961,7 +985,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
-        list_device_groups_request: _models.ListDeviceGroupsRequest,
+        body: _models.ListDeviceGroupsRequest,
         filter: Optional[str] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
@@ -977,8 +1001,8 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
-        :param list_device_groups_request: List device groups for catalog. Required.
-        :type list_device_groups_request: ~azure.mgmt.sphere.models.ListDeviceGroupsRequest
+        :param body: The content of the action request. Required.
+        :type body: ~azure.mgmt.sphere.models.ListDeviceGroupsRequest
         :param filter: Filter the result list using the given expression. Default value is None.
         :type filter: str
         :param top: The number of result items to return. Default value is None.
@@ -1001,7 +1025,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
-        list_device_groups_request: IO,
+        body: IO,
         filter: Optional[str] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
@@ -1017,8 +1041,8 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
-        :param list_device_groups_request: List device groups for catalog. Required.
-        :type list_device_groups_request: IO
+        :param body: The content of the action request. Required.
+        :type body: IO
         :param filter: Filter the result list using the given expression. Default value is None.
         :type filter: str
         :param top: The number of result items to return. Default value is None.
@@ -1041,7 +1065,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
-        list_device_groups_request: Union[_models.ListDeviceGroupsRequest, IO],
+        body: Union[_models.ListDeviceGroupsRequest, IO],
         filter: Optional[str] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
@@ -1055,9 +1079,9 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
-        :param list_device_groups_request: List device groups for catalog. Is either a
-         ListDeviceGroupsRequest type or a IO type. Required.
-        :type list_device_groups_request: ~azure.mgmt.sphere.models.ListDeviceGroupsRequest or IO
+        :param body: The content of the action request. Is either a ListDeviceGroupsRequest type or a
+         IO type. Required.
+        :type body: ~azure.mgmt.sphere.models.ListDeviceGroupsRequest or IO
         :param filter: Filter the result list using the given expression. Default value is None.
         :type filter: str
         :param top: The number of result items to return. Default value is None.
@@ -1091,10 +1115,10 @@ class CatalogsOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(list_device_groups_request, (IOBase, bytes)):
-            _content = list_device_groups_request
+        if isinstance(body, (IOBase, bytes)):
+            _content = body
         else:
-            _json = self._serialize.body(list_device_groups_request, "ListDeviceGroupsRequest")
+            _json = self._serialize.body(body, "ListDeviceGroupsRequest")
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -1170,6 +1194,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
+        body: JSON,
         filter: Optional[str] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
@@ -1183,6 +1208,8 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :param filter: Filter the result list using the given expression. Default value is None.
         :type filter: str
         :param top: The number of result items to return. Default value is None.
@@ -1196,10 +1223,11 @@ class CatalogsOperations:
         :rtype: ~azure.core.async_paging.AsyncItemPaged[~azure.mgmt.sphere.models.DeviceInsight]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.PagedDeviceInsight] = kwargs.pop("cls", None)
 
         error_map = {
@@ -1212,6 +1240,7 @@ class CatalogsOperations:
 
         def prepare_request(next_link=None):
             if not next_link:
+                _json = self._serialize.body(body, "object")
 
                 request = build_list_device_insights_request(
                     resource_group_name=resource_group_name,
@@ -1222,6 +1251,8 @@ class CatalogsOperations:
                     skip=skip,
                     maxpagesize=maxpagesize,
                     api_version=api_version,
+                    content_type=content_type,
+                    json=_json,
                     template_url=self.list_device_insights.metadata["url"],
                     headers=_headers,
                     params=_params,
@@ -1281,6 +1312,7 @@ class CatalogsOperations:
         self,
         resource_group_name: str,
         catalog_name: str,
+        body: JSON,
         filter: Optional[str] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
@@ -1294,6 +1326,8 @@ class CatalogsOperations:
         :type resource_group_name: str
         :param catalog_name: Name of catalog. Required.
         :type catalog_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :param filter: Filter the result list using the given expression. Default value is None.
         :type filter: str
         :param top: The number of result items to return. Default value is None.
@@ -1307,10 +1341,11 @@ class CatalogsOperations:
         :rtype: ~azure.core.async_paging.AsyncItemPaged[~azure.mgmt.sphere.models.Device]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.DeviceListResult] = kwargs.pop("cls", None)
 
         error_map = {
@@ -1323,6 +1358,7 @@ class CatalogsOperations:
 
         def prepare_request(next_link=None):
             if not next_link:
+                _json = self._serialize.body(body, "object")
 
                 request = build_list_devices_request(
                     resource_group_name=resource_group_name,
@@ -1333,6 +1369,8 @@ class CatalogsOperations:
                     skip=skip,
                     maxpagesize=maxpagesize,
                     api_version=api_version,
+                    content_type=content_type,
+                    json=_json,
                     template_url=self.list_devices.metadata["url"],
                     headers=_headers,
                     params=_params,

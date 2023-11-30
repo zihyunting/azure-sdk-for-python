@@ -7,6 +7,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 from io import IOBase
+import sys
 from typing import Any, Callable, Dict, IO, Iterable, Optional, TypeVar, Union, cast, overload
 import urllib.parse
 
@@ -30,8 +31,13 @@ from azure.mgmt.core.polling.arm_polling import ARMPolling
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _convert_request, _format_url_section
+from .._vendor import _convert_request
 
+if sys.version_info >= (3, 9):
+    from collections.abc import MutableMapping
+else:
+    from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
+JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
@@ -73,9 +79,10 @@ def build_list_by_product_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
+    _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
     if filter is not None:
         _params["$filter"] = _SERIALIZER.query("filter", filter, "str")
     if top is not None:
@@ -84,7 +91,6 @@ def build_list_by_product_request(
         _params["$skip"] = _SERIALIZER.query("skip", skip, "int")
     if maxpagesize is not None:
         _params["$maxpagesize"] = _SERIALIZER.query("maxpagesize", maxpagesize, "int")
-    _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
 
     # Construct headers
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
@@ -128,7 +134,7 @@ def build_get_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -176,7 +182,7 @@ def build_create_or_update_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -226,7 +232,7 @@ def build_update_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -275,7 +281,7 @@ def build_delete_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -323,7 +329,7 @@ def build_claim_devices_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -342,12 +348,15 @@ def build_count_devices_request(
     product_name: str,
     device_group_name: str,
     subscription_id: str,
+    *,
+    json: JSON,
     **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
     api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2022-09-01-preview"))
+    content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -372,15 +381,17 @@ def build_count_devices_request(
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
 
     # Construct headers
+    if content_type is not None:
+        _headers["Content-Type"] = _SERIALIZER.header("content_type", content_type, "str")
     _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
 
-    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, **kwargs)
+    return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, json=json, **kwargs)
 
 
 class DeviceGroupsOperations:
@@ -1242,7 +1253,7 @@ class DeviceGroupsOperations:
         catalog_name: str,
         product_name: str,
         device_group_name: str,
-        claim_devices_request: Union[_models.ClaimDevicesRequest, IO],
+        body: Union[_models.ClaimDevicesRequest, IO],
         **kwargs: Any
     ) -> None:
         error_map = {
@@ -1263,10 +1274,10 @@ class DeviceGroupsOperations:
         content_type = content_type or "application/json"
         _json = None
         _content = None
-        if isinstance(claim_devices_request, (IOBase, bytes)):
-            _content = claim_devices_request
+        if isinstance(body, (IOBase, bytes)):
+            _content = body
         else:
-            _json = self._serialize.body(claim_devices_request, "ClaimDevicesRequest")
+            _json = self._serialize.body(body, "ClaimDevicesRequest")
 
         request = build_claim_devices_request(
             resource_group_name=resource_group_name,
@@ -1299,6 +1310,7 @@ class DeviceGroupsOperations:
 
         response_headers = {}
         response_headers["Retry-After"] = self._deserialize("int", response.headers.get("Retry-After"))
+        response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
             return cls(pipeline_response, None, response_headers)
@@ -1314,7 +1326,7 @@ class DeviceGroupsOperations:
         catalog_name: str,
         product_name: str,
         device_group_name: str,
-        claim_devices_request: _models.ClaimDevicesRequest,
+        body: _models.ClaimDevicesRequest,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1331,8 +1343,8 @@ class DeviceGroupsOperations:
         :type product_name: str
         :param device_group_name: Name of device group. Required.
         :type device_group_name: str
-        :param claim_devices_request: Bulk claim devices request body. Required.
-        :type claim_devices_request: ~azure.mgmt.sphere.models.ClaimDevicesRequest
+        :param body: The content of the action request. Required.
+        :type body: ~azure.mgmt.sphere.models.ClaimDevicesRequest
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1356,7 +1368,7 @@ class DeviceGroupsOperations:
         catalog_name: str,
         product_name: str,
         device_group_name: str,
-        claim_devices_request: IO,
+        body: IO,
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1373,8 +1385,8 @@ class DeviceGroupsOperations:
         :type product_name: str
         :param device_group_name: Name of device group. Required.
         :type device_group_name: str
-        :param claim_devices_request: Bulk claim devices request body. Required.
-        :type claim_devices_request: IO
+        :param body: The content of the action request. Required.
+        :type body: IO
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1398,7 +1410,7 @@ class DeviceGroupsOperations:
         catalog_name: str,
         product_name: str,
         device_group_name: str,
-        claim_devices_request: Union[_models.ClaimDevicesRequest, IO],
+        body: Union[_models.ClaimDevicesRequest, IO],
         **kwargs: Any
     ) -> LROPoller[None]:
         """Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names
@@ -1413,9 +1425,9 @@ class DeviceGroupsOperations:
         :type product_name: str
         :param device_group_name: Name of device group. Required.
         :type device_group_name: str
-        :param claim_devices_request: Bulk claim devices request body. Is either a ClaimDevicesRequest
-         type or a IO type. Required.
-        :type claim_devices_request: ~azure.mgmt.sphere.models.ClaimDevicesRequest or IO
+        :param body: The content of the action request. Is either a ClaimDevicesRequest type or a IO
+         type. Required.
+        :type body: ~azure.mgmt.sphere.models.ClaimDevicesRequest or IO
         :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
          Default value is None.
         :paramtype content_type: str
@@ -1446,7 +1458,7 @@ class DeviceGroupsOperations:
                 catalog_name=catalog_name,
                 product_name=product_name,
                 device_group_name=device_group_name,
-                claim_devices_request=claim_devices_request,
+                body=body,
                 api_version=api_version,
                 content_type=content_type,
                 cls=lambda x, y, z: x,
@@ -1483,7 +1495,13 @@ class DeviceGroupsOperations:
 
     @distributed_trace
     def count_devices(
-        self, resource_group_name: str, catalog_name: str, product_name: str, device_group_name: str, **kwargs: Any
+        self,
+        resource_group_name: str,
+        catalog_name: str,
+        product_name: str,
+        device_group_name: str,
+        body: JSON,
+        **kwargs: Any
     ) -> _models.CountDeviceResponse:
         """Counts devices in device group. '.default' and '.unassigned' are system defined values and
         cannot be used for product or device group name.
@@ -1497,6 +1515,8 @@ class DeviceGroupsOperations:
         :type product_name: str
         :param device_group_name: Name of device group. Required.
         :type device_group_name: str
+        :param body: The content of the action request. Required.
+        :type body: JSON
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: CountDeviceResponse or the result of cls(response)
         :rtype: ~azure.mgmt.sphere.models.CountDeviceResponse
@@ -1510,11 +1530,14 @@ class DeviceGroupsOperations:
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = kwargs.pop("headers", {}) or {}
+        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
+        content_type: str = kwargs.pop("content_type", _headers.pop("Content-Type", "application/json"))
         cls: ClsType[_models.CountDeviceResponse] = kwargs.pop("cls", None)
+
+        _json = self._serialize.body(body, "object")
 
         request = build_count_devices_request(
             resource_group_name=resource_group_name,
@@ -1523,6 +1546,8 @@ class DeviceGroupsOperations:
             device_group_name=device_group_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
+            content_type=content_type,
+            json=_json,
             template_url=self.count_devices.metadata["url"],
             headers=_headers,
             params=_params,

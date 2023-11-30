@@ -8,11 +8,10 @@
 
 from ._models_py3 import Catalog
 from ._models_py3 import CatalogListResult
-from ._models_py3 import CatalogUpdate
+from ._models_py3 import CatalogTagsUpdate
 from ._models_py3 import Certificate
 from ._models_py3 import CertificateChainResponse
 from ._models_py3 import CertificateListResult
-from ._models_py3 import CertificateProperties
 from ._models_py3 import ClaimDevicesRequest
 from ._models_py3 import CountDeviceResponse
 from ._models_py3 import CountElementsResponse
@@ -25,7 +24,6 @@ from ._models_py3 import DeviceGroupUpdate
 from ._models_py3 import DeviceInsight
 from ._models_py3 import DeviceListResult
 from ._models_py3 import DevicePatchProperties
-from ._models_py3 import DeviceUpdate
 from ._models_py3 import ErrorAdditionalInfo
 from ._models_py3 import ErrorDetail
 from ._models_py3 import ErrorResponse
@@ -60,6 +58,7 @@ from ._azure_sphere_mgmt_client_enums import Origin
 from ._azure_sphere_mgmt_client_enums import ProvisioningState
 from ._azure_sphere_mgmt_client_enums import RegionalDataBoundary
 from ._azure_sphere_mgmt_client_enums import UpdatePolicy
+from ._azure_sphere_mgmt_client_enums import Versions
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
 from ._patch import patch_sdk as _patch_sdk
@@ -67,11 +66,10 @@ from ._patch import patch_sdk as _patch_sdk
 __all__ = [
     "Catalog",
     "CatalogListResult",
-    "CatalogUpdate",
+    "CatalogTagsUpdate",
     "Certificate",
     "CertificateChainResponse",
     "CertificateListResult",
-    "CertificateProperties",
     "ClaimDevicesRequest",
     "CountDeviceResponse",
     "CountElementsResponse",
@@ -84,7 +82,6 @@ __all__ = [
     "DeviceInsight",
     "DeviceListResult",
     "DevicePatchProperties",
-    "DeviceUpdate",
     "ErrorAdditionalInfo",
     "ErrorDetail",
     "ErrorResponse",
@@ -118,6 +115,7 @@ __all__ = [
     "ProvisioningState",
     "RegionalDataBoundary",
     "UpdatePolicy",
+    "Versions",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
 _patch_sdk()
