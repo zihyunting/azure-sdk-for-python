@@ -10,8 +10,14 @@ from enum import Enum
 from azure.core import CaseInsensitiveEnumMeta
 
 
+class ActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs."""
+
+    INTERNAL = "Internal"
+
+
 class AttestationServiceStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Status of attestation service."""
+    """AttestationServiceStatus."""
 
     READY = "Ready"
     NOT_READY = "NotReady"
@@ -25,6 +31,16 @@ class CreatedByType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     APPLICATION = "Application"
     MANAGED_IDENTITY = "ManagedIdentity"
     KEY = "Key"
+
+
+class Origin(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit
+    logs UX. Default value is "user,system".
+    """
+
+    USER = "user"
+    SYSTEM = "system"
+    USER_SYSTEM = "user,system"
 
 
 class PrivateEndpointConnectionProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -42,3 +58,27 @@ class PrivateEndpointServiceConnectionStatus(str, Enum, metaclass=CaseInsensitiv
     PENDING = "Pending"
     APPROVED = "Approved"
     REJECTED = "Rejected"
+
+
+class PublicNetworkAccessType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """PublicNetworkAccessType."""
+
+    ENABLED = "Enabled"
+    """Enables public network connectivity to the Attestation Provider REST APIs."""
+    DISABLED = "Disabled"
+    """Disables public network connectivity to the Attestation Provider REST APIs."""
+
+
+class TpmAttestationAuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """TpmAttestationAuthenticationType."""
+
+    ENABLED = "Enabled"
+    """Enables the requirement of authentication for TPM Attestation REST APIs."""
+    DISABLED = "Disabled"
+    """Disables the requirement of authentication for TPM Attestation REST APIs."""
+
+
+class Versions(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The available API versions."""
+
+    V2021_06_01 = "2021-06-01"
