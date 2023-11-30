@@ -27,15 +27,14 @@ from ._models_py3 import ProxyResource
 from ._models_py3 import ReportComplianceStatus
 from ._models_py3 import ReportProperties
 from ._models_py3 import ReportResource
-from ._models_py3 import ReportResourceList
-from ._models_py3 import ReportResourcePatch
+from ._models_py3 import ReportResourceListResult
+from ._models_py3 import ReportResourceUpdate
 from ._models_py3 import Resource
 from ._models_py3 import ResourceItem
 from ._models_py3 import ResourceMetadata
 from ._models_py3 import SnapshotDownloadRequest
-from ._models_py3 import SnapshotProperties
 from ._models_py3 import SnapshotResource
-from ._models_py3 import SnapshotResourceList
+from ._models_py3 import SnapshotResourceListResult
 from ._models_py3 import SystemData
 
 from ._app_compliance_automation_tool_for_microsoft365_enums import ActionType
@@ -54,8 +53,9 @@ from ._app_compliance_automation_tool_for_microsoft365_enums import Origin
 from ._app_compliance_automation_tool_for_microsoft365_enums import ProvisioningState
 from ._app_compliance_automation_tool_for_microsoft365_enums import ReportStatus
 from ._app_compliance_automation_tool_for_microsoft365_enums import ResourceStatus
+from ._app_compliance_automation_tool_for_microsoft365_enums import Versions
 from ._patch import __all__ as _patch_all
-from ._patch import *  # type: ignore # pylint: disable=unused-wildcard-import
+from ._patch import *  # pylint: disable=unused-wildcard-import
 from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
@@ -80,15 +80,14 @@ __all__ = [
     "ReportComplianceStatus",
     "ReportProperties",
     "ReportResource",
-    "ReportResourceList",
-    "ReportResourcePatch",
+    "ReportResourceListResult",
+    "ReportResourceUpdate",
     "Resource",
     "ResourceItem",
     "ResourceMetadata",
     "SnapshotDownloadRequest",
-    "SnapshotProperties",
     "SnapshotResource",
-    "SnapshotResourceList",
+    "SnapshotResourceListResult",
     "SystemData",
     "ActionType",
     "AssessmentSeverity",
@@ -106,6 +105,7 @@ __all__ = [
     "ProvisioningState",
     "ReportStatus",
     "ResourceStatus",
+    "Versions",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
 _patch_sdk()

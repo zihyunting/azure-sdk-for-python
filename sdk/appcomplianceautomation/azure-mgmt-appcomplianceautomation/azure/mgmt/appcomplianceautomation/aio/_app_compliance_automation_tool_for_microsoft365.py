@@ -12,10 +12,10 @@ from typing import Any, Awaitable, TYPE_CHECKING
 from azure.core.rest import AsyncHttpResponse, HttpRequest
 from azure.mgmt.core import AsyncARMPipelineClient
 
-from .. import models
+from .. import models as _models
 from .._serialization import Deserializer, Serializer
 from ._configuration import AppComplianceAutomationToolForMicrosoft365Configuration
-from .operations import Operations, ReportOperations, ReportsOperations, SnapshotOperations, SnapshotsOperations
+from .operations import Operations, ReportResourcesOperations, SnapshotResourcesOperations
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
@@ -27,14 +27,12 @@ class AppComplianceAutomationToolForMicrosoft365:  # pylint: disable=client-acce
 
     :ivar operations: Operations operations
     :vartype operations: azure.mgmt.appcomplianceautomation.aio.operations.Operations
-    :ivar reports: ReportsOperations operations
-    :vartype reports: azure.mgmt.appcomplianceautomation.aio.operations.ReportsOperations
-    :ivar report: ReportOperations operations
-    :vartype report: azure.mgmt.appcomplianceautomation.aio.operations.ReportOperations
-    :ivar snapshots: SnapshotsOperations operations
-    :vartype snapshots: azure.mgmt.appcomplianceautomation.aio.operations.SnapshotsOperations
-    :ivar snapshot: SnapshotOperations operations
-    :vartype snapshot: azure.mgmt.appcomplianceautomation.aio.operations.SnapshotOperations
+    :ivar report_resources: ReportResourcesOperations operations
+    :vartype report_resources:
+     azure.mgmt.appcomplianceautomation.aio.operations.ReportResourcesOperations
+    :ivar snapshot_resources: SnapshotResourcesOperations operations
+    :vartype snapshot_resources:
+     azure.mgmt.appcomplianceautomation.aio.operations.SnapshotResourcesOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param base_url: Service URL. Default value is "https://management.azure.com".
@@ -50,17 +48,19 @@ class AppComplianceAutomationToolForMicrosoft365:  # pylint: disable=client-acce
         self, credential: "AsyncTokenCredential", base_url: str = "https://management.azure.com", **kwargs: Any
     ) -> None:
         self._config = AppComplianceAutomationToolForMicrosoft365Configuration(credential=credential, **kwargs)
-        self._client = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        self._client: AsyncARMPipelineClient = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
 
-        client_models = {k: v for k, v in models.__dict__.items() if isinstance(v, type)}
+        client_models = {k: v for k, v in _models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
         self._serialize.client_side_validation = False
         self.operations = Operations(self._client, self._config, self._serialize, self._deserialize)
-        self.reports = ReportsOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.report = ReportOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.snapshots = SnapshotsOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.snapshot = SnapshotOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.report_resources = ReportResourcesOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.snapshot_resources = SnapshotResourcesOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
 
     def _send_request(self, request: HttpRequest, **kwargs: Any) -> Awaitable[AsyncHttpResponse]:
         """Runs the network request through the client's chained policies.
@@ -91,5 +91,5 @@ class AppComplianceAutomationToolForMicrosoft365:  # pylint: disable=client-acce
         await self._client.__aenter__()
         return self
 
-    async def __aexit__(self, *exc_details) -> None:
+    async def __aexit__(self, *exc_details: Any) -> None:
         await self._client.__aexit__(*exc_details)

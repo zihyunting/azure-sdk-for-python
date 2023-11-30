@@ -7,21 +7,17 @@
 # --------------------------------------------------------------------------
 
 from ._operations import Operations
-from ._reports_operations import ReportsOperations
-from ._report_operations import ReportOperations
-from ._snapshots_operations import SnapshotsOperations
-from ._snapshot_operations import SnapshotOperations
+from ._report_resources_operations import ReportResourcesOperations
+from ._snapshot_resources_operations import SnapshotResourcesOperations
 
 from ._patch import __all__ as _patch_all
-from ._patch import *  # type: ignore # pylint: disable=unused-wildcard-import
+from ._patch import *  # pylint: disable=unused-wildcard-import
 from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
     "Operations",
-    "ReportsOperations",
-    "ReportOperations",
-    "SnapshotsOperations",
-    "SnapshotOperations",
+    "ReportResourcesOperations",
+    "SnapshotResourcesOperations",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
 _patch_sdk()

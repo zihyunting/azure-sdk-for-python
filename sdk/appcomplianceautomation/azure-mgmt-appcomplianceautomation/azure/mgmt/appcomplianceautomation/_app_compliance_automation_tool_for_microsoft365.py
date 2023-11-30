@@ -12,10 +12,10 @@ from typing import Any, TYPE_CHECKING
 from azure.core.rest import HttpRequest, HttpResponse
 from azure.mgmt.core import ARMPipelineClient
 
-from . import models
+from . import models as _models
 from ._configuration import AppComplianceAutomationToolForMicrosoft365Configuration
 from ._serialization import Deserializer, Serializer
-from .operations import Operations, ReportOperations, ReportsOperations, SnapshotOperations, SnapshotsOperations
+from .operations import Operations, ReportResourcesOperations, SnapshotResourcesOperations
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
@@ -27,14 +27,12 @@ class AppComplianceAutomationToolForMicrosoft365:  # pylint: disable=client-acce
 
     :ivar operations: Operations operations
     :vartype operations: azure.mgmt.appcomplianceautomation.operations.Operations
-    :ivar reports: ReportsOperations operations
-    :vartype reports: azure.mgmt.appcomplianceautomation.operations.ReportsOperations
-    :ivar report: ReportOperations operations
-    :vartype report: azure.mgmt.appcomplianceautomation.operations.ReportOperations
-    :ivar snapshots: SnapshotsOperations operations
-    :vartype snapshots: azure.mgmt.appcomplianceautomation.operations.SnapshotsOperations
-    :ivar snapshot: SnapshotOperations operations
-    :vartype snapshot: azure.mgmt.appcomplianceautomation.operations.SnapshotOperations
+    :ivar report_resources: ReportResourcesOperations operations
+    :vartype report_resources:
+     azure.mgmt.appcomplianceautomation.operations.ReportResourcesOperations
+    :ivar snapshot_resources: SnapshotResourcesOperations operations
+    :vartype snapshot_resources:
+     azure.mgmt.appcomplianceautomation.operations.SnapshotResourcesOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials.TokenCredential
     :param base_url: Service URL. Default value is "https://management.azure.com".
@@ -50,17 +48,19 @@ class AppComplianceAutomationToolForMicrosoft365:  # pylint: disable=client-acce
         self, credential: "TokenCredential", base_url: str = "https://management.azure.com", **kwargs: Any
     ) -> None:
         self._config = AppComplianceAutomationToolForMicrosoft365Configuration(credential=credential, **kwargs)
-        self._client = ARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        self._client: ARMPipelineClient = ARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
 
-        client_models = {k: v for k, v in models.__dict__.items() if isinstance(v, type)}
+        client_models = {k: v for k, v in _models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
         self._serialize.client_side_validation = False
         self.operations = Operations(self._client, self._config, self._serialize, self._deserialize)
-        self.reports = ReportsOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.report = ReportOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.snapshots = SnapshotsOperations(self._client, self._config, self._serialize, self._deserialize)
-        self.snapshot = SnapshotOperations(self._client, self._config, self._serialize, self._deserialize)
+        self.report_resources = ReportResourcesOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.snapshot_resources = SnapshotResourcesOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
 
     def _send_request(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         """Runs the network request through the client's chained policies.
@@ -84,15 +84,12 @@ class AppComplianceAutomationToolForMicrosoft365:  # pylint: disable=client-acce
         request_copy.url = self._client.format_url(request_copy.url)
         return self._client.send_request(request_copy, **kwargs)
 
-    def close(self):
-        # type: () -> None
+    def close(self) -> None:
         self._client.close()
 
-    def __enter__(self):
-        # type: () -> AppComplianceAutomationToolForMicrosoft365
+    def __enter__(self) -> "AppComplianceAutomationToolForMicrosoft365":
         self._client.__enter__()
         return self
 
-    def __exit__(self, *exc_details):
-        # type: (Any) -> None
+    def __exit__(self, *exc_details: Any) -> None:
         self._client.__exit__(*exc_details)

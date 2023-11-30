@@ -8,7 +8,7 @@
 # --------------------------------------------------------------------------
 
 import datetime
-from typing import Dict, List, Optional, TYPE_CHECKING, Union
+from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 
 from .. import _serialization
 
@@ -60,7 +60,7 @@ class Assessment(_serialization.Model):
         "resource_list": {"key": "resourceList", "type": "[AssessmentResource]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.name = None
@@ -103,7 +103,7 @@ class AssessmentResource(_serialization.Model):
         "status_change_date": {"key": "statusChangeDate", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.resource_id = None
@@ -142,7 +142,7 @@ class Category(_serialization.Model):
         "control_families": {"key": "controlFamilies", "type": "[ControlFamily]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.category_name = None
@@ -220,7 +220,7 @@ class ComplianceReportItem(_serialization.Model):  # pylint: disable=too-many-in
         "status_change_date": {"key": "statusChangeDate", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.category_name = None
@@ -259,7 +259,7 @@ class ComplianceResult(_serialization.Model):
         "categories": {"key": "categories", "type": "[Category]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.compliance_name = None
@@ -314,7 +314,7 @@ class Control(_serialization.Model):
         "assessments": {"key": "assessments", "type": "[Assessment]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.control_id = None
@@ -357,7 +357,7 @@ class ControlFamily(_serialization.Model):
         "controls": {"key": "controls", "type": "[Control]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.family_name = None
@@ -401,7 +401,7 @@ class DownloadResponse(_serialization.Model):
         },
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.resource_list = None
@@ -427,7 +427,7 @@ class DownloadResponseComplianceDetailedPdfReport(_serialization.Model):
         "sas_uri": {"key": "sasUri", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.sas_uri = None
@@ -450,7 +450,7 @@ class DownloadResponseCompliancePdfReport(_serialization.Model):
         "sas_uri": {"key": "sasUri", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.sas_uri = None
@@ -477,7 +477,7 @@ class ErrorAdditionalInfo(_serialization.Model):
         "info": {"key": "info", "type": "object"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.type = None
@@ -517,7 +517,7 @@ class ErrorDetail(_serialization.Model):
         "additional_info": {"key": "additionalInfo", "type": "[ErrorAdditionalInfo]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.code = None
@@ -528,7 +528,8 @@ class ErrorDetail(_serialization.Model):
 
 
 class ErrorResponse(_serialization.Model):
-    """Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response format.).
+    """Common error response for all Azure Resource Manager APIs to return error details for failed
+    operations. (This also follows the OData error response format.).
 
     :ivar error: The error object.
     :vartype error: ~azure.mgmt.appcomplianceautomation.models.ErrorDetail
@@ -538,7 +539,7 @@ class ErrorResponse(_serialization.Model):
         "error": {"key": "error", "type": "ErrorDetail"},
     }
 
-    def __init__(self, *, error: Optional["_models.ErrorDetail"] = None, **kwargs):
+    def __init__(self, *, error: Optional["_models.ErrorDetail"] = None, **kwargs: Any) -> None:
         """
         :keyword error: The error object.
         :paramtype error: ~azure.mgmt.appcomplianceautomation.models.ErrorDetail
@@ -584,7 +585,7 @@ class Operation(_serialization.Model):
         "action_type": {"key": "actionType", "type": "str"},
     }
 
-    def __init__(self, *, display: Optional["_models.OperationDisplay"] = None, **kwargs):
+    def __init__(self, *, display: Optional["_models.OperationDisplay"] = None, **kwargs: Any) -> None:
         """
         :keyword display: Localized display information for this particular operation.
         :paramtype display: ~azure.mgmt.appcomplianceautomation.models.OperationDisplay
@@ -630,7 +631,7 @@ class OperationDisplay(_serialization.Model):
         "description": {"key": "description", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.provider = None
@@ -640,7 +641,8 @@ class OperationDisplay(_serialization.Model):
 
 
 class OperationListResult(_serialization.Model):
-    """A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+    """A list of REST API operations supported by an Azure Resource Provider. It contains an URL link
+    to get the next set of results.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
@@ -660,7 +662,7 @@ class OperationListResult(_serialization.Model):
         "next_link": {"key": "nextLink", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.value = None
@@ -690,8 +692,8 @@ class OverviewStatus(_serialization.Model):
         passed_count: Optional[int] = None,
         failed_count: Optional[int] = None,
         manual_count: Optional[int] = None,
-        **kwargs
-    ):
+        **kwargs: Any
+    ) -> None:
         """
         :keyword passed_count: The count of all passed full automation control.
         :paramtype passed_count: int
@@ -738,7 +740,7 @@ class Resource(_serialization.Model):
         "system_data": {"key": "systemData", "type": "SystemData"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.id = None
@@ -748,7 +750,8 @@ class Resource(_serialization.Model):
 
 
 class ProxyResource(Resource):
-    """The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location.
+    """The resource model definition for a Azure Resource Manager proxy resource. It will not have
+    tags and a location.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
@@ -779,7 +782,7 @@ class ProxyResource(Resource):
         "system_data": {"key": "systemData", "type": "SystemData"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
 
@@ -795,7 +798,7 @@ class ReportComplianceStatus(_serialization.Model):
         "m365": {"key": "m365", "type": "OverviewStatus"},
     }
 
-    def __init__(self, *, m365: Optional["_models.OverviewStatus"] = None, **kwargs):
+    def __init__(self, *, m365: Optional["_models.OverviewStatus"] = None, **kwargs: Any) -> None:
         """
         :keyword m365: The Microsoft 365 certification name.
         :paramtype m365: ~azure.mgmt.appcomplianceautomation.models.OverviewStatus
@@ -881,8 +884,8 @@ class ReportProperties(_serialization.Model):  # pylint: disable=too-many-instan
         trigger_time: datetime.datetime,
         resources: List["_models.ResourceMetadata"],
         offer_guid: Optional[str] = None,
-        **kwargs
-    ):
+        **kwargs: Any
+    ) -> None:
         """
         :keyword offer_guid: Report offer Guid.
         :paramtype offer_guid: str
@@ -911,12 +914,10 @@ class ReportProperties(_serialization.Model):  # pylint: disable=too-many-instan
         self.provisioning_state = None
 
 
-class ReportResource(ProxyResource):
+class ReportResource(ProxyResource):  # pylint: disable=too-many-instance-attributes
     """A class represent an AppComplianceAutomation report resource.
 
     Variables are only populated by the server, and will be ignored when sending a request.
-
-    All required parameters must be populated in order to send to Azure.
 
     :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
@@ -929,8 +930,36 @@ class ReportResource(ProxyResource):
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
     :vartype system_data: ~azure.mgmt.appcomplianceautomation.models.SystemData
-    :ivar properties: Report property. Required.
-    :vartype properties: ~azure.mgmt.appcomplianceautomation.models.ReportProperties
+    :ivar id_properties_id: Report id in database.
+    :vartype id_properties_id: str
+    :ivar status: Report status. Known values are: "Active", "Failed", and "Disabled".
+    :vartype status: str or ~azure.mgmt.appcomplianceautomation.models.ReportStatus
+    :ivar tenant_id: Report's tenant id.
+    :vartype tenant_id: str
+    :ivar report_name: Report name.
+    :vartype report_name: str
+    :ivar offer_guid: Report offer Guid.
+    :vartype offer_guid: str
+    :ivar time_zone: Report collection trigger time's time zone, the available list can be obtained
+     by executing "Get-TimeZone -ListAvailable" in PowerShell.
+     An example of valid timezone id is "Pacific Standard Time".
+    :vartype time_zone: str
+    :ivar trigger_time: Report collection trigger time.
+    :vartype trigger_time: ~datetime.datetime
+    :ivar next_trigger_time: Report next collection trigger time.
+    :vartype next_trigger_time: ~datetime.datetime
+    :ivar last_trigger_time: Report last collection trigger time.
+    :vartype last_trigger_time: ~datetime.datetime
+    :ivar subscriptions: List of subscription Ids.
+    :vartype subscriptions: list[str]
+    :ivar resources: List of resource data.
+    :vartype resources: list[~azure.mgmt.appcomplianceautomation.models.ResourceMetadata]
+    :ivar compliance_status: Report compliance status.
+    :vartype compliance_status: ~azure.mgmt.appcomplianceautomation.models.ReportComplianceStatus
+    :ivar provisioning_state: Azure lifecycle management. Known values are: "Succeeded", "Failed",
+     "Canceled", "Creating", "Deleting", and "Updating".
+    :vartype provisioning_state: str or
+     ~azure.mgmt.appcomplianceautomation.models.ProvisioningState
     """
 
     _validation = {
@@ -938,7 +967,15 @@ class ReportResource(ProxyResource):
         "name": {"readonly": True},
         "type": {"readonly": True},
         "system_data": {"readonly": True},
-        "properties": {"required": True},
+        "id_properties_id": {"readonly": True},
+        "status": {"readonly": True},
+        "tenant_id": {"readonly": True},
+        "report_name": {"readonly": True},
+        "next_trigger_time": {"readonly": True},
+        "last_trigger_time": {"readonly": True},
+        "subscriptions": {"readonly": True},
+        "compliance_status": {"readonly": True},
+        "provisioning_state": {"readonly": True},
     }
 
     _attribute_map = {
@@ -946,32 +983,71 @@ class ReportResource(ProxyResource):
         "name": {"key": "name", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "system_data": {"key": "systemData", "type": "SystemData"},
-        "properties": {"key": "properties", "type": "ReportProperties"},
+        "id_properties_id": {"key": "properties.id", "type": "str"},
+        "status": {"key": "properties.status", "type": "str"},
+        "tenant_id": {"key": "properties.tenantId", "type": "str"},
+        "report_name": {"key": "properties.reportName", "type": "str"},
+        "offer_guid": {"key": "properties.offerGuid", "type": "str"},
+        "time_zone": {"key": "properties.timeZone", "type": "str"},
+        "trigger_time": {"key": "properties.triggerTime", "type": "iso-8601"},
+        "next_trigger_time": {"key": "properties.nextTriggerTime", "type": "iso-8601"},
+        "last_trigger_time": {"key": "properties.lastTriggerTime", "type": "iso-8601"},
+        "subscriptions": {"key": "properties.subscriptions", "type": "[str]"},
+        "resources": {"key": "properties.resources", "type": "[ResourceMetadata]"},
+        "compliance_status": {"key": "properties.complianceStatus", "type": "ReportComplianceStatus"},
+        "provisioning_state": {"key": "properties.provisioningState", "type": "str"},
     }
 
-    def __init__(self, *, properties: "_models.ReportProperties", **kwargs):
+    def __init__(
+        self,
+        *,
+        offer_guid: Optional[str] = None,
+        time_zone: Optional[str] = None,
+        trigger_time: Optional[datetime.datetime] = None,
+        resources: Optional[List["_models.ResourceMetadata"]] = None,
+        **kwargs: Any
+    ) -> None:
         """
-        :keyword properties: Report property. Required.
-        :paramtype properties: ~azure.mgmt.appcomplianceautomation.models.ReportProperties
+        :keyword offer_guid: Report offer Guid.
+        :paramtype offer_guid: str
+        :keyword time_zone: Report collection trigger time's time zone, the available list can be
+         obtained by executing "Get-TimeZone -ListAvailable" in PowerShell.
+         An example of valid timezone id is "Pacific Standard Time".
+        :paramtype time_zone: str
+        :keyword trigger_time: Report collection trigger time.
+        :paramtype trigger_time: ~datetime.datetime
+        :keyword resources: List of resource data.
+        :paramtype resources: list[~azure.mgmt.appcomplianceautomation.models.ResourceMetadata]
         """
         super().__init__(**kwargs)
-        self.properties = properties
+        self.id_properties_id = None
+        self.status = None
+        self.tenant_id = None
+        self.report_name = None
+        self.offer_guid = offer_guid
+        self.time_zone = time_zone
+        self.trigger_time = trigger_time
+        self.next_trigger_time = None
+        self.last_trigger_time = None
+        self.subscriptions = None
+        self.resources = resources
+        self.compliance_status = None
+        self.provisioning_state = None
 
 
-class ReportResourceList(_serialization.Model):
-    """Object that includes an array of resources and a possible link for next set.
+class ReportResourceListResult(_serialization.Model):
+    """The response of a ReportResource list operation.
 
-    Variables are only populated by the server, and will be ignored when sending a request.
+    All required parameters must be populated in order to send to Azure.
 
-    :ivar value: List of the reports.
+    :ivar value: The ReportResource items on this page. Required.
     :vartype value: list[~azure.mgmt.appcomplianceautomation.models.ReportResource]
-    :ivar next_link: The URL the client should use to fetch the next page (per server side paging).
-     It's null for now, added for future use.
+    :ivar next_link: The link to the next page of items.
     :vartype next_link: str
     """
 
     _validation = {
-        "value": {"readonly": True},
+        "value": {"required": True},
     }
 
     _attribute_map = {
@@ -979,36 +1055,68 @@ class ReportResourceList(_serialization.Model):
         "next_link": {"key": "nextLink", "type": "str"},
     }
 
-    def __init__(self, *, next_link: Optional[str] = None, **kwargs):
+    def __init__(
+        self, *, value: List["_models.ReportResource"], next_link: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """
-        :keyword next_link: The URL the client should use to fetch the next page (per server side
-         paging).
-         It's null for now, added for future use.
+        :keyword value: The ReportResource items on this page. Required.
+        :paramtype value: list[~azure.mgmt.appcomplianceautomation.models.ReportResource]
+        :keyword next_link: The link to the next page of items.
         :paramtype next_link: str
         """
         super().__init__(**kwargs)
-        self.value = None
+        self.value = value
         self.next_link = next_link
 
 
-class ReportResourcePatch(_serialization.Model):
-    """A class represent a AppComplianceAutomation report resource update properties.
+class ReportResourceUpdate(_serialization.Model):
+    """The type used for update operations of the ReportResource.
 
-    :ivar properties: Report property.
-    :vartype properties: ~azure.mgmt.appcomplianceautomation.models.ReportProperties
+    :ivar offer_guid: Report offer Guid.
+    :vartype offer_guid: str
+    :ivar time_zone: Report collection trigger time's time zone, the available list can be obtained
+     by executing "Get-TimeZone -ListAvailable" in PowerShell.
+     An example of valid timezone id is "Pacific Standard Time".
+    :vartype time_zone: str
+    :ivar trigger_time: Report collection trigger time.
+    :vartype trigger_time: ~datetime.datetime
+    :ivar resources: List of resource data.
+    :vartype resources: list[~azure.mgmt.appcomplianceautomation.models.ResourceMetadata]
     """
 
     _attribute_map = {
-        "properties": {"key": "properties", "type": "ReportProperties"},
+        "offer_guid": {"key": "properties.offerGuid", "type": "str"},
+        "time_zone": {"key": "properties.timeZone", "type": "str"},
+        "trigger_time": {"key": "properties.triggerTime", "type": "iso-8601"},
+        "resources": {"key": "properties.resources", "type": "[ResourceMetadata]"},
     }
 
-    def __init__(self, *, properties: Optional["_models.ReportProperties"] = None, **kwargs):
+    def __init__(
+        self,
+        *,
+        offer_guid: Optional[str] = None,
+        time_zone: Optional[str] = None,
+        trigger_time: Optional[datetime.datetime] = None,
+        resources: Optional[List["_models.ResourceMetadata"]] = None,
+        **kwargs: Any
+    ) -> None:
         """
-        :keyword properties: Report property.
-        :paramtype properties: ~azure.mgmt.appcomplianceautomation.models.ReportProperties
+        :keyword offer_guid: Report offer Guid.
+        :paramtype offer_guid: str
+        :keyword time_zone: Report collection trigger time's time zone, the available list can be
+         obtained by executing "Get-TimeZone -ListAvailable" in PowerShell.
+         An example of valid timezone id is "Pacific Standard Time".
+        :paramtype time_zone: str
+        :keyword trigger_time: Report collection trigger time.
+        :paramtype trigger_time: ~datetime.datetime
+        :keyword resources: List of resource data.
+        :paramtype resources: list[~azure.mgmt.appcomplianceautomation.models.ResourceMetadata]
         """
         super().__init__(**kwargs)
-        self.properties = properties
+        self.offer_guid = offer_guid
+        self.time_zone = time_zone
+        self.trigger_time = trigger_time
+        self.resources = resources
 
 
 class ResourceItem(_serialization.Model):
@@ -1041,7 +1149,7 @@ class ResourceItem(_serialization.Model):
         "resource_id": {"key": "resourceId", "type": "str"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
         self.subscription_id = None
@@ -1089,8 +1197,8 @@ class ResourceMetadata(_serialization.Model):
         resource_kind: Optional[str] = None,
         resource_name: Optional[str] = None,
         tags: Optional[Dict[str, str]] = None,
-        **kwargs
-    ):
+        **kwargs: Any
+    ) -> None:
         """
         :keyword resource_id: Resource Id - e.g.
          "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
@@ -1144,8 +1252,8 @@ class SnapshotDownloadRequest(_serialization.Model):
         download_type: Union[str, "_models.DownloadType"],
         report_creator_tenant_id: Optional[str] = None,
         offer_guid: Optional[str] = None,
-        **kwargs
-    ):
+        **kwargs: Any
+    ) -> None:
         """
         :keyword report_creator_tenant_id: Tenant id.
         :paramtype report_creator_tenant_id: str
@@ -1159,62 +1267,6 @@ class SnapshotDownloadRequest(_serialization.Model):
         self.report_creator_tenant_id = report_creator_tenant_id
         self.download_type = download_type
         self.offer_guid = offer_guid
-
-
-class SnapshotProperties(_serialization.Model):
-    """Snapshot's properties.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :ivar id: Snapshot id in the database.
-    :vartype id: str
-    :ivar snapshot_name: Snapshot name.
-    :vartype snapshot_name: str
-    :ivar created_at: The timestamp of resource creation (UTC).
-    :vartype created_at: ~datetime.datetime
-    :ivar provisioning_state: Azure lifecycle management. Known values are: "Succeeded", "Failed",
-     "Canceled", "Creating", "Deleting", and "Updating".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.appcomplianceautomation.models.ProvisioningState
-    :ivar report_properties: The report essential info.
-    :vartype report_properties: ~azure.mgmt.appcomplianceautomation.models.ReportProperties
-    :ivar report_system_data: Metadata pertaining to creation and last modification of the
-     resource.
-    :vartype report_system_data: ~azure.mgmt.appcomplianceautomation.models.SystemData
-    :ivar compliance_results: List of compliance results.
-    :vartype compliance_results: list[~azure.mgmt.appcomplianceautomation.models.ComplianceResult]
-    """
-
-    _validation = {
-        "id": {"readonly": True},
-        "snapshot_name": {"readonly": True},
-        "created_at": {"readonly": True},
-        "provisioning_state": {"readonly": True},
-        "report_properties": {"readonly": True},
-        "report_system_data": {"readonly": True},
-        "compliance_results": {"readonly": True},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "snapshot_name": {"key": "snapshotName", "type": "str"},
-        "created_at": {"key": "createdAt", "type": "iso-8601"},
-        "provisioning_state": {"key": "provisioningState", "type": "str"},
-        "report_properties": {"key": "reportProperties", "type": "ReportProperties"},
-        "report_system_data": {"key": "reportSystemData", "type": "SystemData"},
-        "compliance_results": {"key": "complianceResults", "type": "[ComplianceResult]"},
-    }
-
-    def __init__(self, **kwargs):
-        """ """
-        super().__init__(**kwargs)
-        self.id = None
-        self.snapshot_name = None
-        self.created_at = None
-        self.provisioning_state = None
-        self.report_properties = None
-        self.report_system_data = None
-        self.compliance_results = None
 
 
 class SnapshotResource(ProxyResource):
@@ -1233,8 +1285,20 @@ class SnapshotResource(ProxyResource):
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
     :vartype system_data: ~azure.mgmt.appcomplianceautomation.models.SystemData
-    :ivar properties: Snapshot's property'.
-    :vartype properties: ~azure.mgmt.appcomplianceautomation.models.SnapshotProperties
+    :ivar id_properties_id: Snapshot id in the database.
+    :vartype id_properties_id: str
+    :ivar snapshot_name: Snapshot name.
+    :vartype snapshot_name: str
+    :ivar created_at: The timestamp of resource creation (UTC).
+    :vartype created_at: ~datetime.datetime
+    :ivar provisioning_state: Azure lifecycle management. Known values are: "Succeeded", "Failed",
+     "Canceled", "Creating", "Deleting", and "Updating".
+    :vartype provisioning_state: str or
+     ~azure.mgmt.appcomplianceautomation.models.ProvisioningState
+    :ivar report_properties: The report essential info.
+    :vartype report_properties: ~azure.mgmt.appcomplianceautomation.models.ReportProperties
+    :ivar compliance_results: List of compliance results.
+    :vartype compliance_results: list[~azure.mgmt.appcomplianceautomation.models.ComplianceResult]
     """
 
     _validation = {
@@ -1242,7 +1306,12 @@ class SnapshotResource(ProxyResource):
         "name": {"readonly": True},
         "type": {"readonly": True},
         "system_data": {"readonly": True},
-        "properties": {"readonly": True},
+        "id_properties_id": {"readonly": True},
+        "snapshot_name": {"readonly": True},
+        "created_at": {"readonly": True},
+        "provisioning_state": {"readonly": True},
+        "report_properties": {"readonly": True},
+        "compliance_results": {"readonly": True},
     }
 
     _attribute_map = {
@@ -1250,29 +1319,38 @@ class SnapshotResource(ProxyResource):
         "name": {"key": "name", "type": "str"},
         "type": {"key": "type", "type": "str"},
         "system_data": {"key": "systemData", "type": "SystemData"},
-        "properties": {"key": "properties", "type": "SnapshotProperties"},
+        "id_properties_id": {"key": "properties.id", "type": "str"},
+        "snapshot_name": {"key": "properties.snapshotName", "type": "str"},
+        "created_at": {"key": "properties.createdAt", "type": "iso-8601"},
+        "provisioning_state": {"key": "properties.provisioningState", "type": "str"},
+        "report_properties": {"key": "properties.reportProperties", "type": "ReportProperties"},
+        "compliance_results": {"key": "properties.complianceResults", "type": "[ComplianceResult]"},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """ """
         super().__init__(**kwargs)
-        self.properties = None
+        self.id_properties_id = None
+        self.snapshot_name = None
+        self.created_at = None
+        self.provisioning_state = None
+        self.report_properties = None
+        self.compliance_results = None
 
 
-class SnapshotResourceList(_serialization.Model):
-    """Object that includes an array of resources and a possible link for next set.
+class SnapshotResourceListResult(_serialization.Model):
+    """The response of a SnapshotResource list operation.
 
-    Variables are only populated by the server, and will be ignored when sending a request.
+    All required parameters must be populated in order to send to Azure.
 
-    :ivar value: List of the snapshots.
+    :ivar value: The SnapshotResource items on this page. Required.
     :vartype value: list[~azure.mgmt.appcomplianceautomation.models.SnapshotResource]
-    :ivar next_link: The URL the client should use to fetch the next page (per server side paging).
-     It's null for now, added for future use.
+    :ivar next_link: The link to the next page of items.
     :vartype next_link: str
     """
 
     _validation = {
-        "value": {"readonly": True},
+        "value": {"required": True},
     }
 
     _attribute_map = {
@@ -1280,15 +1358,17 @@ class SnapshotResourceList(_serialization.Model):
         "next_link": {"key": "nextLink", "type": "str"},
     }
 
-    def __init__(self, *, next_link: Optional[str] = None, **kwargs):
+    def __init__(
+        self, *, value: List["_models.SnapshotResource"], next_link: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """
-        :keyword next_link: The URL the client should use to fetch the next page (per server side
-         paging).
-         It's null for now, added for future use.
+        :keyword value: The SnapshotResource items on this page. Required.
+        :paramtype value: list[~azure.mgmt.appcomplianceautomation.models.SnapshotResource]
+        :keyword next_link: The link to the next page of items.
         :paramtype next_link: str
         """
         super().__init__(**kwargs)
-        self.value = None
+        self.value = value
         self.next_link = next_link
 
 
@@ -1329,8 +1409,8 @@ class SystemData(_serialization.Model):
         last_modified_by: Optional[str] = None,
         last_modified_by_type: Optional[Union[str, "_models.CreatedByType"]] = None,
         last_modified_at: Optional[datetime.datetime] = None,
-        **kwargs
-    ):
+        **kwargs: Any
+    ) -> None:
         """
         :keyword created_by: The identity that created the resource.
         :paramtype created_by: str

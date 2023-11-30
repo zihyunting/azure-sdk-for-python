@@ -17,7 +17,7 @@ class ActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class AssessmentSeverity(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the assessment severity."""
+    """AssessmentSeverity."""
 
     HIGH = "High"
     MEDIUM = "Medium"
@@ -25,14 +25,14 @@ class AssessmentSeverity(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class CategoryStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the category status."""
+    """CategoryStatus."""
 
     HEALTHY = "Healthy"
     UNHEALTHY = "Unhealthy"
 
 
 class CategoryType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the compliance category type."""
+    """CategoryType."""
 
     FULLY_AUTOMATED = "FullyAutomated"
     PARTIALLY_AUTOMATED = "PartiallyAutomated"
@@ -40,21 +40,21 @@ class CategoryType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ComplianceState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """The compliance result's status."""
+    """ComplianceState."""
 
     HEALTHY = "Healthy"
     UNHEALTHY = "Unhealthy"
 
 
 class ControlFamilyStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the control family status."""
+    """ControlFamilyStatus."""
 
     HEALTHY = "Healthy"
     UNHEALTHY = "Unhealthy"
 
 
 class ControlFamilyType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the control family type."""
+    """ControlFamilyType."""
 
     FULLY_AUTOMATED = "FullyAutomated"
     PARTIALLY_AUTOMATED = "PartiallyAutomated"
@@ -62,7 +62,7 @@ class ControlFamilyType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ControlStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the control status."""
+    """ControlStatus."""
 
     PASSED = "Passed"
     FAILED = "Failed"
@@ -70,7 +70,7 @@ class ControlStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ControlType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the control type."""
+    """ControlType."""
 
     FULLY_AUTOMATED = "FullyAutomated"
     PARTIALLY_AUTOMATED = "PartiallyAutomated"
@@ -87,7 +87,7 @@ class CreatedByType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class DownloadType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the download type."""
+    """DownloadType."""
 
     COMPLIANCE_REPORT = "ComplianceReport"
     COMPLIANCE_PDF_REPORT = "CompliancePdfReport"
@@ -96,7 +96,7 @@ class DownloadType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class IsPass(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates whether all the resource(s) are compliant."""
+    """IsPass."""
 
     TRUE = "True"
     FALSE = "False"
@@ -113,7 +113,7 @@ class Origin(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Resource provisioning states."""
+    """ProvisioningState."""
 
     SUCCEEDED = "Succeeded"
     FAILED = "Failed"
@@ -124,7 +124,7 @@ class ProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ReportStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Report status."""
+    """ReportStatus."""
 
     ACTIVE = "Active"
     FAILED = "Failed"
@@ -132,8 +132,14 @@ class ReportStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ResourceStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Indicates the resource status."""
+    """ResourceStatus."""
 
     HEALTHY = "Healthy"
     UNHEALTHY = "Unhealthy"
     NOT_APPLICABLE = "NotApplicable"
+
+
+class Versions(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The available API versions."""
+
+    V2022_11_16_PREVIEW = "2022-11-16-preview"
