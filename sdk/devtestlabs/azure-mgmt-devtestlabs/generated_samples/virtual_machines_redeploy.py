@@ -29,14 +29,13 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.virtual_machines.begin_redeploy(
+    client.virtual_machines.begin_redeploy(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         name="{vmName}",
     ).result()
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Redeploy.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/VirtualMachines_Redeploy.json
 if __name__ == "__main__":
     main()

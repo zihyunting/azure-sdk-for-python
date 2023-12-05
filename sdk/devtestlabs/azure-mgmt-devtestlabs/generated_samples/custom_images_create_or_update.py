@@ -34,6 +34,7 @@ def main():
         lab_name="{labName}",
         name="{customImageName}",
         custom_image={
+            "location": "{location}",
             "properties": {
                 "description": "My Custom Image",
                 "vm": {
@@ -47,6 +48,6 @@ def main():
     print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_CreateOrUpdate.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/CustomImages_CreateOrUpdate.json
 if __name__ == "__main__":
     main()

@@ -33,24 +33,10 @@ def main():
         resource_group_name="resourceGroupName",
         lab_name="{devtestlabName}",
         name="{userName}",
-        user={
-            "location": "{location}",
-            "properties": {
-                "identity": {
-                    "appId": "{appId}",
-                    "objectId": "{objectId}",
-                    "principalId": "{principalId}",
-                    "principalName": "{principalName}",
-                    "tenantId": "{tenantId}",
-                },
-                "secretStore": {"keyVaultId": "{keyVaultId}", "keyVaultUri": "{keyVaultUri}"},
-            },
-            "tags": {"tagName1": "tagValue1"},
-        },
     ).result()
     print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_CreateOrUpdate.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/Users_CreateOrUpdate.json
 if __name__ == "__main__":
     main()

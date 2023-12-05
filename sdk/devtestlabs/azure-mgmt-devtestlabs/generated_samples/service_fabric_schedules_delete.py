@@ -29,16 +29,15 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.service_fabric_schedules.delete(
+    client.service_fabric_schedules.delete(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         user_name="@me",
         service_fabric_name="{serviceFrabicName}",
         name="{scheduleName}",
     )
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_Delete.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/ServiceFabricSchedules_Delete.json
 if __name__ == "__main__":
     main()

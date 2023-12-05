@@ -34,11 +34,11 @@ def main():
         lab_name="{labName}",
         user_name="{userName}",
         name="{secretName}",
-        secret={"properties": {"value": "{secret}"}},
+        secret={"location": "{location}", "properties": {"value": "{secret}"}},
     ).result()
     print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_CreateOrUpdate.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/Secrets_CreateOrUpdate.json
 if __name__ == "__main__":
     main()

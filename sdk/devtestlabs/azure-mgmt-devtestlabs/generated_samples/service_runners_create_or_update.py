@@ -29,7 +29,7 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.service_runners.create_or_update(
+    response = client.service_runners.begin_create_or_update(
         resource_group_name="resourceGroupName",
         lab_name="{devtestlabName}",
         name="{servicerunnerName}",
@@ -41,12 +41,13 @@ def main():
                 "type": "{identityType}",
             },
             "location": "{location}",
+            "properties": {},
             "tags": {"tagName1": "tagValue1"},
         },
-    )
+    ).result()
     print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceRunners_CreateOrUpdate.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/ServiceRunners_CreateOrUpdate.json
 if __name__ == "__main__":
     main()

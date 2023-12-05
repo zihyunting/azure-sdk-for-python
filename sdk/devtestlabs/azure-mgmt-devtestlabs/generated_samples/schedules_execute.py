@@ -29,14 +29,13 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.schedules.begin_execute(
+    client.schedules.begin_execute(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         name="{scheduleName}",
     ).result()
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Execute.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/Schedules_Execute.json
 if __name__ == "__main__":
     main()

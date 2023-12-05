@@ -29,15 +29,14 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.disks.begin_delete(
+    client.disks.begin_delete(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         user_name="{userId}",
         name="{diskName}",
     ).result()
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Delete.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/Disks_Delete.json
 if __name__ == "__main__":
     main()

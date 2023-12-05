@@ -29,15 +29,14 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.virtual_machine_schedules.delete(
+    client.virtual_machine_schedules.delete(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         virtual_machine_name="{vmName}",
         name="LabVmsShutdown",
     )
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Delete.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/VirtualMachineSchedules_Delete.json
 if __name__ == "__main__":
     main()

@@ -29,14 +29,13 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.virtual_networks.begin_delete(
+    client.virtual_networks.begin_delete(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         name="{virtualNetworkName}",
     ).result()
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Delete.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/VirtualNetworks_Delete.json
 if __name__ == "__main__":
     main()

@@ -29,14 +29,13 @@ def main():
         subscription_id="{subscriptionId}",
     )
 
-    response = client.notification_channels.delete(
+    client.notification_channels.delete(
         resource_group_name="resourceGroupName",
         lab_name="{labName}",
         name="{notificationChannelName}",
     )
-    print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_Delete.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/NotificationChannels_Delete.json
 if __name__ == "__main__":
     main()

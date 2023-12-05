@@ -35,16 +35,17 @@ def main():
         user_name="{userId}",
         name="{diskName}",
         disk={
+            "location": "{location}",
             "properties": {
                 "diskSizeGiB": 1023,
                 "diskType": "Standard",
                 "leasedByLabVmId": "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/vmName",
-            }
+            },
         },
     ).result()
     print(response)
 
 
-# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_CreateOrUpdate.json
+# x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2021-09-01/examples/Disks_CreateOrUpdate.json
 if __name__ == "__main__":
     main()
