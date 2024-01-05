@@ -721,6 +721,20 @@ class SalesforceSourceReadBehavior(str, Enum, metaclass=CaseInsensitiveEnumMeta)
     QUERY_ALL = "QueryAll"
 
 
+class SalesforceV2SinkWriteBehavior(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The write behavior for the operation. Default is Insert."""
+
+    INSERT = "Insert"
+    UPSERT = "Upsert"
+
+
+class SalesforceV2SourceReadBehavior(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The Salesforce read behavior for the operation."""
+
+    QUERY = "query"
+    QUERY_ALL = "queryAll"
+
+
 class SapCloudForCustomerSinkWriteBehavior(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The write behavior for the operation. Default is 'Insert'."""
 
@@ -1019,6 +1033,17 @@ class WebAuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     BASIC = "Basic"
     ANONYMOUS = "Anonymous"
     CLIENT_CERTIFICATE = "ClientCertificate"
+
+
+class WebConnectionAuthenticationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of authentication used to connect to the WEB CONNECTION service."""
+
+    ANONYMOUS = "Anonymous"
+    BASIC = "Basic"
+    MANAGED_SERVICE_IDENTITY = "ManagedServiceIdentity"
+    CLIENT_CERTIFICATE = "ClientCertificate"
+    AAD_SERVICE_PRINCIPAL = "AadServicePrincipal"
+    USER_ASSIGNED_MANAGED_IDENTITY = "UserAssignedManagedIdentity"
 
 
 class WebHookActivityMethod(str, Enum, metaclass=CaseInsensitiveEnumMeta):
