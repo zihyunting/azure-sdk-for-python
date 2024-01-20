@@ -36,6 +36,7 @@ from ...operations._webhooks_operations import (
     build_delete_request,
     build_get_callback_config_request,
     build_get_request,
+    build_list_events_next_request,
     build_list_events_request,
     build_list_request,
     build_ping_request,
@@ -933,7 +934,12 @@ class WebhooksOperations:
 
     @distributed_trace
     def list_events(
-        self, resource_group_name: str, registry_name: str, webhook_name: str, **kwargs: Any
+        self,
+        resource_group_name: str,
+        registry_name: str,
+        webhook_name: str,
+        skip_token: Optional[str] = None,
+        **kwargs: Any
     ) -> AsyncIterable["_models.Event"]:
         """Lists recent events for the specified webhook.
 
@@ -944,6 +950,9 @@ class WebhooksOperations:
         :type registry_name: str
         :param webhook_name: The name of the webhook. Required.
         :type webhook_name: str
+        :param skip_token: Skiptoken is only provided if a previous response returned a partial result
+         as a part of nextLink element. Default value is None.
+        :type skip_token: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either Event or the result of cls(response)
         :rtype:
@@ -974,6 +983,7 @@ class WebhooksOperations:
                     registry_name=registry_name,
                     webhook_name=webhook_name,
                     subscription_id=self._config.subscription_id,
+                    skip_token=skip_token,
                     api_version=api_version,
                     template_url=self.list_events.metadata["url"],
                     headers=_headers,
@@ -983,21 +993,18 @@ class WebhooksOperations:
                 request.url = self._client.format_url(request.url)
 
             else:
-                # make call to next link with the client's api-version
-                _parsed_next_link = urllib.parse.urlparse(next_link)
-                _next_request_params = case_insensitive_dict(
-                    {
-                        key: [urllib.parse.quote(v) for v in value]
-                        for key, value in urllib.parse.parse_qs(_parsed_next_link.query).items()
-                    }
-                )
-                _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
-                    "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
+
+                request = build_list_events_next_request(
+                    next_link=next_link,
+                    skip_token=skip_token,
+                    api_version=api_version,
+                    template_url="{nextLink}",
+                    headers=_headers,
+                    params=_params,
                 )
                 request = _convert_request(request)
                 request.url = self._client.format_url(request.url)
-                request.method = "GET"
+
             return request
 
         async def extract_data(pipeline_response):
