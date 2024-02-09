@@ -14,7 +14,7 @@ from azure.mgmt.servicelinker import ServiceLinkerManagementClient
     pip install azure-identity
     pip install azure-mgmt-servicelinker
 # USAGE
-    python delete_dryrun.py
+    python delete_link.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -28,13 +28,12 @@ def main():
         credential=DefaultAzureCredential(),
     )
 
-    response = client.linkers.delete_dryrun(
+    client.linker.begin_delete(
         resource_uri="subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
-        dryrun_name="dryrunName",
-    )
-    print(response)
+        linker_name="linkName",
+    ).result()
 
 
-# x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2022-11-01-preview/examples/DeleteDryrun.json
+# x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2023-05-01/examples/DeleteLink.json
 if __name__ == "__main__":
     main()
