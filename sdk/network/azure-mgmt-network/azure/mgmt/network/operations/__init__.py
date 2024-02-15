@@ -160,6 +160,10 @@ from ._operations import (
     SubscriptionNetworkManagerConnectionsOperations,
     VipSwapOperations,
     NetworkVirtualApplianceConnectionsOperations,
+    FirewallPolicyDeploymentsOperations,
+    FirewallPolicyDraftsOperations,
+    FirewallPolicyRuleCollectionGroupDraftsOperations,
+    ListOperations,
     NetworkManagementClientOperationsMixin,
 )
 
@@ -322,6 +326,10 @@ __all__ = [
     "SubscriptionNetworkManagerConnectionsOperations",
     "VipSwapOperations",
     "NetworkVirtualApplianceConnectionsOperations",
+    "FirewallPolicyDeploymentsOperations",
+    "FirewallPolicyDraftsOperations",
+    "FirewallPolicyRuleCollectionGroupDraftsOperations",
+    "ListOperations",
     "NetworkManagementClientOperationsMixin",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
