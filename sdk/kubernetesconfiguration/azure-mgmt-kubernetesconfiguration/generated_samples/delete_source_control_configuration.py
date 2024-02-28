@@ -38,6 +38,6 @@ def main():
     ).result()
 
 
-# x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/DeleteSourceControlConfiguration.json
+# x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2024-04-01/examples/DeleteSourceControlConfiguration.json
 if __name__ == "__main__":
     main()
