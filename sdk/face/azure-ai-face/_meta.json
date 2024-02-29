@@ -1,0 +1,6 @@
+{
+  "commit": "7172ab1990481fc322ab21f441fc107652b7cd18",
+  "repository_url": "https://github.com/Azure/azure-rest-api-specs",
+  "typespec_src": "specification/ai/Face",
+  "@azure-tools/typespec-python": "0.21.1"
+}
