@@ -25498,7 +25498,6 @@ class P2SConnectionConfiguration(SubResource):
 
     _validation = {
         "etag": {"readonly": True},
-        "configuration_policy_group_associations": {"readonly": True},
         "previous_configuration_policy_group_associations": {"readonly": True},
         "provisioning_state": {"readonly": True},
     }
@@ -25529,6 +25528,7 @@ class P2SConnectionConfiguration(SubResource):
         vpn_client_address_pool: Optional["_models.AddressSpace"] = None,
         routing_configuration: Optional["_models.RoutingConfiguration"] = None,
         enable_internet_security: Optional[bool] = None,
+        configuration_policy_group_associations: Optional[List["_models.SubResource"]] = None,
         **kwargs: Any
     ) -> None:
         """
@@ -25546,6 +25546,10 @@ class P2SConnectionConfiguration(SubResource):
         :keyword enable_internet_security: Flag indicating whether the enable internet security flag is
          turned on for the P2S Connections or not.
         :paramtype enable_internet_security: bool
+        :keyword configuration_policy_group_associations: List of Configuration Policy Groups that this
+         P2SConnectionConfiguration is attached to.
+        :paramtype configuration_policy_group_associations:
+         list[~azure.mgmt.network.v2023_04_01.models.SubResource]
         """
         super().__init__(id=id, **kwargs)
         self.name = name
@@ -25553,7 +25557,7 @@ class P2SConnectionConfiguration(SubResource):
         self.vpn_client_address_pool = vpn_client_address_pool
         self.routing_configuration = routing_configuration
         self.enable_internet_security = enable_internet_security
-        self.configuration_policy_group_associations = None
+        self.configuration_policy_group_associations = configuration_policy_group_associations
         self.previous_configuration_policy_group_associations = None
         self.provisioning_state = None
 
