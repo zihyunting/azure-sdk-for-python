@@ -14,7 +14,7 @@ from azure.mgmt.alertsmanagement import AlertsManagementClient
     pip install azure-identity
     pip install azure-mgmt-alertsmanagement
 # USAGE
-    python alert_processing_rules_create_or_update_add_action_group_all_alerts_in_subscription.py
+    python alert_processing_rules_create_or_update_add_correlation_with_correlation_updates.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -31,19 +31,28 @@ def main():
 
     response = client.alert_processing_rules.create_or_update(
         resource_group_name="alertscorrelationrg",
-        alert_processing_rule_name="AddActionGroupToSubscription",
+        alert_processing_rule_name="CorrelateAlerts",
         alert_processing_rule={
             "location": "Global",
             "properties": {
                 "actions": [
                     {
-                        "actionGroupIds": [
-                            "/subscriptions/subId1/resourcegroups/RGId1/providers/microsoft.insights/actiongroups/ActionGroup1"
-                        ],
-                        "actionType": "AddActionGroups",
+                        "actionType": "CorrelateAlerts",
+                        "correlateBy": [{"field": "essentials.alertRule"}],
+                        "correlationInterval": "PT30M",
+                        "correlationUpdates": {
+                            "actionGroups": [
+                                "/subscriptions/subId1/resourcegroups/RGId1/providers/microsoft.insights/actiongroups/AGId1",
+                                "/subscriptions/subId1/resourcegroups/RGId1/providers/microsoft.insights/actiongroups/AGId2",
+                            ],
+                            "updateInterval": "PT15M",
+                            "updateType": "timeBased",
+                        },
+                        "notificationsForCorrelatedAlerts": "SuppressAlways",
+                        "priority": 50,
                     }
                 ],
-                "description": "Add ActionGroup1 to all alerts in the subscription",
+                "description": "Correlate Alerts Example.",
                 "enabled": True,
                 "scopes": ["/subscriptions/subId1"],
             },
@@ -53,6 +62,6 @@ def main():
     print(response)
 
 
-# x-ms-original-file: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2024-03-01-preview/examples/AlertProcessingRules_Create_or_update_add_action_group_all_alerts_in_subscription.json
+# x-ms-original-file: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2024-03-01-preview/examples/AlertProcessingRules_Create_or_update_add_correlation_with_correlation_updates.json
 if __name__ == "__main__":
     main()
