@@ -178,7 +178,6 @@ from ._models_py3 import ReplaceAllIpFirewallRulesRequest
 from ._models_py3 import ReplicationLink
 from ._models_py3 import ReplicationLinkListResult
 from ._models_py3 import Resource
-from ._models_py3 import ResourceMoveDefinition
 from ._models_py3 import RestorableDroppedSqlPool
 from ._models_py3 import RestorableDroppedSqlPoolListResult
 from ._models_py3 import RestorePoint
@@ -265,6 +264,7 @@ from ._models_py3 import WorkspaceInfoListResult
 from ._models_py3 import WorkspaceKeyDetails
 from ._models_py3 import WorkspacePatchInfo
 from ._models_py3 import WorkspaceRepositoryConfiguration
+from ._models_py3 import WorkspaceUsageQuotaResponse
 
 from ._synapse_management_client_enums import ActualState
 from ._synapse_management_client_enums import AzureADOnlyAuthenticationName
@@ -527,7 +527,6 @@ __all__ = [
     "ReplicationLink",
     "ReplicationLinkListResult",
     "Resource",
-    "ResourceMoveDefinition",
     "RestorableDroppedSqlPool",
     "RestorableDroppedSqlPoolListResult",
     "RestorePoint",
@@ -614,6 +613,7 @@ __all__ = [
     "WorkspaceKeyDetails",
     "WorkspacePatchInfo",
     "WorkspaceRepositoryConfiguration",
+    "WorkspaceUsageQuotaResponse",
     "ActualState",
     "AzureADOnlyAuthenticationName",
     "AzureScaleType",
