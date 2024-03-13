@@ -8,7 +8,7 @@
 
 from ._models_py3 import ApiEntityReference
 from ._models_py3 import BackupProperties
-from ._models_py3 import CHsmError
+from ._models_py3 import ChsmError
 from ._models_py3 import CloudHsmCluster
 from ._models_py3 import CloudHsmClusterError
 from ._models_py3 import CloudHsmClusterListResult
@@ -16,8 +16,8 @@ from ._models_py3 import CloudHsmClusterPatchParameters
 from ._models_py3 import CloudHsmClusterPatchParametersProperties
 from ._models_py3 import CloudHsmClusterProperties
 from ._models_py3 import CloudHsmClusterResource
-from ._models_py3 import CloudHsmClusterSecurityDomainProperties
 from ._models_py3 import CloudHsmClusterSku
+from ._models_py3 import CloudHsmClusterStatusProperties
 from ._models_py3 import CloudHsmProperties
 from ._models_py3 import DedicatedHsm
 from ._models_py3 import DedicatedHsmError
@@ -71,7 +71,7 @@ from ._patch import patch_sdk as _patch_sdk
 __all__ = [
     "ApiEntityReference",
     "BackupProperties",
-    "CHsmError",
+    "ChsmError",
     "CloudHsmCluster",
     "CloudHsmClusterError",
     "CloudHsmClusterListResult",
@@ -79,8 +79,8 @@ __all__ = [
     "CloudHsmClusterPatchParametersProperties",
     "CloudHsmClusterProperties",
     "CloudHsmClusterResource",
-    "CloudHsmClusterSecurityDomainProperties",
     "CloudHsmClusterSku",
+    "CloudHsmClusterStatusProperties",
     "CloudHsmProperties",
     "DedicatedHsm",
     "DedicatedHsmError",

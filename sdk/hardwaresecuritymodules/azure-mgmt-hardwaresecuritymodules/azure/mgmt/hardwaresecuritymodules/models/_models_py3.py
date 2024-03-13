@@ -44,8 +44,8 @@ class BackupProperties(_serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar azure_storage_resource_uri: Azure storage Resource Uri.
-    :vartype azure_storage_resource_uri: str
+    :ivar azure_storage_container_uri: Azure Blob storage container Uri.
+    :vartype azure_storage_container_uri: str
     :ivar last_backup_date_time: Last Date Time that Customer Enabled Backup was taken.
     :vartype last_backup_date_time: ~datetime.datetime
     :ivar last_backup_status: Status of last backup.
@@ -58,23 +58,23 @@ class BackupProperties(_serialization.Model):
     }
 
     _attribute_map = {
-        "azure_storage_resource_uri": {"key": "azureStorageResourceUri", "type": "str"},
+        "azure_storage_container_uri": {"key": "azureStorageContainerUri", "type": "str"},
         "last_backup_date_time": {"key": "lastBackupDateTime", "type": "iso-8601"},
         "last_backup_status": {"key": "lastBackupStatus", "type": "str"},
     }
 
-    def __init__(self, *, azure_storage_resource_uri: Optional[str] = None, **kwargs: Any) -> None:
+    def __init__(self, *, azure_storage_container_uri: Optional[str] = None, **kwargs: Any) -> None:
         """
-        :keyword azure_storage_resource_uri: Azure storage Resource Uri.
-        :paramtype azure_storage_resource_uri: str
+        :keyword azure_storage_container_uri: Azure Blob storage container Uri.
+        :paramtype azure_storage_container_uri: str
         """
         super().__init__(**kwargs)
-        self.azure_storage_resource_uri = azure_storage_resource_uri
+        self.azure_storage_container_uri = azure_storage_container_uri
         self.last_backup_date_time = None
         self.last_backup_status = None
 
 
-class CHsmError(_serialization.Model):
+class ChsmError(_serialization.Model):
     """Error details.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -219,10 +219,10 @@ class CloudHsmClusterResource(TrackedResource):
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
-    :ivar sku: SKU details.
-    :vartype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
     :vartype identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+    :ivar sku: SKU details.
+    :vartype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
     """
 
     _validation = {
@@ -240,8 +240,8 @@ class CloudHsmClusterResource(TrackedResource):
         "system_data": {"key": "systemData", "type": "SystemData"},
         "tags": {"key": "tags", "type": "{str}"},
         "location": {"key": "location", "type": "str"},
-        "sku": {"key": "sku", "type": "CloudHsmClusterSku"},
         "identity": {"key": "identity", "type": "ManagedServiceIdentity"},
+        "sku": {"key": "sku", "type": "CloudHsmClusterSku"},
     }
 
     def __init__(
@@ -249,8 +249,8 @@ class CloudHsmClusterResource(TrackedResource):
         *,
         location: str,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional["_models.CloudHsmClusterSku"] = None,
         identity: Optional["_models.ManagedServiceIdentity"] = None,
+        sku: Optional["_models.CloudHsmClusterSku"] = None,
         **kwargs: Any
     ) -> None:
         """
@@ -258,14 +258,14 @@ class CloudHsmClusterResource(TrackedResource):
         :paramtype tags: dict[str, str]
         :keyword location: The geo-location where the resource lives. Required.
         :paramtype location: str
-        :keyword sku: SKU details.
-        :paramtype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :keyword identity: Managed service identity (system assigned and/or user assigned identities).
         :paramtype identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+        :keyword sku: SKU details.
+        :paramtype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         """
         super().__init__(tags=tags, location=location, **kwargs)
-        self.sku = sku
         self.identity = identity
+        self.sku = sku
 
 
 class CloudHsmCluster(CloudHsmClusterResource):
@@ -290,10 +290,10 @@ class CloudHsmCluster(CloudHsmClusterResource):
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
-    :ivar sku: SKU details.
-    :vartype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
     :vartype identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+    :ivar sku: SKU details.
+    :vartype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
     :ivar properties: Properties of the Cloud HSM Cluster.
     :vartype properties: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterProperties
     """
@@ -313,8 +313,8 @@ class CloudHsmCluster(CloudHsmClusterResource):
         "system_data": {"key": "systemData", "type": "SystemData"},
         "tags": {"key": "tags", "type": "{str}"},
         "location": {"key": "location", "type": "str"},
-        "sku": {"key": "sku", "type": "CloudHsmClusterSku"},
         "identity": {"key": "identity", "type": "ManagedServiceIdentity"},
+        "sku": {"key": "sku", "type": "CloudHsmClusterSku"},
         "properties": {"key": "properties", "type": "CloudHsmClusterProperties"},
     }
 
@@ -323,8 +323,8 @@ class CloudHsmCluster(CloudHsmClusterResource):
         *,
         location: str,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional["_models.CloudHsmClusterSku"] = None,
         identity: Optional["_models.ManagedServiceIdentity"] = None,
+        sku: Optional["_models.CloudHsmClusterSku"] = None,
         properties: Optional["_models.CloudHsmClusterProperties"] = None,
         **kwargs: Any
     ) -> None:
@@ -333,14 +333,14 @@ class CloudHsmCluster(CloudHsmClusterResource):
         :paramtype tags: dict[str, str]
         :keyword location: The geo-location where the resource lives. Required.
         :paramtype location: str
-        :keyword sku: SKU details.
-        :paramtype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :keyword identity: Managed service identity (system assigned and/or user assigned identities).
         :paramtype identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+        :keyword sku: SKU details.
+        :paramtype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :keyword properties: Properties of the Cloud HSM Cluster.
         :paramtype properties: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterProperties
         """
-        super().__init__(tags=tags, location=location, sku=sku, identity=identity, **kwargs)
+        super().__init__(tags=tags, location=location, identity=identity, sku=sku, **kwargs)
         self.properties = properties
 
 
@@ -348,17 +348,17 @@ class CloudHsmClusterError(_serialization.Model):
     """The Cloud HSM Cluster error details.
 
     :ivar error: Error details.
-    :vartype error: ~azure.mgmt.hardwaresecuritymodules.models.CHsmError
+    :vartype error: ~azure.mgmt.hardwaresecuritymodules.models.ChsmError
     """
 
     _attribute_map = {
-        "error": {"key": "error", "type": "CHsmError"},
+        "error": {"key": "error", "type": "ChsmError"},
     }
 
-    def __init__(self, *, error: Optional["_models.CHsmError"] = None, **kwargs: Any) -> None:
+    def __init__(self, *, error: Optional["_models.ChsmError"] = None, **kwargs: Any) -> None:
         """
         :keyword error: Error details.
-        :paramtype error: ~azure.mgmt.hardwaresecuritymodules.models.CHsmError
+        :paramtype error: ~azure.mgmt.hardwaresecuritymodules.models.ChsmError
         """
         super().__init__(**kwargs)
         self.error = error
@@ -397,10 +397,10 @@ class CloudHsmClusterPatchParameters(_serialization.Model):
 
     :ivar tags: The Cloud HSM Cluster's tags.
     :vartype tags: dict[str, str]
-    :ivar sku: SKU details.
-    :vartype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
     :vartype identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+    :ivar sku: SKU details.
+    :vartype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
     :ivar properties: Properties of the Cloud HSM Cluster.
     :vartype properties:
      ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterPatchParametersProperties
@@ -408,8 +408,8 @@ class CloudHsmClusterPatchParameters(_serialization.Model):
 
     _attribute_map = {
         "tags": {"key": "tags", "type": "{str}"},
-        "sku": {"key": "sku", "type": "CloudHsmClusterSku"},
         "identity": {"key": "identity", "type": "ManagedServiceIdentity"},
+        "sku": {"key": "sku", "type": "CloudHsmClusterSku"},
         "properties": {"key": "properties", "type": "CloudHsmClusterPatchParametersProperties"},
     }
 
@@ -417,26 +417,26 @@ class CloudHsmClusterPatchParameters(_serialization.Model):
         self,
         *,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional["_models.CloudHsmClusterSku"] = None,
         identity: Optional["_models.ManagedServiceIdentity"] = None,
+        sku: Optional["_models.CloudHsmClusterSku"] = None,
         properties: Optional["_models.CloudHsmClusterPatchParametersProperties"] = None,
         **kwargs: Any
     ) -> None:
         """
         :keyword tags: The Cloud HSM Cluster's tags.
         :paramtype tags: dict[str, str]
-        :keyword sku: SKU details.
-        :paramtype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :keyword identity: Managed service identity (system assigned and/or user assigned identities).
         :paramtype identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+        :keyword sku: SKU details.
+        :paramtype sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :keyword properties: Properties of the Cloud HSM Cluster.
         :paramtype properties:
          ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterPatchParametersProperties
         """
         super().__init__(**kwargs)
         self.tags = tags
-        self.sku = sku
         self.identity = identity
+        self.sku = sku
         self.properties = properties
 
 
@@ -465,29 +465,29 @@ class CloudHsmClusterProperties(_serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
+    :ivar auto_generated_domain_name_label_scope: The Cloud HSM Cluster's auto-generated Domain
+     Name Label Scope.
+    :vartype auto_generated_domain_name_label_scope: str
+    :ivar hsms: An array of Cloud HSM Cluster's HSMs.
+    :vartype hsms: list[~azure.mgmt.hardwaresecuritymodules.models.CloudHsmProperties]
+    :ivar private_endpoint_connections: List of private endpoint connection resources.
+    :vartype private_endpoint_connections:
+     list[~azure.mgmt.hardwaresecuritymodules.models.PrivateEndpointConnection]
     :ivar provisioning_state: The Cloud HSM Cluster's provisioningState. Known values are:
      "Provisioning", "Succeeded", "Failed", "Deleting", and "Canceled".
     :vartype provisioning_state: str or
      ~azure.mgmt.hardwaresecuritymodules.models.ProvisioningState
-    :ivar auto_generated_domain_name_label_scope: The Cloud HSM Cluster's auto-generated Domain
-     Name Label Scope.
-    :vartype auto_generated_domain_name_label_scope: str
-    :ivar security_domain: Security domain properties information for Cloud HSM cluster.
-    :vartype security_domain:
-     ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSecurityDomainProperties
-    :ivar hsms: An array of Cloud HSM Cluster's HSMs.
-    :vartype hsms: list[~azure.mgmt.hardwaresecuritymodules.models.CloudHsmProperties]
     :ivar public_network_access: The Cloud HSM Cluster public network access.
     :vartype public_network_access: str
-    :ivar private_endpoint_connections: List of private endpoint connection resources.
-    :vartype private_endpoint_connections:
-     list[~azure.mgmt.hardwaresecuritymodules.models.PrivateEndpointConnection]
     :ivar status_message: Cloud HSM Cluster status message.
     :vartype status_message: str
-    :ivar restore_properties: Cloud Hsm Cluster restore information.
-    :vartype restore_properties: ~azure.mgmt.hardwaresecuritymodules.models.RestoreProperties
+    :ivar cluster_status: Security domain properties information for Cloud HSM cluster.
+    :vartype cluster_status:
+     ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterStatusProperties
     :ivar backup_properties: Cloud Hsm Cluster backup information.
     :vartype backup_properties: ~azure.mgmt.hardwaresecuritymodules.models.BackupProperties
+    :ivar restore_properties: Cloud Hsm Cluster restore information.
+    :vartype restore_properties: ~azure.mgmt.hardwaresecuritymodules.models.RestoreProperties
     """
 
     _validation = {
@@ -495,91 +495,63 @@ class CloudHsmClusterProperties(_serialization.Model):
     }
 
     _attribute_map = {
-        "provisioning_state": {"key": "provisioningState", "type": "str"},
         "auto_generated_domain_name_label_scope": {"key": "autoGeneratedDomainNameLabelScope", "type": "str"},
-        "security_domain": {"key": "securityDomain", "type": "CloudHsmClusterSecurityDomainProperties"},
         "hsms": {"key": "hsms", "type": "[CloudHsmProperties]"},
-        "public_network_access": {"key": "publicNetworkAccess", "type": "str"},
         "private_endpoint_connections": {"key": "privateEndpointConnections", "type": "[PrivateEndpointConnection]"},
+        "provisioning_state": {"key": "provisioningState", "type": "str"},
+        "public_network_access": {"key": "publicNetworkAccess", "type": "str"},
         "status_message": {"key": "statusMessage", "type": "str"},
-        "restore_properties": {"key": "restoreProperties", "type": "RestoreProperties"},
+        "cluster_status": {"key": "clusterStatus", "type": "CloudHsmClusterStatusProperties"},
         "backup_properties": {"key": "backupProperties", "type": "BackupProperties"},
+        "restore_properties": {"key": "restoreProperties", "type": "RestoreProperties"},
     }
 
     def __init__(
         self,
         *,
-        provisioning_state: Optional[Union[str, "_models.ProvisioningState"]] = None,
         auto_generated_domain_name_label_scope: Optional[str] = None,
-        security_domain: Optional["_models.CloudHsmClusterSecurityDomainProperties"] = None,
         hsms: Optional[List["_models.CloudHsmProperties"]] = None,
-        public_network_access: Optional[str] = None,
         private_endpoint_connections: Optional[List["_models.PrivateEndpointConnection"]] = None,
-        restore_properties: Optional["_models.RestoreProperties"] = None,
+        provisioning_state: Optional[Union[str, "_models.ProvisioningState"]] = None,
+        public_network_access: Optional[str] = None,
+        cluster_status: Optional["_models.CloudHsmClusterStatusProperties"] = None,
         backup_properties: Optional["_models.BackupProperties"] = None,
+        restore_properties: Optional["_models.RestoreProperties"] = None,
         **kwargs: Any
     ) -> None:
         """
+        :keyword auto_generated_domain_name_label_scope: The Cloud HSM Cluster's auto-generated Domain
+         Name Label Scope.
+        :paramtype auto_generated_domain_name_label_scope: str
+        :keyword hsms: An array of Cloud HSM Cluster's HSMs.
+        :paramtype hsms: list[~azure.mgmt.hardwaresecuritymodules.models.CloudHsmProperties]
+        :keyword private_endpoint_connections: List of private endpoint connection resources.
+        :paramtype private_endpoint_connections:
+         list[~azure.mgmt.hardwaresecuritymodules.models.PrivateEndpointConnection]
         :keyword provisioning_state: The Cloud HSM Cluster's provisioningState. Known values are:
          "Provisioning", "Succeeded", "Failed", "Deleting", and "Canceled".
         :paramtype provisioning_state: str or
          ~azure.mgmt.hardwaresecuritymodules.models.ProvisioningState
-        :keyword auto_generated_domain_name_label_scope: The Cloud HSM Cluster's auto-generated Domain
-         Name Label Scope.
-        :paramtype auto_generated_domain_name_label_scope: str
-        :keyword security_domain: Security domain properties information for Cloud HSM cluster.
-        :paramtype security_domain:
-         ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSecurityDomainProperties
-        :keyword hsms: An array of Cloud HSM Cluster's HSMs.
-        :paramtype hsms: list[~azure.mgmt.hardwaresecuritymodules.models.CloudHsmProperties]
         :keyword public_network_access: The Cloud HSM Cluster public network access.
         :paramtype public_network_access: str
-        :keyword private_endpoint_connections: List of private endpoint connection resources.
-        :paramtype private_endpoint_connections:
-         list[~azure.mgmt.hardwaresecuritymodules.models.PrivateEndpointConnection]
-        :keyword restore_properties: Cloud Hsm Cluster restore information.
-        :paramtype restore_properties: ~azure.mgmt.hardwaresecuritymodules.models.RestoreProperties
+        :keyword cluster_status: Security domain properties information for Cloud HSM cluster.
+        :paramtype cluster_status:
+         ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterStatusProperties
         :keyword backup_properties: Cloud Hsm Cluster backup information.
         :paramtype backup_properties: ~azure.mgmt.hardwaresecuritymodules.models.BackupProperties
+        :keyword restore_properties: Cloud Hsm Cluster restore information.
+        :paramtype restore_properties: ~azure.mgmt.hardwaresecuritymodules.models.RestoreProperties
         """
         super().__init__(**kwargs)
-        self.provisioning_state = provisioning_state
         self.auto_generated_domain_name_label_scope = auto_generated_domain_name_label_scope
-        self.security_domain = security_domain
         self.hsms = hsms
-        self.public_network_access = public_network_access
         self.private_endpoint_connections = private_endpoint_connections
+        self.provisioning_state = provisioning_state
+        self.public_network_access = public_network_access
         self.status_message = None
-        self.restore_properties = restore_properties
+        self.cluster_status = cluster_status
         self.backup_properties = backup_properties
-
-
-class CloudHsmClusterSecurityDomainProperties(_serialization.Model):
-    """Security domain properties information for Cloud HSM cluster.
-
-    :ivar fips_state: FIPS state information for security domain.
-    :vartype fips_state: int
-    :ivar activation_status: status of security domain activation.
-    :vartype activation_status: str
-    """
-
-    _attribute_map = {
-        "fips_state": {"key": "fipsState", "type": "int"},
-        "activation_status": {"key": "activationStatus", "type": "str"},
-    }
-
-    def __init__(
-        self, *, fips_state: Optional[int] = None, activation_status: Optional[str] = None, **kwargs: Any
-    ) -> None:
-        """
-        :keyword fips_state: FIPS state information for security domain.
-        :paramtype fips_state: int
-        :keyword activation_status: status of security domain activation.
-        :paramtype activation_status: str
-        """
-        super().__init__(**kwargs)
-        self.fips_state = fips_state
-        self.activation_status = activation_status
+        self.restore_properties = restore_properties
 
 
 class CloudHsmClusterSku(_serialization.Model):
@@ -628,6 +600,34 @@ class CloudHsmClusterSku(_serialization.Model):
         self.family = family
         self.name = name
         self.capacity = capacity
+
+
+class CloudHsmClusterStatusProperties(_serialization.Model):
+    """Security domain properties information for Cloud HSM cluster.
+
+    :ivar activation_status: status of security domain activation.
+    :vartype activation_status: str
+    :ivar fips_state: FIPS state information for security domain.
+    :vartype fips_state: int
+    """
+
+    _attribute_map = {
+        "activation_status": {"key": "activationStatus", "type": "str"},
+        "fips_state": {"key": "fipsState", "type": "int"},
+    }
+
+    def __init__(
+        self, *, activation_status: Optional[str] = None, fips_state: Optional[int] = None, **kwargs: Any
+    ) -> None:
+        """
+        :keyword activation_status: status of security domain activation.
+        :paramtype activation_status: str
+        :keyword fips_state: FIPS state information for security domain.
+        :paramtype fips_state: int
+        """
+        super().__init__(**kwargs)
+        self.activation_status = activation_status
+        self.fips_state = fips_state
 
 
 class CloudHsmProperties(_serialization.Model):
@@ -1761,29 +1761,29 @@ class ResourceListResult(_serialization.Model):
 class RestoreProperties(_serialization.Model):
     """Cloud Hsm Cluster restore information.
 
-    :ivar foldername: Directory name in Azure Storage Blob where the backup is stored.
-    :vartype foldername: str
-    :ivar azure_storage_resource_uri: Azure Blob storage container Uri.
-    :vartype azure_storage_resource_uri: str
+    :ivar azure_storage_container_uri: Azure Blob storage container Uri.
+    :vartype azure_storage_container_uri: str
+    :ivar folder_name: Directory name in Azure Storage Blob where the backup is stored.
+    :vartype folder_name: str
     """
 
     _attribute_map = {
-        "foldername": {"key": "foldername", "type": "str"},
-        "azure_storage_resource_uri": {"key": "azureStorageResourceUri", "type": "str"},
+        "azure_storage_container_uri": {"key": "azureStorageContainerUri", "type": "str"},
+        "folder_name": {"key": "folderName", "type": "str"},
     }
 
     def __init__(
-        self, *, foldername: Optional[str] = None, azure_storage_resource_uri: Optional[str] = None, **kwargs: Any
+        self, *, azure_storage_container_uri: Optional[str] = None, folder_name: Optional[str] = None, **kwargs: Any
     ) -> None:
         """
-        :keyword foldername: Directory name in Azure Storage Blob where the backup is stored.
-        :paramtype foldername: str
-        :keyword azure_storage_resource_uri: Azure Blob storage container Uri.
-        :paramtype azure_storage_resource_uri: str
+        :keyword azure_storage_container_uri: Azure Blob storage container Uri.
+        :paramtype azure_storage_container_uri: str
+        :keyword folder_name: Directory name in Azure Storage Blob where the backup is stored.
+        :paramtype folder_name: str
         """
         super().__init__(**kwargs)
-        self.foldername = foldername
-        self.azure_storage_resource_uri = azure_storage_resource_uri
+        self.azure_storage_container_uri = azure_storage_container_uri
+        self.folder_name = folder_name
 
 
 class Sku(_serialization.Model):

@@ -67,8 +67,8 @@ class CloudHsmClustersOperations:
         cloud_hsm_cluster_name: str,
         location: str,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional[_models.CloudHsmClusterSku] = None,
         identity: Optional[_models.ManagedServiceIdentity] = None,
+        sku: Optional[_models.CloudHsmClusterSku] = None,
         properties: Optional[_models.CloudHsmClusterProperties] = None,
         **kwargs: Any
     ) -> _models.CloudHsmCluster:
@@ -138,8 +138,8 @@ class CloudHsmClustersOperations:
         cloud_hsm_cluster_name: str,
         location: str,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional[_models.CloudHsmClusterSku] = None,
         identity: Optional[_models.ManagedServiceIdentity] = None,
+        sku: Optional[_models.CloudHsmClusterSku] = None,
         properties: Optional[_models.CloudHsmClusterProperties] = None,
         **kwargs: Any
     ) -> AsyncLROPoller[_models.CloudHsmCluster]:
@@ -155,11 +155,11 @@ class CloudHsmClustersOperations:
         :type location: str
         :param tags: Resource tags. Default value is None.
         :type tags: dict[str, str]
-        :param sku: SKU details. Default value is None.
-        :type sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :param identity: Managed service identity (system assigned and/or user assigned identities).
          Default value is None.
         :type identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+        :param sku: SKU details. Default value is None.
+        :type sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :param properties: Properties of the Cloud HSM Cluster. Default value is None.
         :type properties: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterProperties
         :keyword callable cls: A custom type or function that will be passed the direct response
@@ -191,8 +191,8 @@ class CloudHsmClustersOperations:
                 cloud_hsm_cluster_name=cloud_hsm_cluster_name,
                 location=location,
                 tags=tags,
-                sku=sku,
                 identity=identity,
+                sku=sku,
                 properties=properties,
                 api_version=api_version,
                 content_type=content_type,
@@ -236,8 +236,8 @@ class CloudHsmClustersOperations:
         resource_group_name: str,
         cloud_hsm_cluster_name: str,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional[_models.CloudHsmClusterSku] = None,
         identity: Optional[_models.ManagedServiceIdentity] = None,
+        sku: Optional[_models.CloudHsmClusterSku] = None,
         properties: Optional[_models.CloudHsmClusterPatchParametersProperties] = None,
         **kwargs: Any
     ) -> Optional[_models.CloudHsmCluster]:
@@ -308,8 +308,8 @@ class CloudHsmClustersOperations:
         resource_group_name: str,
         cloud_hsm_cluster_name: str,
         tags: Optional[Dict[str, str]] = None,
-        sku: Optional[_models.CloudHsmClusterSku] = None,
         identity: Optional[_models.ManagedServiceIdentity] = None,
+        sku: Optional[_models.CloudHsmClusterSku] = None,
         properties: Optional[_models.CloudHsmClusterPatchParametersProperties] = None,
         **kwargs: Any
     ) -> AsyncLROPoller[_models.CloudHsmCluster]:
@@ -323,11 +323,11 @@ class CloudHsmClustersOperations:
         :type cloud_hsm_cluster_name: str
         :param tags: The Cloud HSM Cluster's tags. Default value is None.
         :type tags: dict[str, str]
-        :param sku: SKU details. Default value is None.
-        :type sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :param identity: Managed service identity (system assigned and/or user assigned identities).
          Default value is None.
         :type identity: ~azure.mgmt.hardwaresecuritymodules.models.ManagedServiceIdentity
+        :param sku: SKU details. Default value is None.
+        :type sku: ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterSku
         :param properties: Properties of the Cloud HSM Cluster. Default value is None.
         :type properties:
          ~azure.mgmt.hardwaresecuritymodules.models.CloudHsmClusterPatchParametersProperties
@@ -359,8 +359,8 @@ class CloudHsmClustersOperations:
                 resource_group_name=resource_group_name,
                 cloud_hsm_cluster_name=cloud_hsm_cluster_name,
                 tags=tags,
-                sku=sku,
                 identity=identity,
+                sku=sku,
                 properties=properties,
                 api_version=api_version,
                 content_type=content_type,
