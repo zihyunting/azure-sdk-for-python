@@ -35,6 +35,20 @@ class CreatedByType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     KEY = "Key"
 
 
+class DataEncryptionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """DataEncryptionType."""
+
+    AZURE_KEY_VAULT = "AzureKeyVault"
+    SYSTEM_ASSIGNED = "SystemAssigned"
+
+
+class IdentityType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """IdentityType."""
+
+    USER_ASSIGNED = "UserAssigned"
+    SYSTEM_ASSIGNED = "SystemAssigned"
+
+
 class OperationOrigin(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The intended executor of the operation."""
 

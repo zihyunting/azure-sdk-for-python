@@ -15,11 +15,13 @@ from ._models_py3 import ClusterServer
 from ._models_py3 import ClusterServerListResult
 from ._models_py3 import ClusterServerProperties
 from ._models_py3 import Configuration
+from ._models_py3 import DataEncryption
 from ._models_py3 import ErrorAdditionalInfo
 from ._models_py3 import ErrorDetail
 from ._models_py3 import ErrorResponse
 from ._models_py3 import FirewallRule
 from ._models_py3 import FirewallRuleListResult
+from ._models_py3 import IdentityProperties
 from ._models_py3 import MaintenanceWindow
 from ._models_py3 import NameAvailability
 from ._models_py3 import NameAvailabilityRequest
@@ -46,10 +48,13 @@ from ._models_py3 import ServerRoleGroupConfiguration
 from ._models_py3 import SimplePrivateEndpointConnection
 from ._models_py3 import SystemData
 from ._models_py3 import TrackedResource
+from ._models_py3 import UserAssignedIdentity
 
 from ._cosmosdb_for_postgresql_mgmt_client_enums import ActiveDirectoryAuth
 from ._cosmosdb_for_postgresql_mgmt_client_enums import ConfigurationDataType
 from ._cosmosdb_for_postgresql_mgmt_client_enums import CreatedByType
+from ._cosmosdb_for_postgresql_mgmt_client_enums import DataEncryptionType
+from ._cosmosdb_for_postgresql_mgmt_client_enums import IdentityType
 from ._cosmosdb_for_postgresql_mgmt_client_enums import OperationOrigin
 from ._cosmosdb_for_postgresql_mgmt_client_enums import PasswordAuth
 from ._cosmosdb_for_postgresql_mgmt_client_enums import PrincipalType
@@ -72,11 +77,13 @@ __all__ = [
     "ClusterServerListResult",
     "ClusterServerProperties",
     "Configuration",
+    "DataEncryption",
     "ErrorAdditionalInfo",
     "ErrorDetail",
     "ErrorResponse",
     "FirewallRule",
     "FirewallRuleListResult",
+    "IdentityProperties",
     "MaintenanceWindow",
     "NameAvailability",
     "NameAvailabilityRequest",
@@ -103,9 +110,12 @@ __all__ = [
     "SimplePrivateEndpointConnection",
     "SystemData",
     "TrackedResource",
+    "UserAssignedIdentity",
     "ActiveDirectoryAuth",
     "ConfigurationDataType",
     "CreatedByType",
+    "DataEncryptionType",
+    "IdentityType",
     "OperationOrigin",
     "PasswordAuth",
     "PrincipalType",
