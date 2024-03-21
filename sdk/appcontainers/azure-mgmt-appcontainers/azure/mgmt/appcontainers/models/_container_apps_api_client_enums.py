@@ -206,7 +206,6 @@ class DotNetComponentType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Type of the .NET Component."""
 
     ASPIRE_DASHBOARD = "AspireDashboard"
-    ASPIRE_RESOURCE_SERVER_API = "AspireResourceServerApi"
 
 
 class EnvironmentProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):

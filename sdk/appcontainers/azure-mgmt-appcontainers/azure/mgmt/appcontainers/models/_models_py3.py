@@ -5369,8 +5369,7 @@ class DotNetComponent(ProxyResource):
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
     :vartype system_data: ~azure.mgmt.appcontainers.models.SystemData
-    :ivar component_type: Type of the .NET Component. Known values are: "AspireDashboard" and
-     "AspireResourceServerApi".
+    :ivar component_type: Type of the .NET Component. "AspireDashboard"
     :vartype component_type: str or ~azure.mgmt.appcontainers.models.DotNetComponentType
     :ivar provisioning_state: Provisioning state of the .NET Component. Known values are:
      "Succeeded", "Failed", "Canceled", "Deleting", and "InProgress".
@@ -5411,8 +5410,7 @@ class DotNetComponent(ProxyResource):
         **kwargs: Any
     ) -> None:
         """
-        :keyword component_type: Type of the .NET Component. Known values are: "AspireDashboard" and
-         "AspireResourceServerApi".
+        :keyword component_type: Type of the .NET Component. "AspireDashboard"
         :paramtype component_type: str or ~azure.mgmt.appcontainers.models.DotNetComponentType
         :keyword configurations: List of .NET Components configuration properties.
         :paramtype configurations:
