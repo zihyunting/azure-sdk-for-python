@@ -7,7 +7,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 from io import IOBase
-from typing import Any, AsyncIterable, Callable, Dict, IO, Literal, Optional, TypeVar, Union, cast, overload
+from typing import Any, AsyncIterable, Callable, Dict, IO, Optional, TypeVar, Union, cast, overload
 import urllib.parse
 
 from azure.core.async_paging import AsyncItemPaged, AsyncList
@@ -197,8 +197,8 @@ class JobsOperations:
         return deserialized  # type: ignore
 
     @distributed_trace_async
-    async def proxy_get(self, resource_group_name: str, job_name: str, **kwargs: Any) -> _models.Job:
-        """Get the properties for a given Container App Job.
+    async def proxy_get(self, resource_group_name: str, job_name: str, api_name: str, **kwargs: Any) -> _models.Job:
+        """Get the properties of a Container App Job.
 
         Get the properties of a Container App Job.
 
@@ -207,6 +207,8 @@ class JobsOperations:
         :type resource_group_name: str
         :param job_name: Job Name. Required.
         :type job_name: str
+        :param api_name: Proxy API Name for Container App Job. Required.
+        :type api_name: str
         :return: Job or the result of cls(response)
         :rtype: ~azure.mgmt.appcontainers.models.Job
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -222,15 +224,14 @@ class JobsOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-        api_name: Literal["rootApi"] = kwargs.pop("api_name", "rootApi")
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.Job] = kwargs.pop("cls", None)
 
         _request = build_proxy_get_request(
             resource_group_name=resource_group_name,
             job_name=job_name,
-            subscription_id=self._config.subscription_id,
             api_name=api_name,
+            subscription_id=self._config.subscription_id,
             api_version=api_version,
             headers=_headers,
             params=_params,
