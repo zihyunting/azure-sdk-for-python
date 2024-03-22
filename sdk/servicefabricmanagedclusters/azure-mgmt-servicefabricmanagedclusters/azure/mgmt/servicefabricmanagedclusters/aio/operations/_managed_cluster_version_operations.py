@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
@@ -67,7 +67,6 @@ class ManagedClusterVersionOperations:
         :type location: str
         :param cluster_version: The cluster code version. Required.
         :type cluster_version: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: ManagedClusterCodeVersionResult or the result of cls(response)
         :rtype: ~azure.mgmt.servicefabricmanagedclusters.models.ManagedClusterCodeVersionResult
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -86,21 +85,20 @@ class ManagedClusterVersionOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.ManagedClusterCodeVersionResult] = kwargs.pop("cls", None)
 
-        request = build_get_request(
+        _request = build_get_request(
             location=location,
             cluster_version=cluster_version,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.get.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -113,13 +111,9 @@ class ManagedClusterVersionOperations:
         deserialized = self._deserialize("ManagedClusterCodeVersionResult", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    get.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/managedClusterVersions/{clusterVersion}"
-    }
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def get_by_environment(
@@ -143,7 +137,6 @@ class ManagedClusterVersionOperations:
          ~azure.mgmt.servicefabricmanagedclusters.models.ManagedClusterVersionEnvironment
         :param cluster_version: The cluster code version. Required.
         :type cluster_version: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: ManagedClusterCodeVersionResult or the result of cls(response)
         :rtype: ~azure.mgmt.servicefabricmanagedclusters.models.ManagedClusterCodeVersionResult
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -162,22 +155,21 @@ class ManagedClusterVersionOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.ManagedClusterCodeVersionResult] = kwargs.pop("cls", None)
 
-        request = build_get_by_environment_request(
+        _request = build_get_by_environment_request(
             location=location,
             environment=environment,
             cluster_version=cluster_version,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.get_by_environment.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -190,13 +182,9 @@ class ManagedClusterVersionOperations:
         deserialized = self._deserialize("ManagedClusterCodeVersionResult", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    get_by_environment.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/managedClusterVersions/{clusterVersion}"
-    }
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def list(self, location: str, **kwargs: Any) -> List[_models.ManagedClusterCodeVersionResult]:
@@ -207,7 +195,6 @@ class ManagedClusterVersionOperations:
         :param location: The location for the cluster code versions. This is different from cluster
          location. Required.
         :type location: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: list of ManagedClusterCodeVersionResult or the result of cls(response)
         :rtype: list[~azure.mgmt.servicefabricmanagedclusters.models.ManagedClusterCodeVersionResult]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -226,20 +213,19 @@ class ManagedClusterVersionOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[List[_models.ManagedClusterCodeVersionResult]] = kwargs.pop("cls", None)
 
-        request = build_list_request(
+        _request = build_list_request(
             location=location,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.list.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -252,13 +238,9 @@ class ManagedClusterVersionOperations:
         deserialized = self._deserialize("[ManagedClusterCodeVersionResult]", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    list.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/managedClusterVersions"
-    }
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def list_by_environment(
@@ -275,7 +257,6 @@ class ManagedClusterVersionOperations:
          Required.
         :type environment: str or
          ~azure.mgmt.servicefabricmanagedclusters.models.ManagedClusterVersionEnvironment
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: list of ManagedClusterCodeVersionResult or the result of cls(response)
         :rtype: list[~azure.mgmt.servicefabricmanagedclusters.models.ManagedClusterCodeVersionResult]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -294,21 +275,20 @@ class ManagedClusterVersionOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[List[_models.ManagedClusterCodeVersionResult]] = kwargs.pop("cls", None)
 
-        request = build_list_by_environment_request(
+        _request = build_list_by_environment_request(
             location=location,
             environment=environment,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.list_by_environment.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -321,10 +301,6 @@ class ManagedClusterVersionOperations:
         deserialized = self._deserialize("[ManagedClusterCodeVersionResult]", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    list_by_environment.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/managedClusterVersions"
-    }
+        return deserialized  # type: ignore

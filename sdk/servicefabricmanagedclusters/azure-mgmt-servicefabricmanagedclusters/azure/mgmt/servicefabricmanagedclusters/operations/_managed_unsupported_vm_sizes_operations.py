@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
@@ -40,7 +40,7 @@ def build_list_request(location: str, subscription_id: str, **kwargs: Any) -> Ht
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-12-01-preview"))
+    api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2024-04-01"))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -68,7 +68,7 @@ def build_get_request(location: str, vm_size: str, subscription_id: str, **kwarg
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-12-01-preview"))
+    api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2024-04-01"))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -121,7 +121,6 @@ class ManagedUnsupportedVMSizesOperations:
         :param location: The location for the cluster code versions. This is different from cluster
          location. Required.
         :type location: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either ManagedVMSize or the result of cls(response)
         :rtype:
          ~azure.core.paging.ItemPaged[~azure.mgmt.servicefabricmanagedclusters.models.ManagedVMSize]
@@ -144,16 +143,15 @@ class ManagedUnsupportedVMSizesOperations:
         def prepare_request(next_link=None):
             if not next_link:
 
-                request = build_list_request(
+                _request = build_list_request(
                     location=location,
                     subscription_id=self._config.subscription_id,
                     api_version=api_version,
-                    template_url=self.list.metadata["url"],
                     headers=_headers,
                     params=_params,
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
 
             else:
                 # make call to next link with the client's api-version
@@ -165,13 +163,13 @@ class ManagedUnsupportedVMSizesOperations:
                     }
                 )
                 _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
+                _request = HttpRequest(
                     "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
-                request.method = "GET"
-            return request
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
+                _request.method = "GET"
+            return _request
 
         def extract_data(pipeline_response):
             deserialized = self._deserialize("ManagedVMSizesResult", pipeline_response)
@@ -181,11 +179,11 @@ class ManagedUnsupportedVMSizesOperations:
             return deserialized.next_link or None, iter(list_of_elem)
 
         def get_next(next_link=None):
-            request = prepare_request(next_link)
+            _request = prepare_request(next_link)
 
             _stream = False
             pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-                request, stream=_stream, **kwargs
+                _request, stream=_stream, **kwargs
             )
             response = pipeline_response.http_response
 
@@ -198,10 +196,6 @@ class ManagedUnsupportedVMSizesOperations:
 
         return ItemPaged(get_next, extract_data)
 
-    list.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/managedUnsupportedVMSizes"
-    }
-
     @distributed_trace
     def get(self, location: str, vm_size: str, **kwargs: Any) -> _models.ManagedVMSize:
         """Get unsupported vm size for Service Fabric Managed Clusters.
@@ -213,7 +207,6 @@ class ManagedUnsupportedVMSizesOperations:
         :type location: str
         :param vm_size: VM Size name. Required.
         :type vm_size: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: ManagedVMSize or the result of cls(response)
         :rtype: ~azure.mgmt.servicefabricmanagedclusters.models.ManagedVMSize
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -232,21 +225,20 @@ class ManagedUnsupportedVMSizesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.ManagedVMSize] = kwargs.pop("cls", None)
 
-        request = build_get_request(
+        _request = build_get_request(
             location=location,
             vm_size=vm_size,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.get.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -259,10 +251,6 @@ class ManagedUnsupportedVMSizesOperations:
         deserialized = self._deserialize("ManagedVMSize", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    get.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/managedUnsupportedVMSizes/{vmSize}"
-    }
+        return deserialized  # type: ignore
