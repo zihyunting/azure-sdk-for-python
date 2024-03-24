@@ -7,22 +7,31 @@
 # --------------------------------------------------------------------------
 
 from ._models_py3 import CloudErrorBody
+from ._models_py3 import DataScanner
+from ._models_py3 import DataScannersList
 from ._models_py3 import ErrorAdditionalInfo
 from ._models_py3 import Identity
 from ._models_py3 import Resource
 from ._models_py3 import SecurityOperator
 from ._models_py3 import SecurityOperatorList
+from ._models_py3 import SystemData
+
+from ._security_center_enums import CreatedByType
 from ._patch import __all__ as _patch_all
 from ._patch import *  # pylint: disable=unused-wildcard-import
 from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
     "CloudErrorBody",
+    "DataScanner",
+    "DataScannersList",
     "ErrorAdditionalInfo",
     "Identity",
     "Resource",
     "SecurityOperator",
     "SecurityOperatorList",
+    "SystemData",
+    "CreatedByType",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])
 _patch_sdk()
