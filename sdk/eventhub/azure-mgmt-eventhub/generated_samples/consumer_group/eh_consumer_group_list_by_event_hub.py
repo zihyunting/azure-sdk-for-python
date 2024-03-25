@@ -7,14 +7,15 @@
 # --------------------------------------------------------------------------
 
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.synapse import SynapseManagementClient
+
+from azure.mgmt.eventhub import EventHubManagementClient
 
 """
 # PREREQUISITES
     pip install azure-identity
-    pip install azure-mgmt-synapse
+    pip install azure-mgmt-eventhub
 # USAGE
-    python rename_sql_pool.py
+    python eh_consumer_group_list_by_event_hub.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -24,22 +25,20 @@ from azure.mgmt.synapse import SynapseManagementClient
 
 
 def main():
-    client = SynapseManagementClient(
+    client = EventHubManagementClient(
         credential=DefaultAzureCredential(),
-        subscription_id="00000000-1111-2222-3333-444444444444",
+        subscription_id="5f750a97-50d9-4e36-8081-c9ee4c0210d4",
     )
 
-    response = client.sql_pools.rename(
-        resource_group_name="Default-SQL-SouthEastAsia",
-        workspace_name="testsvr",
-        sql_pool_name="testdb",
-        parameters={
-            "id": "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Synapse/workspaces/testsvr/sqlPools/newtestdb"
-        },
+    response = client.consumer_groups.list_by_event_hub(
+        resource_group_name="ArunMonocle",
+        namespace_name="sdk-Namespace-2661",
+        event_hub_name="sdk-EventHub-6681",
     )
-    print(response)
+    for item in response:
+        print(item)
 
 
-# x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RenameSqlPool.json
+# x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupListByEventHub.json
 if __name__ == "__main__":
     main()

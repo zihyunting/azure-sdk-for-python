@@ -6,7 +6,10 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
+from typing import Any, IO, Union
+
 from azure.identity import DefaultAzureCredential
+
 from azure.mgmt.synapse import SynapseManagementClient
 
 """
@@ -29,13 +32,12 @@ def main():
         subscription_id="12345678-1234-1234-1234-123456789098",
     )
 
-    response = client.kusto_pools.begin_add_language_extensions(
+    client.kusto_pools.begin_add_language_extensions(
         workspace_name="kustorptest",
         kusto_pool_name="kustoclusterrptest4",
         resource_group_name="kustorptest",
         language_extensions_to_add={"value": [{"languageExtensionName": "PYTHON"}, {"languageExtensionName": "R"}]},
     ).result()
-    print(response)
 
 
 # x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsAdd.json
