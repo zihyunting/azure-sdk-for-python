@@ -1,0 +1,7 @@
+{
+  "commit": "e062b11ffa9f1bd0af0ba6d6d764055b6ade3599",
+  "repository_url": "https://github.com/Azure/azure-rest-api-specs",
+  "typespec_src": "specification/ai/ModelInference",
+  "@azure-tools/typespec-python": "0.22.4",
+  "@autorest/python": "6.13.8"
+}
