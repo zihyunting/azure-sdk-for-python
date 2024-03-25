@@ -308,7 +308,7 @@ class GlobalParameterType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     OBJECT = "Object"
     STRING = "String"
-    INT = "Int"
+    INT_ENUM = "Int"
     FLOAT = "Float"
     BOOL = "Bool"
     ARRAY = "Array"
@@ -450,12 +450,6 @@ class IntegrationRuntimeLicenseType(str, Enum, metaclass=CaseInsensitiveEnumMeta
     LICENSE_INCLUDED = "LicenseIncluded"
 
 
-class IntegrationRuntimeReferenceType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Type of integration runtime."""
-
-    INTEGRATION_RUNTIME_REFERENCE = "IntegrationRuntimeReference"
-
-
 class IntegrationRuntimeSsisCatalogPricingTier(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The pricing tier for the catalog database. The valid values could be found in
     https://azure.microsoft.com/en-us/pricing/details/sql-database/.
@@ -553,7 +547,7 @@ class NotebookParameterType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Notebook parameter type."""
 
     STRING = "string"
-    INT = "int"
+    INT_ENUM = "int"
     FLOAT = "float"
     BOOL = "bool"
 
@@ -603,7 +597,7 @@ class ParameterType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     OBJECT = "Object"
     STRING = "String"
-    INT = "Int"
+    INT_ENUM = "Int"
     FLOAT = "Float"
     BOOL = "Bool"
     ARRAY = "Array"
@@ -693,9 +687,8 @@ class RunQueryFilterOperator(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     EQUALS = "Equals"
     NOT_EQUALS = "NotEquals"
-    IN = "In"
-    NOT_IN = "NotIn"
     IN_ENUM = "In"
+    NOT_IN = "NotIn"
 
 
 class RunQueryOrder(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -961,7 +954,7 @@ class StoredProcedureParameterType(str, Enum, metaclass=CaseInsensitiveEnumMeta)
     """Stored procedure parameter type."""
 
     STRING = "String"
-    INT = "Int"
+    INT_ENUM = "Int"
     INT64 = "Int64"
     DECIMAL = "Decimal"
     GUID = "Guid"
@@ -1026,12 +1019,6 @@ class TumblingWindowFrequency(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     MINUTE = "Minute"
     HOUR = "Hour"
     MONTH = "Month"
-
-
-class Type(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Linked service reference type."""
-
-    LINKED_SERVICE_REFERENCE = "LinkedServiceReference"
 
 
 class VariableType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
