@@ -94,7 +94,7 @@ class GroupTypeEnum(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 class HttpStatusCode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """HttpStatusCode."""
 
-    CONTINUE = "Continue"
+    CONTINUE_ENUM = "Continue"
     SWITCHING_PROTOCOLS = "SwitchingProtocols"
     OK = "OK"
     CREATED = "Created"
@@ -192,7 +192,7 @@ class LinuxUpdateClasses(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
 
 class ModuleProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
-    """Gets or sets the provisioning state of the module."""
+    """Gets the provisioning state of the module."""
 
     CREATED = "Created"
     CREATING = "Creating"
@@ -208,7 +208,7 @@ class ModuleProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     MODULE_IMPORT_RUNBOOK_COMPLETE = "ModuleImportRunbookComplete"
     SUCCEEDED = "Succeeded"
     FAILED = "Failed"
-    CANCELLED = "Cancelled"
+    CANCELED = "Canceled"
     UPDATING = "Updating"
 
 
@@ -255,6 +255,7 @@ class RunbookTypeEnum(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     GRAPH_POWER_SHELL = "GraphPowerShell"
     PYTHON2 = "Python2"
     PYTHON3 = "Python3"
+    POWER_SHELL72 = "PowerShell72"
 
 
 class ScheduleDay(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -279,8 +280,8 @@ class ScheduleFrequency(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     HOUR = "Hour"
     WEEK = "Week"
     MONTH = "Month"
-    #: The minimum allowed interval for Minute schedules is 15 minutes.
     MINUTE = "Minute"
+    """The minimum allowed interval for Minute schedules is 15 minutes."""
 
 
 class SkuNameEnum(str, Enum, metaclass=CaseInsensitiveEnumMeta):
