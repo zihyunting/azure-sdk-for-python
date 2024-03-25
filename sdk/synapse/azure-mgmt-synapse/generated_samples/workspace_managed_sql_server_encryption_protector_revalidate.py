@@ -6,9 +6,15 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
+from typing import TYPE_CHECKING, Union
+
 from azure.identity import DefaultAzureCredential
+
 from azure.mgmt.synapse import SynapseManagementClient
 
+if TYPE_CHECKING:
+    # pylint: disable=unused-import,ungrouped-imports
+    from .. import models as _models
 """
 # PREREQUISITES
     pip install azure-identity
@@ -29,12 +35,11 @@ def main():
         subscription_id="00000000-1111-2222-3333-444444444444",
     )
 
-    response = client.workspace_managed_sql_server_encryption_protector.begin_revalidate(
+    client.workspace_managed_sql_server_encryption_protector.begin_revalidate(
         resource_group_name="wsg-7398",
         workspace_name="testWorkspace",
         encryption_protector_name="current",
     ).result()
-    print(response)
 
 
 # x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/WorkspaceManagedSqlServerEncryptionProtectorRevalidate.json
