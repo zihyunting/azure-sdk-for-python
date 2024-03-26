@@ -649,6 +649,7 @@ from ._models_py3 import ServiceNowV2LinkedService
 from ._models_py3 import ServiceNowV2ObjectDataset
 from ._models_py3 import ServiceNowV2Source
 from ._models_py3 import ServicePrincipalCredential
+from ._models_py3 import ServicePrincipalCredentialResource
 from ._models_py3 import SetVariableActivity
 from ._models_py3 import SftpLocation
 from ._models_py3 import SftpReadSettings
@@ -802,8 +803,8 @@ from ._data_factory_management_client_enums import CredentialReferenceType
 from ._data_factory_management_client_enums import DataFlowComputeType
 from ._data_factory_management_client_enums import DataFlowDebugCommandType
 from ._data_factory_management_client_enums import DataFlowReferenceType
+from ._data_factory_management_client_enums import DataSetReferenceType
 from ._data_factory_management_client_enums import DatasetCompressionLevel
-from ._data_factory_management_client_enums import DatasetReferenceType
 from ._data_factory_management_client_enums import DayOfWeek
 from ._data_factory_management_client_enums import DaysOfWeek
 from ._data_factory_management_client_enums import Db2AuthenticationType
@@ -1557,6 +1558,7 @@ __all__ = [
     "ServiceNowV2ObjectDataset",
     "ServiceNowV2Source",
     "ServicePrincipalCredential",
+    "ServicePrincipalCredentialResource",
     "SetVariableActivity",
     "SftpLocation",
     "SftpReadSettings",
@@ -1709,8 +1711,8 @@ __all__ = [
     "DataFlowComputeType",
     "DataFlowDebugCommandType",
     "DataFlowReferenceType",
+    "DataSetReferenceType",
     "DatasetCompressionLevel",
-    "DatasetReferenceType",
     "DayOfWeek",
     "DaysOfWeek",
     "Db2AuthenticationType",
