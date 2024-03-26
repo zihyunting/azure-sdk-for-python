@@ -9,8 +9,10 @@
 from copy import deepcopy
 from typing import Any, TYPE_CHECKING
 
+from azure.core.pipeline import policies
 from azure.core.rest import HttpRequest, HttpResponse
 from azure.mgmt.core import ARMPipelineClient
+from azure.mgmt.core.policies import ARMAutoResourceProviderRegistrationPolicy
 
 from . import models as _models
 from ._configuration import AzureArcDataManagementClientConfiguration
@@ -18,9 +20,12 @@ from ._serialization import Deserializer, Serializer
 from .operations import (
     ActiveDirectoryConnectorsOperations,
     DataControllersOperations,
+    FailoverGroupsOperations,
     Operations,
     PostgresInstancesOperations,
     SqlManagedInstancesOperations,
+    SqlServerAvailabilityGroupsOperations,
+    SqlServerDatabasesOperations,
     SqlServerInstancesOperations,
 )
 
@@ -29,7 +34,7 @@ if TYPE_CHECKING:
     from azure.core.credentials import TokenCredential
 
 
-class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-version-keyword
+class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-version-keyword,too-many-instance-attributes
     """The AzureArcData management API provides a RESTful set of web APIs to manage Azure Data
     Services on Azure Arc Resources.
 
@@ -38,6 +43,8 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
     :ivar sql_managed_instances: SqlManagedInstancesOperations operations
     :vartype sql_managed_instances:
      azure.mgmt.azurearcdata.operations.SqlManagedInstancesOperations
+    :ivar failover_groups: FailoverGroupsOperations operations
+    :vartype failover_groups: azure.mgmt.azurearcdata.operations.FailoverGroupsOperations
     :ivar sql_server_instances: SqlServerInstancesOperations operations
     :vartype sql_server_instances: azure.mgmt.azurearcdata.operations.SqlServerInstancesOperations
     :ivar data_controllers: DataControllersOperations operations
@@ -47,14 +54,19 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
      azure.mgmt.azurearcdata.operations.ActiveDirectoryConnectorsOperations
     :ivar postgres_instances: PostgresInstancesOperations operations
     :vartype postgres_instances: azure.mgmt.azurearcdata.operations.PostgresInstancesOperations
+    :ivar sql_server_availability_groups: SqlServerAvailabilityGroupsOperations operations
+    :vartype sql_server_availability_groups:
+     azure.mgmt.azurearcdata.operations.SqlServerAvailabilityGroupsOperations
+    :ivar sql_server_databases: SqlServerDatabasesOperations operations
+    :vartype sql_server_databases: azure.mgmt.azurearcdata.operations.SqlServerDatabasesOperations
     :param credential: Credential needed for the client to connect to Azure. Required.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The ID of the Azure subscription. Required.
     :type subscription_id: str
     :param base_url: Service URL. Default value is "https://management.azure.com".
     :type base_url: str
-    :keyword api_version: Api Version. Default value is "2022-03-01-preview". Note that overriding
-     this default value may result in unsupported behavior.
+    :keyword api_version: Api Version. Default value is "2024-01-01". Note that overriding this
+     default value may result in unsupported behavior.
     :paramtype api_version: str
     :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
      Retry-After header is present.
@@ -70,7 +82,25 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
         self._config = AzureArcDataManagementClientConfiguration(
             credential=credential, subscription_id=subscription_id, **kwargs
         )
-        self._client = ARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        _policies = kwargs.pop("policies", None)
+        if _policies is None:
+            _policies = [
+                policies.RequestIdPolicy(**kwargs),
+                self._config.headers_policy,
+                self._config.user_agent_policy,
+                self._config.proxy_policy,
+                policies.ContentDecodePolicy(**kwargs),
+                ARMAutoResourceProviderRegistrationPolicy(),
+                self._config.redirect_policy,
+                self._config.retry_policy,
+                self._config.authentication_policy,
+                self._config.custom_hook_policy,
+                self._config.logging_policy,
+                policies.DistributedTracingPolicy(**kwargs),
+                policies.SensitiveHeaderCleanupPolicy(**kwargs) if self._config.redirect_policy else None,
+                self._config.http_logging_policy,
+            ]
+        self._client: ARMPipelineClient = ARMPipelineClient(base_url=base_url, policies=_policies, **kwargs)
 
         client_models = {k: v for k, v in _models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
@@ -80,6 +110,7 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
         self.sql_managed_instances = SqlManagedInstancesOperations(
             self._client, self._config, self._serialize, self._deserialize
         )
+        self.failover_groups = FailoverGroupsOperations(self._client, self._config, self._serialize, self._deserialize)
         self.sql_server_instances = SqlServerInstancesOperations(
             self._client, self._config, self._serialize, self._deserialize
         )
@@ -92,8 +123,14 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
         self.postgres_instances = PostgresInstancesOperations(
             self._client, self._config, self._serialize, self._deserialize
         )
+        self.sql_server_availability_groups = SqlServerAvailabilityGroupsOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
+        self.sql_server_databases = SqlServerDatabasesOperations(
+            self._client, self._config, self._serialize, self._deserialize
+        )
 
-    def _send_request(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
+    def _send_request(self, request: HttpRequest, *, stream: bool = False, **kwargs: Any) -> HttpResponse:
         """Runs the network request through the client's chained policies.
 
         >>> from azure.core.rest import HttpRequest
@@ -113,7 +150,7 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
 
         request_copy = deepcopy(request)
         request_copy.url = self._client.format_url(request_copy.url)
-        return self._client.send_request(request_copy, **kwargs)
+        return self._client.send_request(request_copy, stream=stream, **kwargs)  # type: ignore
 
     def close(self) -> None:
         self._client.close()
@@ -122,5 +159,5 @@ class AzureArcDataManagementClient:  # pylint: disable=client-accepts-api-versio
         self._client.__enter__()
         return self
 
-    def __exit__(self, *exc_details) -> None:
+    def __exit__(self, *exc_details: Any) -> None:
         self._client.__exit__(*exc_details)

@@ -6,7 +6,10 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
+from typing import Any, IO, Union
+
 from azure.identity import DefaultAzureCredential
+
 from azure.mgmt.azurearcdata import AzureArcDataManagementClient
 
 """
@@ -29,14 +32,14 @@ def main():
         subscription_id="00000000-1111-2222-3333-444444444444",
     )
 
-    response = client.sql_server_instances.update(
+    response = client.sql_server_instances.begin_update(
         resource_group_name="testrg",
         sql_server_instance_name="testsqlServerInstance",
         parameters={"tags": {"mytag": "myval"}},
-    )
+    ).result()
     print(response)
 
 
-# x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/UpdateSqlServerInstance.json
+# x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2024-01-01/examples/UpdateSqlServerInstance.json
 if __name__ == "__main__":
     main()

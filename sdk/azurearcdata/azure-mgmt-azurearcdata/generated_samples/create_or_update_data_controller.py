@@ -6,7 +6,10 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
+from typing import Any, IO, Union
+
 from azure.identity import DefaultAzureCredential
+
 from azure.mgmt.azurearcdata import AzureArcDataManagementClient
 
 """
@@ -71,6 +74,6 @@ def main():
     print(response)
 
 
-# x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/CreateOrUpdateDataController.json
+# x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2024-01-01/examples/CreateOrUpdateDataController.json
 if __name__ == "__main__":
     main()
