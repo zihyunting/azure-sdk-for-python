@@ -77,7 +77,7 @@ class ApiProperties(_serialization.Model):
     """ApiProperties.
 
     :ivar server_version: Describes the ServerVersion of an a MongoDB account. Known values are:
-     "3.2", "3.6", "4.0", and "4.2".
+     "3.2", "3.6", "4.0", "4.2", "5.0", and "6.0".
     :vartype server_version: str or ~azure.mgmt.cosmosdb.models.ServerVersion
     """
 
@@ -88,7 +88,7 @@ class ApiProperties(_serialization.Model):
     def __init__(self, *, server_version: Optional[Union[str, "_models.ServerVersion"]] = None, **kwargs: Any) -> None:
         """
         :keyword server_version: Describes the ServerVersion of an a MongoDB account. Known values are:
-         "3.2", "3.6", "4.0", and "4.2".
+         "3.2", "3.6", "4.0", "4.2", "5.0", and "6.0".
         :paramtype server_version: str or ~azure.mgmt.cosmosdb.models.ServerVersion
         """
         super().__init__(**kwargs)
@@ -305,7 +305,7 @@ class AutoscaleSettingsResource(_serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar max_throughput: Represents maximum throughput container can scale up to. Required.
     :vartype max_throughput: int
@@ -376,7 +376,7 @@ class DataTransferDataSourceSink(_serialization.Model):
     You probably want to use the sub-classes and not this class directly. Known sub-classes are:
     AzureBlobDataTransferDataSourceSink, BaseCosmosDataTransferDataSourceSink
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar component: Known values are: "CosmosDBCassandra", "CosmosDBMongo", "CosmosDBSql", and
      "AzureBlobStorage".
@@ -407,7 +407,7 @@ class DataTransferDataSourceSink(_serialization.Model):
 class AzureBlobDataTransferDataSourceSink(DataTransferDataSourceSink):
     """An Azure Blob Storage data source/sink.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar component: Known values are: "CosmosDBCassandra", "CosmosDBMongo", "CosmosDBSql", and
      "AzureBlobStorage".
@@ -471,7 +471,7 @@ class BackupPolicy(_serialization.Model):
     You probably want to use the sub-classes and not this class directly. Known sub-classes are:
     ContinuousModeBackupPolicy, PeriodicModeBackupPolicy
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar type: Describes the mode of backups. Required. Known values are: "Periodic" and
      "Continuous".
@@ -651,7 +651,7 @@ class BaseCosmosDataTransferDataSourceSink(DataTransferDataSourceSink):
     CosmosCassandraDataTransferDataSourceSink, CosmosMongoDataTransferDataSourceSink,
     CosmosSqlDataTransferDataSourceSink
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar component: Known values are: "CosmosDBCassandra", "CosmosDBMongo", "CosmosDBSql", and
      "AzureBlobStorage".
@@ -952,7 +952,7 @@ class CassandraClusterPublicStatus(_serialization.Model):
         self.data_centers = data_centers
 
 
-class CassandraClusterPublicStatusDataCentersItem(_serialization.Model):
+class CassandraClusterPublicStatusDataCentersItem(_serialization.Model):  # pylint: disable=name-too-long
     """CassandraClusterPublicStatusDataCentersItem.
 
     :ivar name: The name of this Datacenter.
@@ -1042,7 +1042,7 @@ class CassandraKeyspaceCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -1163,27 +1163,6 @@ class CassandraKeyspaceGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class ExtendedResourceProperties(_serialization.Model):
     """The system generated resource properties associated with SQL databases, SQL containers, Gremlin
@@ -1223,7 +1202,7 @@ class ExtendedResourceProperties(_serialization.Model):
 class CassandraKeyspaceResource(_serialization.Model):
     """Cosmos DB Cassandra keyspace resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Cassandra keyspace. Required.
     :vartype id: str
@@ -1251,7 +1230,7 @@ class CassandraKeyspaceGetPropertiesResource(CassandraKeyspaceResource, Extended
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -1454,7 +1433,7 @@ class CassandraTableCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -1541,32 +1520,11 @@ class CassandraTableGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class CassandraTableResource(_serialization.Model):
     """Cosmos DB Cassandra table resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Cassandra table. Required.
     :vartype id: str
@@ -1620,7 +1578,7 @@ class CassandraTableGetPropertiesResource(CassandraTableResource, ExtendedResour
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -1792,7 +1750,7 @@ class CassandraViewCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -1879,32 +1837,11 @@ class CassandraViewGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class CassandraViewResource(_serialization.Model):
     """Cosmos DB Cassandra view resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Cassandra view. Required.
     :vartype id: str
@@ -1939,7 +1876,7 @@ class CassandraViewGetPropertiesResource(CassandraViewResource, ExtendedResource
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -2175,7 +2112,7 @@ class CheckNameAvailabilityResponse(_serialization.Model):
 class ClientEncryptionIncludedPath(_serialization.Model):
     """.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar path: Path that needs to be encrypted. Required.
     :vartype path: str
@@ -2233,10 +2170,10 @@ class ClientEncryptionIncludedPath(_serialization.Model):
         self.encryption_algorithm = encryption_algorithm
 
 
-class ClientEncryptionKeyCreateUpdateParameters(_serialization.Model):
+class ClientEncryptionKeyCreateUpdateParameters(_serialization.Model):  # pylint: disable=name-too-long
     """Parameters to create and update ClientEncryptionKey.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar resource: The standard JSON format of a ClientEncryptionKey. Required.
     :vartype resource: ~azure.mgmt.cosmosdb.models.ClientEncryptionKeyResource
@@ -2455,7 +2392,7 @@ class ClientEncryptionKeysListResult(_serialization.Model):
 class ClientEncryptionPolicy(_serialization.Model):
     """Cosmos DB client encryption policy.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar included_paths: Paths of the item that need encryption along with path-specific settings.
      Required.
@@ -2974,7 +2911,7 @@ class CommandOutput(_serialization.Model):
 class CommandPostBody(_serialization.Model):
     """Specification of which command to run where.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar command: The command which should be run. Required.
     :vartype command: str
@@ -3324,7 +3261,7 @@ class ConnectionString(_serialization.Model):
 class ConsistencyPolicy(_serialization.Model):
     """The consistency policy for the Cosmos DB database account.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar default_consistency_level: The default consistency level and configuration settings of
      the Cosmos DB account. Required. Known values are: "Eventual", "Session", "BoundedStaleness",
@@ -3479,7 +3416,7 @@ class ContinuousBackupRestoreLocation(_serialization.Model):
 class ContinuousModeBackupPolicy(BackupPolicy):
     """The object representing continuous mode backup policy.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar type: Describes the mode of backups. Required. Known values are: "Periodic" and
      "Continuous".
@@ -3545,7 +3482,7 @@ class ContinuousModeProperties(_serialization.Model):
 class CorsPolicy(_serialization.Model):
     """The CORS policy for the Cosmos DB database account.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar allowed_origins: The origin domains that are permitted to make a request against the
      service via CORS. Required.
@@ -3612,10 +3549,10 @@ class CorsPolicy(_serialization.Model):
         self.max_age_in_seconds = max_age_in_seconds
 
 
-class CosmosCassandraDataTransferDataSourceSink(BaseCosmosDataTransferDataSourceSink):
+class CosmosCassandraDataTransferDataSourceSink(BaseCosmosDataTransferDataSourceSink):  # pylint: disable=name-too-long
     """A CosmosDB Cassandra API data source/sink.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar component: Known values are: "CosmosDBCassandra", "CosmosDBMongo", "CosmosDBSql", and
      "AzureBlobStorage".
@@ -3661,7 +3598,7 @@ class CosmosCassandraDataTransferDataSourceSink(BaseCosmosDataTransferDataSource
 class CosmosMongoDataTransferDataSourceSink(BaseCosmosDataTransferDataSourceSink):
     """A CosmosDB Mongo API data source/sink.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar component: Known values are: "CosmosDBCassandra", "CosmosDBMongo", "CosmosDBSql", and
      "AzureBlobStorage".
@@ -3707,7 +3644,7 @@ class CosmosMongoDataTransferDataSourceSink(BaseCosmosDataTransferDataSourceSink
 class CosmosSqlDataTransferDataSourceSink(BaseCosmosDataTransferDataSourceSink):
     """A CosmosDB No Sql API data source/sink.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar component: Known values are: "CosmosDBCassandra", "CosmosDBMongo", "CosmosDBSql", and
      "AzureBlobStorage".
@@ -3755,7 +3692,7 @@ class CreateJobRequest(ARMProxyResource):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the database account.
     :vartype id: str
@@ -3871,7 +3808,7 @@ class DatabaseAccountCreateUpdateParameters(ARMResourceProperties):  # pylint: d
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -4748,7 +4685,7 @@ class DatabaseAccountKeysMetadata(_serialization.Model):
         self.secondary_readonly_master_key = None
 
 
-class DatabaseAccountListConnectionStringsResult(_serialization.Model):
+class DatabaseAccountListConnectionStringsResult(_serialization.Model):  # pylint: disable=name-too-long
     """The connection strings for the given database account.
 
     :ivar connection_strings: An array that contains the connection strings for the Cosmos DB
@@ -4840,7 +4777,7 @@ class DatabaseAccountListKeysResult(DatabaseAccountListReadOnlyKeysResult):
 class DatabaseAccountRegenerateKeyParameters(_serialization.Model):
     """Parameters to regenerate the keys within the database account.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar key_kind: The access key to regenerate. Required. Known values are: "primary",
      "secondary", "primaryReadonly", and "secondaryReadonly".
@@ -5612,7 +5549,7 @@ class DataTransferJobProperties(_serialization.Model):  # pylint: disable=too-ma
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar job_name: Job Name.
     :vartype job_name: str
@@ -5746,22 +5683,6 @@ class DataTransferRegionalServiceResource(RegionalServiceResource):
     :vartype status: str or ~azure.mgmt.cosmosdb.models.ServiceStatus
     """
 
-    _validation = {
-        "name": {"readonly": True},
-        "location": {"readonly": True},
-        "status": {"readonly": True},
-    }
-
-    _attribute_map = {
-        "name": {"key": "name", "type": "str"},
-        "location": {"key": "location", "type": "str"},
-        "status": {"key": "status", "type": "str"},
-    }
-
-    def __init__(self, **kwargs: Any) -> None:
-        """ """
-        super().__init__(**kwargs)
-
 
 class DataTransferServiceResource(_serialization.Model):
     """Describes the service response property.
@@ -5794,7 +5715,7 @@ class ServiceResourceProperties(_serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar additional_properties: Unmatched properties from the message are deserialized to this
      collection.
@@ -5871,7 +5792,7 @@ class DataTransferServiceResourceProperties(ServiceResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar additional_properties: Unmatched properties from the message are deserialized to this
      collection.
@@ -6106,7 +6027,7 @@ class ExcludedPath(_serialization.Model):
 class FailoverPolicies(_serialization.Model):
     """The list of new failover policies for the failover priority change.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar failover_policies: List of failover policies. Required.
     :vartype failover_policies: list[~azure.mgmt.cosmosdb.models.FailoverPolicy]
@@ -6181,7 +6102,7 @@ class Resource(_serialization.Model):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -6223,7 +6144,7 @@ class ProxyResource(Resource):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -6235,34 +6156,16 @@ class ProxyResource(Resource):
     :vartype system_data: ~azure.mgmt.cosmosdb.models.SystemData
     """
 
-    _validation = {
-        "id": {"readonly": True},
-        "name": {"readonly": True},
-        "type": {"readonly": True},
-        "system_data": {"readonly": True},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "name": {"key": "name", "type": "str"},
-        "type": {"key": "type", "type": "str"},
-        "system_data": {"key": "systemData", "type": "SystemData"},
-    }
-
-    def __init__(self, **kwargs: Any) -> None:
-        """ """
-        super().__init__(**kwargs)
-
 
 class FirewallRule(ProxyResource):
     """Represents a mongo cluster firewall rule.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -6417,7 +6320,7 @@ class GraphAPIComputeServiceResourceProperties(ServiceResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar additional_properties: Unmatched properties from the message are deserialized to this
      collection.
@@ -6495,7 +6398,7 @@ class GraphAPIComputeServiceResourceProperties(ServiceResourceProperties):
 class GraphResource(_serialization.Model):
     """Cosmos DB Graph resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Graph. Required.
     :vartype id: str
@@ -6523,7 +6426,7 @@ class GraphResourceCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -6610,51 +6513,15 @@ class GraphResourceGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class GraphResourceGetPropertiesResource(GraphResource):
     """GraphResourceGetPropertiesResource.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Graph. Required.
     :vartype id: str
     """
-
-    _validation = {
-        "id": {"required": True},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-    }
-
-    def __init__(self, *, id: str, **kwargs: Any) -> None:  # pylint: disable=redefined-builtin
-        """
-        :keyword id: Name of the Cosmos DB Graph. Required.
-        :paramtype id: str
-        """
-        super().__init__(id=id, **kwargs)
 
 
 class GraphResourceGetResults(ARMResourceProperties):
@@ -6762,7 +6629,7 @@ class GremlinDatabaseCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -6849,32 +6716,11 @@ class GremlinDatabaseGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class GremlinDatabaseResource(_serialization.Model):
     """Cosmos DB Gremlin database resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Gremlin database. Required.
     :vartype id: str
@@ -6923,7 +6769,7 @@ class GremlinDatabaseGetPropertiesResource(GremlinDatabaseResource, ExtendedReso
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -7116,7 +6962,7 @@ class GremlinGraphCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -7203,32 +7049,11 @@ class GremlinGraphGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class GremlinGraphResource(_serialization.Model):
     """Cosmos DB Gremlin graph resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB Gremlin graph. Required.
     :vartype id: str
@@ -7327,7 +7152,7 @@ class GremlinGraphGetPropertiesResource(
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -8155,7 +7980,7 @@ class ManagedServiceIdentity(_serialization.Model):
     :vartype type: str or ~azure.mgmt.cosmosdb.models.ResourceIdentityType
     :ivar user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
-     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.  # pylint: disable=line-too-long
     :vartype user_assigned_identities: dict[str,
      ~azure.mgmt.cosmosdb.models.ManagedServiceIdentityUserAssignedIdentity]
     """
@@ -8190,7 +8015,7 @@ class ManagedServiceIdentity(_serialization.Model):
         :paramtype type: str or ~azure.mgmt.cosmosdb.models.ResourceIdentityType
         :keyword user_assigned_identities: The list of user identities associated with resource. The
          user identity dictionary key references will be ARM resource ids in the form:
-         '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+         '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.  # pylint: disable=line-too-long
         :paramtype user_assigned_identities: dict[str,
          ~azure.mgmt.cosmosdb.models.ManagedServiceIdentityUserAssignedIdentity]
         """
@@ -8201,7 +8026,7 @@ class ManagedServiceIdentity(_serialization.Model):
         self.user_assigned_identities = user_assigned_identities
 
 
-class ManagedServiceIdentityUserAssignedIdentity(_serialization.Model):
+class ManagedServiceIdentityUserAssignedIdentity(_serialization.Model):  # pylint: disable=name-too-long
     """ManagedServiceIdentityUserAssignedIdentity.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -8234,7 +8059,7 @@ class MaterializedViewDefinition(_serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar source_collection_rid: An unique identifier for the source collection. This is a system
      generated property.
@@ -8274,7 +8099,7 @@ class MaterializedViewDefinition(_serialization.Model):
         self.definition = definition
 
 
-class MaterializedViewsBuilderRegionalServiceResource(RegionalServiceResource):
+class MaterializedViewsBuilderRegionalServiceResource(RegionalServiceResource):  # pylint: disable=name-too-long
     """Resource for a regional service location.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -8287,22 +8112,6 @@ class MaterializedViewsBuilderRegionalServiceResource(RegionalServiceResource):
      "Updating", "Deleting", "Error", and "Stopped".
     :vartype status: str or ~azure.mgmt.cosmosdb.models.ServiceStatus
     """
-
-    _validation = {
-        "name": {"readonly": True},
-        "location": {"readonly": True},
-        "status": {"readonly": True},
-    }
-
-    _attribute_map = {
-        "name": {"key": "name", "type": "str"},
-        "location": {"key": "location", "type": "str"},
-        "status": {"key": "status", "type": "str"},
-    }
-
-    def __init__(self, **kwargs: Any) -> None:
-        """ """
-        super().__init__(**kwargs)
 
 
 class MaterializedViewsBuilderServiceResource(_serialization.Model):
@@ -8329,12 +8138,12 @@ class MaterializedViewsBuilderServiceResource(_serialization.Model):
         self.properties = properties
 
 
-class MaterializedViewsBuilderServiceResourceProperties(ServiceResourceProperties):
+class MaterializedViewsBuilderServiceResourceProperties(ServiceResourceProperties):  # pylint: disable=name-too-long
     """Properties for MaterializedViewsBuilderServiceResource.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar additional_properties: Unmatched properties from the message are deserialized to this
      collection.
@@ -8673,10 +8482,10 @@ class TrackedResource(Resource):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -8726,10 +8535,10 @@ class MongoCluster(TrackedResource):  # pylint: disable=too-many-instance-attrib
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -9013,7 +8822,7 @@ class MongoDBCollectionCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -9100,32 +8909,11 @@ class MongoDBCollectionGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class MongoDBCollectionResource(_serialization.Model):
     """Cosmos DB MongoDB collection resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB MongoDB collection. Required.
     :vartype id: str
@@ -9195,7 +8983,7 @@ class MongoDBCollectionGetPropertiesResource(MongoDBCollectionResource, Extended
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -9389,7 +9177,7 @@ class MongoDBDatabaseCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -9476,32 +9264,11 @@ class MongoDBDatabaseGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class MongoDBDatabaseResource(_serialization.Model):
     """Cosmos DB MongoDB database resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB MongoDB database. Required.
     :vartype id: str
@@ -9550,7 +9317,7 @@ class MongoDBDatabaseGetPropertiesResource(MongoDBDatabaseResource, ExtendedReso
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -9790,7 +9557,7 @@ class MongoIndexOptions(_serialization.Model):
         self.unique = unique
 
 
-class MongoRoleDefinitionCreateUpdateParameters(_serialization.Model):
+class MongoRoleDefinitionCreateUpdateParameters(_serialization.Model):  # pylint: disable=name-too-long
     """Parameters to create and update an Azure Cosmos DB Mongo Role Definition.
 
     :ivar role_name: A user-friendly name for the Role Definition. Must be unique for the database
@@ -9956,7 +9723,7 @@ class MongoRoleDefinitionListResult(_serialization.Model):
         self.value = None
 
 
-class MongoUserDefinitionCreateUpdateParameters(_serialization.Model):
+class MongoUserDefinitionCreateUpdateParameters(_serialization.Model):  # pylint: disable=name-too-long
     """Parameters to create and update an Azure Cosmos DB Mongo User Definition.
 
     :ivar user_name: The user name for User Definition.
@@ -10303,22 +10070,6 @@ class NotebookWorkspaceCreateUpdateParameters(ARMProxyResource):
     :ivar type: The type of Azure resource.
     :vartype type: str
     """
-
-    _validation = {
-        "id": {"readonly": True},
-        "name": {"readonly": True},
-        "type": {"readonly": True},
-    }
-
-    _attribute_map = {
-        "id": {"key": "id", "type": "str"},
-        "name": {"key": "name", "type": "str"},
-        "type": {"key": "type", "type": "str"},
-    }
-
-    def __init__(self, **kwargs: Any) -> None:
-        """ """
-        super().__init__(**kwargs)
 
 
 class NotebookWorkspaceListResult(_serialization.Model):
@@ -10790,7 +10541,7 @@ class PercentileMetricValue(MetricValue):  # pylint: disable=too-many-instance-a
 class PeriodicModeBackupPolicy(BackupPolicy):
     """The object representing periodic mode backup policy.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar type: Describes the mode of backups. Required. Known values are: "Periodic" and
      "Continuous".
@@ -10913,7 +10664,7 @@ class Permission(_serialization.Model):
 class PhysicalPartitionId(_serialization.Model):
     """PhysicalPartitionId object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Id of a physical partition. Required.
     :vartype id: str
@@ -10992,7 +10743,7 @@ class PhysicalPartitionStorageInfoCollection(_serialization.Model):
         self.physical_partition_storage_info_collection = None
 
 
-class PhysicalPartitionThroughputInfoProperties(_serialization.Model):
+class PhysicalPartitionThroughputInfoProperties(_serialization.Model):  # pylint: disable=name-too-long
     """The properties of an Azure Cosmos DB PhysicalPartitionThroughputInfoProperties object.
 
     :ivar physical_partition_throughput_info: Array of physical partition throughput info objects.
@@ -11026,7 +10777,7 @@ class PhysicalPartitionThroughputInfoProperties(_serialization.Model):
 class PhysicalPartitionThroughputInfoResource(_serialization.Model):
     """PhysicalPartitionThroughputInfo object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Id of a physical partition. Required.
     :vartype id: str
@@ -11129,34 +10880,15 @@ class PhysicalPartitionThroughputInfoResult(ARMResourceProperties):
         self.resource = resource
 
 
-class PhysicalPartitionThroughputInfoResultPropertiesResource(PhysicalPartitionThroughputInfoProperties):
+class PhysicalPartitionThroughputInfoResultPropertiesResource(
+    PhysicalPartitionThroughputInfoProperties
+):  # pylint: disable=name-too-long
     """properties of physical partition throughput info.
 
     :ivar physical_partition_throughput_info: Array of physical partition throughput info objects.
     :vartype physical_partition_throughput_info:
      list[~azure.mgmt.cosmosdb.models.PhysicalPartitionThroughputInfoResource]
     """
-
-    _attribute_map = {
-        "physical_partition_throughput_info": {
-            "key": "physicalPartitionThroughputInfo",
-            "type": "[PhysicalPartitionThroughputInfoResource]",
-        },
-    }
-
-    def __init__(
-        self,
-        *,
-        physical_partition_throughput_info: Optional[List["_models.PhysicalPartitionThroughputInfoResource"]] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword physical_partition_throughput_info: Array of physical partition throughput info
-         objects.
-        :paramtype physical_partition_throughput_info:
-         list[~azure.mgmt.cosmosdb.models.PhysicalPartitionThroughputInfoResource]
-        """
-        super().__init__(physical_partition_throughput_info=physical_partition_throughput_info, **kwargs)
 
 
 class PrivateEndpointConnection(ProxyResource):
@@ -11165,7 +10897,7 @@ class PrivateEndpointConnection(ProxyResource):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -11341,7 +11073,7 @@ class PrivateLinkResourceListResult(_serialization.Model):
         self.value = value
 
 
-class PrivateLinkServiceConnectionStateProperty(_serialization.Model):
+class PrivateLinkServiceConnectionStateProperty(_serialization.Model):  # pylint: disable=name-too-long
     """Connection State of the Private Endpoint Connection.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -11441,7 +11173,7 @@ class RedistributeThroughputParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -11512,7 +11244,7 @@ class RedistributeThroughputParameters(ARMResourceProperties):
 class RedistributeThroughputPropertiesResource(_serialization.Model):
     """Resource to redistribute throughput for Azure Cosmos DB resource.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar throughput_policy: ThroughputPolicy to apply for throughput redistribution. Required.
      Known values are: "none", "equal", and "custom".
@@ -11575,7 +11307,7 @@ class RedistributeThroughputPropertiesResource(_serialization.Model):
 class RegionForOnlineOffline(_serialization.Model):
     """Cosmos DB region to online or offline.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar region: Cosmos DB region, with spaces between words and each word capitalized. Required.
     :vartype region: str
@@ -11604,7 +11336,7 @@ class RestoreParametersBase(_serialization.Model):
 
     :ivar restore_source: The id of the restorable database account from which the restore has to
      be initiated. For example:
-     /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
+     /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.  # pylint: disable=line-too-long
     :vartype restore_source: str
     :ivar restore_timestamp_in_utc: Time to which the account has to be restored (ISO-8601 format).
     :vartype restore_timestamp_in_utc: ~datetime.datetime
@@ -11630,7 +11362,7 @@ class RestoreParametersBase(_serialization.Model):
         """
         :keyword restore_source: The id of the restorable database account from which the restore has
          to be initiated. For example:
-         /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
+         /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.  # pylint: disable=line-too-long
         :paramtype restore_source: str
         :keyword restore_timestamp_in_utc: Time to which the account has to be restored (ISO-8601
          format).
@@ -11650,7 +11382,7 @@ class ResourceRestoreParameters(RestoreParametersBase):
 
     :ivar restore_source: The id of the restorable database account from which the restore has to
      be initiated. For example:
-     /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
+     /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.  # pylint: disable=line-too-long
     :vartype restore_source: str
     :ivar restore_timestamp_in_utc: Time to which the account has to be restored (ISO-8601 format).
     :vartype restore_timestamp_in_utc: ~datetime.datetime
@@ -11658,39 +11390,6 @@ class ResourceRestoreParameters(RestoreParametersBase):
      disabled upon the successful restore.
     :vartype restore_with_ttl_disabled: bool
     """
-
-    _attribute_map = {
-        "restore_source": {"key": "restoreSource", "type": "str"},
-        "restore_timestamp_in_utc": {"key": "restoreTimestampInUtc", "type": "iso-8601"},
-        "restore_with_ttl_disabled": {"key": "restoreWithTtlDisabled", "type": "bool"},
-    }
-
-    def __init__(
-        self,
-        *,
-        restore_source: Optional[str] = None,
-        restore_timestamp_in_utc: Optional[datetime.datetime] = None,
-        restore_with_ttl_disabled: Optional[bool] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword restore_source: The id of the restorable database account from which the restore has
-         to be initiated. For example:
-         /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-        :paramtype restore_source: str
-        :keyword restore_timestamp_in_utc: Time to which the account has to be restored (ISO-8601
-         format).
-        :paramtype restore_timestamp_in_utc: ~datetime.datetime
-        :keyword restore_with_ttl_disabled: Specifies whether the restored account will have
-         Time-To-Live disabled upon the successful restore.
-        :paramtype restore_with_ttl_disabled: bool
-        """
-        super().__init__(
-            restore_source=restore_source,
-            restore_timestamp_in_utc=restore_timestamp_in_utc,
-            restore_with_ttl_disabled=restore_with_ttl_disabled,
-            **kwargs
-        )
 
 
 class RestorableDatabaseAccountGetResult(_serialization.Model):
@@ -11848,7 +11547,7 @@ class RestorableGremlinDatabaseGetResult(_serialization.Model):
         self.resource = resource
 
 
-class RestorableGremlinDatabasePropertiesResource(_serialization.Model):
+class RestorableGremlinDatabasePropertiesResource(_serialization.Model):  # pylint: disable=name-too-long
     """The resource of an Azure Cosmos DB Gremlin database event.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -12201,7 +11900,7 @@ class RestorableMongodbCollectionGetResult(_serialization.Model):
         self.resource = resource
 
 
-class RestorableMongodbCollectionPropertiesResource(_serialization.Model):
+class RestorableMongodbCollectionPropertiesResource(_serialization.Model):  # pylint: disable=name-too-long
     """The resource of an Azure Cosmos DB MongoDB collection event.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -12321,7 +12020,7 @@ class RestorableMongodbDatabaseGetResult(_serialization.Model):
         self.resource = resource
 
 
-class RestorableMongodbDatabasePropertiesResource(_serialization.Model):
+class RestorableMongodbDatabasePropertiesResource(_serialization.Model):  # pylint: disable=name-too-long
     """The resource of an Azure Cosmos DB MongoDB database event.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -12581,7 +12280,7 @@ class RestorableSqlContainerPropertiesResource(_serialization.Model):
 class SqlContainerResource(_serialization.Model):  # pylint: disable=too-many-instance-attributes
     """Cosmos DB SQL container resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB SQL container. Required.
     :vartype id: str
@@ -12698,12 +12397,12 @@ class SqlContainerResource(_serialization.Model):  # pylint: disable=too-many-in
 
 class RestorableSqlContainerPropertiesResourceContainer(
     SqlContainerResource, ExtendedResourceProperties
-):  # pylint: disable=too-many-instance-attributes
+):  # pylint: disable=too-many-instance-attributes,name-too-long
     """Cosmos DB SQL container resource object.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -12987,7 +12686,7 @@ class RestorableSqlDatabasePropertiesResource(_serialization.Model):
 class SqlDatabaseResource(_serialization.Model):
     """Cosmos DB SQL database resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB SQL database. Required.
     :vartype id: str
@@ -13031,12 +12730,14 @@ class SqlDatabaseResource(_serialization.Model):
         self.create_mode = create_mode
 
 
-class RestorableSqlDatabasePropertiesResourceDatabase(SqlDatabaseResource, ExtendedResourceProperties):
+class RestorableSqlDatabasePropertiesResourceDatabase(
+    SqlDatabaseResource, ExtendedResourceProperties
+):  # pylint: disable=name-too-long
     """Cosmos DB SQL database resource object.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -13389,7 +13090,7 @@ class RestoreParameters(RestoreParametersBase):
 
     :ivar restore_source: The id of the restorable database account from which the restore has to
      be initiated. For example:
-     /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
+     /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.  # pylint: disable=line-too-long
     :vartype restore_source: str
     :ivar restore_timestamp_in_utc: Time to which the account has to be restored (ISO-8601 format).
     :vartype restore_timestamp_in_utc: ~datetime.datetime
@@ -13439,7 +13140,7 @@ class RestoreParameters(RestoreParametersBase):
         """
         :keyword restore_source: The id of the restorable database account from which the restore has
          to be initiated. For example:
-         /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
+         /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.  # pylint: disable=line-too-long
         :paramtype restore_source: str
         :keyword restore_timestamp_in_utc: Time to which the account has to be restored (ISO-8601
          format).
@@ -13478,7 +13179,7 @@ class RetrieveThroughputParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -13549,7 +13250,7 @@ class RetrieveThroughputParameters(ARMResourceProperties):
 class RetrieveThroughputPropertiesResource(_serialization.Model):
     """Resource to retrieve throughput information for Cosmos DB resource.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar physical_partition_ids: Array of PhysicalPartitionId objects. Required.
     :vartype physical_partition_ids: list[~azure.mgmt.cosmosdb.models.PhysicalPartitionId]
@@ -13764,7 +13465,7 @@ class SqlContainerCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -13851,27 +13552,6 @@ class SqlContainerGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class SqlContainerGetPropertiesResource(
     SqlContainerResource, ExtendedResourceProperties
@@ -13880,7 +13560,7 @@ class SqlContainerGetPropertiesResource(
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -14130,7 +13810,7 @@ class SqlDatabaseCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -14217,34 +13897,13 @@ class SqlDatabaseGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class SqlDatabaseGetPropertiesResource(SqlDatabaseResource, ExtendedResourceProperties):
     """SqlDatabaseGetPropertiesResource.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -14422,7 +14081,7 @@ class SqlDatabaseListResult(_serialization.Model):
         self.value = None
 
 
-class SqlDedicatedGatewayRegionalServiceResource(RegionalServiceResource):
+class SqlDedicatedGatewayRegionalServiceResource(RegionalServiceResource):  # pylint: disable=name-too-long
     """Resource for a regional service location.
 
     Variables are only populated by the server, and will be ignored when sending a request.
@@ -14480,12 +14139,12 @@ class SqlDedicatedGatewayServiceResource(_serialization.Model):
         self.properties = properties
 
 
-class SqlDedicatedGatewayServiceResourceProperties(ServiceResourceProperties):
+class SqlDedicatedGatewayServiceResourceProperties(ServiceResourceProperties):  # pylint: disable=name-too-long
     """Properties for SqlDedicatedGatewayServiceResource.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar additional_properties: Unmatched properties from the message are deserialized to this
      collection.
@@ -14852,7 +14511,7 @@ class SqlStoredProcedureCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -14932,7 +14591,7 @@ class SqlStoredProcedureCreateUpdateParameters(ARMResourceProperties):
 class SqlStoredProcedureResource(_serialization.Model):
     """Cosmos DB SQL storedProcedure resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB SQL storedProcedure. Required.
     :vartype id: str
@@ -14968,7 +14627,7 @@ class SqlStoredProcedureGetPropertiesResource(SqlStoredProcedureResource, Extend
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -15113,7 +14772,7 @@ class SqlTriggerCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -15193,7 +14852,7 @@ class SqlTriggerCreateUpdateParameters(ARMResourceProperties):
 class SqlTriggerResource(_serialization.Model):
     """Cosmos DB SQL trigger resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB SQL trigger. Required.
     :vartype id: str
@@ -15249,7 +14908,7 @@ class SqlTriggerGetPropertiesResource(SqlTriggerResource, ExtendedResourceProper
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -15409,12 +15068,12 @@ class SqlTriggerListResult(_serialization.Model):
         self.value = None
 
 
-class SqlUserDefinedFunctionCreateUpdateParameters(ARMResourceProperties):
+class SqlUserDefinedFunctionCreateUpdateParameters(ARMResourceProperties):  # pylint: disable=name-too-long
     """Parameters to create and update Cosmos DB userDefinedFunction.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -15494,7 +15153,7 @@ class SqlUserDefinedFunctionCreateUpdateParameters(ARMResourceProperties):
 class SqlUserDefinedFunctionResource(_serialization.Model):
     """Cosmos DB SQL userDefinedFunction resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB SQL userDefinedFunction. Required.
     :vartype id: str
@@ -15525,12 +15184,14 @@ class SqlUserDefinedFunctionResource(_serialization.Model):
         self.body = body
 
 
-class SqlUserDefinedFunctionGetPropertiesResource(SqlUserDefinedFunctionResource, ExtendedResourceProperties):
+class SqlUserDefinedFunctionGetPropertiesResource(
+    SqlUserDefinedFunctionResource, ExtendedResourceProperties
+):  # pylint: disable=name-too-long
     """SqlUserDefinedFunctionGetPropertiesResource.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -15739,7 +15400,7 @@ class TableCreateUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -15826,32 +15487,11 @@ class TableGetPropertiesOptions(OptionsResource):
     :vartype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
     """
 
-    _attribute_map = {
-        "throughput": {"key": "throughput", "type": "int"},
-        "autoscale_settings": {"key": "autoscaleSettings", "type": "AutoscaleSettings"},
-    }
-
-    def __init__(
-        self,
-        *,
-        throughput: Optional[int] = None,
-        autoscale_settings: Optional["_models.AutoscaleSettings"] = None,
-        **kwargs: Any
-    ) -> None:
-        """
-        :keyword throughput: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-         ThroughputSetting resource when retrieving offer details.
-        :paramtype throughput: int
-        :keyword autoscale_settings: Specifies the Autoscale settings.
-        :paramtype autoscale_settings: ~azure.mgmt.cosmosdb.models.AutoscaleSettings
-        """
-        super().__init__(throughput=throughput, autoscale_settings=autoscale_settings, **kwargs)
-
 
 class TableResource(_serialization.Model):
     """Cosmos DB table resource object.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Name of the Cosmos DB table. Required.
     :vartype id: str
@@ -15900,7 +15540,7 @@ class TableGetPropertiesResource(TableResource, ExtendedResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar rid: A system generated property. A unique identifier.
     :vartype rid: str
@@ -16147,7 +15787,7 @@ class ThroughputPoolAccountResource(ProxyResource):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -16248,10 +15888,10 @@ class ThroughputPoolResource(TrackedResource):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: Fully qualified resource ID for the resource. E.g.
-     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".  # pylint: disable=line-too-long
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
@@ -16602,7 +16242,7 @@ class ThroughputSettingsUpdateParameters(ARMResourceProperties):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    All required parameters must be populated in order to send to Azure.
+    All required parameters must be populated in order to send to server.
 
     :ivar id: The unique resource identifier of the ARM resource.
     :vartype id: str
@@ -16741,7 +16381,7 @@ class VirtualNetworkRule(_serialization.Model):
     """Virtual Network ACL Rule object.
 
     :ivar id: Resource ID of a subnet, for example:
-     /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.  # pylint: disable=line-too-long
     :vartype id: str
     :ivar ignore_missing_v_net_service_endpoint: Create firewall rule before the virtual network
      has vnet service endpoint enabled.
@@ -16762,7 +16402,7 @@ class VirtualNetworkRule(_serialization.Model):
     ) -> None:
         """
         :keyword id: Resource ID of a subnet, for example:
-         /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+         /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.  # pylint: disable=line-too-long
         :paramtype id: str
         :keyword ignore_missing_v_net_service_endpoint: Create firewall rule before the virtual network
          has vnet service endpoint enabled.
