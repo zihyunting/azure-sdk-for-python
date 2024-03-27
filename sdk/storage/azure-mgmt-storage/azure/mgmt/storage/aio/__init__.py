@@ -6,5 +6,5 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._storage_management_client import StorageManagementClient
-__all__ = ['StorageManagementClient']
+from ._storage_task_assignments_management_client import StorageTaskAssignmentsManagementClient
+__all__ = ['StorageTaskAssignmentsManagementClient']
