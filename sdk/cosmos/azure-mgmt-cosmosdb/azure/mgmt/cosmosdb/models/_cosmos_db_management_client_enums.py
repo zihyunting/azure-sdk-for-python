@@ -434,6 +434,8 @@ class ServerVersion(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     THREE6 = "3.6"
     FOUR0 = "4.0"
     FOUR2 = "4.2"
+    FIVE0 = "5.0"
+    SIX0 = "6.0"
 
 
 class ServiceSize(str, Enum, metaclass=CaseInsensitiveEnumMeta):
