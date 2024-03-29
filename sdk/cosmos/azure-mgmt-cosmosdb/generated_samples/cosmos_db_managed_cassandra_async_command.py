@@ -6,7 +6,10 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
+from typing import Any, IO, Union
+
 from azure.identity import DefaultAzureCredential
+
 from azure.mgmt.cosmosdb import CosmosDBManagementClient
 
 """
@@ -14,7 +17,7 @@ from azure.mgmt.cosmosdb import CosmosDBManagementClient
     pip install azure-identity
     pip install azure-mgmt-cosmosdb
 # USAGE
-    python cosmos_db_managed_cassandra_command_async.py
+    python cosmos_db_managed_cassandra_async_command.py
 
     Before run the sample, please set the values of the client ID, tenant ID and client secret
     of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID,
@@ -29,7 +32,7 @@ def main():
         subscription_id="00000000-0000-0000-0000-000000000000",
     )
 
-    response = client.cassandra_clusters.begin_invoke_command_async(
+    response = client.cassandra_clusters.begin_invoke_async_command(
         resource_group_name="cassandra-prod-rg",
         cluster_name="cassandra-prod",
         body={"arguments": {"status": ""}, "command": "nodetool", "host": "10.0.1.12"},
@@ -37,6 +40,6 @@ def main():
     print(response)
 
 
-# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBManagedCassandraCommandAsync.json
+# x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBManagedCassandraAsyncCommand.json
 if __name__ == "__main__":
     main()
