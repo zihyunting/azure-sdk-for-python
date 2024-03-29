@@ -87,6 +87,24 @@ class BackupStorageRedundancy(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     ZONE = "Zone"
 
 
+class CapacityMode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Indicates the capacity mode of the account."""
+
+    NONE = "None"
+    PROVISIONED = "Provisioned"
+    SERVERLESS = "Serverless"
+
+
+class CapacityModeTransitionStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The transition status of capacity mode."""
+
+    INVALID = "Invalid"
+    INITIALIZED = "Initialized"
+    IN_PROGRESS = "InProgress"
+    COMPLETED = "Completed"
+    FAILED = "Failed"
+
+
 class CheckNameAvailabilityReason(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """The reason why the given name is not available."""
 
@@ -434,6 +452,8 @@ class ServerVersion(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     THREE6 = "3.6"
     FOUR0 = "4.0"
     FOUR2 = "4.2"
+    FIVE0 = "5.0"
+    SIX0 = "6.0"
 
 
 class ServiceSize(str, Enum, metaclass=CaseInsensitiveEnumMeta):
