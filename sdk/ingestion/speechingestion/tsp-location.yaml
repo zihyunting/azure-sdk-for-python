@@ -1,0 +1,5 @@
+commit: 8b73c968779aa3840aa221963efa53b35c531b47
+additionalDirectories: []
+repo: Azure/azure-rest-api-specs
+directory: specification/speech/ingestion
+
