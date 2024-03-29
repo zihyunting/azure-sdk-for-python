@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
@@ -40,7 +40,7 @@ def build_list_request(resource_uri: str, **kwargs: Any) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
     _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
 
-    api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2023-09-01-preview"))
+    api_version: str = kwargs.pop("api_version", _params.pop("api-version", "2024-01-01"))
     accept = _headers.pop("Accept", "application/json")
 
     # Construct URL
@@ -90,7 +90,6 @@ class GuestAgentsOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either GuestAgent or the result of cls(response)
         :rtype: ~azure.core.paging.ItemPaged[~azure.mgmt.azurestackhci.models.GuestAgent]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -112,15 +111,14 @@ class GuestAgentsOperations:
         def prepare_request(next_link=None):
             if not next_link:
 
-                request = build_list_request(
+                _request = build_list_request(
                     resource_uri=resource_uri,
                     api_version=api_version,
-                    template_url=self.list.metadata["url"],
                     headers=_headers,
                     params=_params,
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
 
             else:
                 # make call to next link with the client's api-version
@@ -132,13 +130,13 @@ class GuestAgentsOperations:
                     }
                 )
                 _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
+                _request = HttpRequest(
                     "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
-                request.method = "GET"
-            return request
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
+                _request.method = "GET"
+            return _request
 
         def extract_data(pipeline_response):
             deserialized = self._deserialize("GuestAgentList", pipeline_response)
@@ -148,11 +146,11 @@ class GuestAgentsOperations:
             return deserialized.next_link or None, iter(list_of_elem)
 
         def get_next(next_link=None):
-            request = prepare_request(next_link)
+            _request = prepare_request(next_link)
 
             _stream = False
             pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-                request, stream=_stream, **kwargs
+                _request, stream=_stream, **kwargs
             )
             response = pipeline_response.http_response
 
@@ -164,7 +162,3 @@ class GuestAgentsOperations:
             return pipeline_response
 
         return ItemPaged(get_next, extract_data)
-
-    list.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents"
-    }

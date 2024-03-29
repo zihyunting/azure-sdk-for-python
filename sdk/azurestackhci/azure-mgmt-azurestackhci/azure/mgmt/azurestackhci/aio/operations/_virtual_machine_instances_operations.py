@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
@@ -72,7 +72,6 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: VirtualMachineInstance or the result of cls(response)
         :rtype: ~azure.mgmt.azurestackhci.models.VirtualMachineInstance
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -91,19 +90,18 @@ class VirtualMachineInstancesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.VirtualMachineInstance] = kwargs.pop("cls", None)
 
-        request = build_get_request(
+        _request = build_get_request(
             resource_uri=resource_uri,
             api_version=api_version,
-            template_url=self.get.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -116,14 +114,15 @@ class VirtualMachineInstancesOperations:
         deserialized = self._deserialize("VirtualMachineInstance", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    get.metadata = {"url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"}
+        return deserialized  # type: ignore
 
     async def _create_or_update_initial(
-        self, resource_uri: str, virtual_machine_instance: Union[_models.VirtualMachineInstance, IO], **kwargs: Any
+        self,
+        resource_uri: str,
+        virtual_machine_instance: Union[_models.VirtualMachineInstance, IO[bytes]],
+        **kwargs: Any
     ) -> _models.VirtualMachineInstance:
         error_map = {
             401: ClientAuthenticationError,
@@ -148,22 +147,21 @@ class VirtualMachineInstancesOperations:
         else:
             _json = self._serialize.body(virtual_machine_instance, "VirtualMachineInstance")
 
-        request = build_create_or_update_request(
+        _request = build_create_or_update_request(
             resource_uri=resource_uri,
             api_version=api_version,
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._create_or_update_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -183,10 +181,6 @@ class VirtualMachineInstancesOperations:
             return cls(pipeline_response, deserialized, {})  # type: ignore
 
         return deserialized  # type: ignore
-
-    _create_or_update_initial.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
-    }
 
     @overload
     async def begin_create_or_update(
@@ -208,14 +202,6 @@ class VirtualMachineInstancesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -225,7 +211,12 @@ class VirtualMachineInstancesOperations:
 
     @overload
     async def begin_create_or_update(
-        self, resource_uri: str, virtual_machine_instance: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        resource_uri: str,
+        virtual_machine_instance: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any
     ) -> AsyncLROPoller[_models.VirtualMachineInstance]:
         """The operation to create or update a virtual machine instance. Please note some properties can
         be set only during virtual machine instance creation.
@@ -234,18 +225,10 @@ class VirtualMachineInstancesOperations:
          Compute machine resource to be extended. Required.
         :type resource_uri: str
         :param virtual_machine_instance: Required.
-        :type virtual_machine_instance: IO
+        :type virtual_machine_instance: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -255,7 +238,10 @@ class VirtualMachineInstancesOperations:
 
     @distributed_trace_async
     async def begin_create_or_update(
-        self, resource_uri: str, virtual_machine_instance: Union[_models.VirtualMachineInstance, IO], **kwargs: Any
+        self,
+        resource_uri: str,
+        virtual_machine_instance: Union[_models.VirtualMachineInstance, IO[bytes]],
+        **kwargs: Any
     ) -> AsyncLROPoller[_models.VirtualMachineInstance]:
         """The operation to create or update a virtual machine instance. Please note some properties can
         be set only during virtual machine instance creation.
@@ -263,20 +249,10 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :param virtual_machine_instance: Is either a VirtualMachineInstance type or a IO type.
+        :param virtual_machine_instance: Is either a VirtualMachineInstance type or a IO[bytes] type.
          Required.
-        :type virtual_machine_instance: ~azure.mgmt.azurestackhci.models.VirtualMachineInstance or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :type virtual_machine_instance: ~azure.mgmt.azurestackhci.models.VirtualMachineInstance or
+         IO[bytes]
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -308,7 +284,7 @@ class VirtualMachineInstancesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("VirtualMachineInstance", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -321,17 +297,15 @@ class VirtualMachineInstancesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.VirtualMachineInstance].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_create_or_update.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
-    }
+        return AsyncLROPoller[_models.VirtualMachineInstance](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     async def _delete_initial(  # pylint: disable=inconsistent-return-statements
         self, resource_uri: str, **kwargs: Any
@@ -350,19 +324,18 @@ class VirtualMachineInstancesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[None] = kwargs.pop("cls", None)
 
-        request = build_delete_request(
+        _request = build_delete_request(
             resource_uri=resource_uri,
             api_version=api_version,
-            template_url=self._delete_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -377,11 +350,7 @@ class VirtualMachineInstancesOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, None, response_headers)
-
-    _delete_initial.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
-    }
+            return cls(pipeline_response, None, response_headers)  # type: ignore
 
     @distributed_trace_async
     async def begin_delete(self, resource_uri: str, **kwargs: Any) -> AsyncLROPoller[None]:
@@ -390,14 +359,6 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either None or the result of cls(response)
         :rtype: ~azure.core.polling.AsyncLROPoller[None]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -423,7 +384,7 @@ class VirtualMachineInstancesOperations:
 
         def get_long_running_output(pipeline_response):  # pylint: disable=inconsistent-return-statements
             if cls:
-                return cls(pipeline_response, None, {})
+                return cls(pipeline_response, None, {})  # type: ignore
 
         if polling is True:
             polling_method: AsyncPollingMethod = cast(
@@ -435,20 +396,18 @@ class VirtualMachineInstancesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[None].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_delete.metadata = {"url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"}
+        return AsyncLROPoller[None](self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     async def _update_initial(
         self,
         resource_uri: str,
-        virtual_machine_instance: Union[_models.VirtualMachineInstanceUpdateRequest, IO],
+        virtual_machine_instance: Union[_models.VirtualMachineInstanceUpdateRequest, IO[bytes]],
         **kwargs: Any
     ) -> Optional[_models.VirtualMachineInstance]:
         error_map = {
@@ -474,22 +433,21 @@ class VirtualMachineInstancesOperations:
         else:
             _json = self._serialize.body(virtual_machine_instance, "VirtualMachineInstanceUpdateRequest")
 
-        request = build_update_request(
+        _request = build_update_request(
             resource_uri=resource_uri,
             api_version=api_version,
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -508,13 +466,9 @@ class VirtualMachineInstancesOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
-        return deserialized
-
-    _update_initial.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
-    }
+        return deserialized  # type: ignore
 
     @overload
     async def begin_update(
@@ -536,14 +490,6 @@ class VirtualMachineInstancesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -553,7 +499,12 @@ class VirtualMachineInstancesOperations:
 
     @overload
     async def begin_update(
-        self, resource_uri: str, virtual_machine_instance: IO, *, content_type: str = "application/json", **kwargs: Any
+        self,
+        resource_uri: str,
+        virtual_machine_instance: IO[bytes],
+        *,
+        content_type: str = "application/json",
+        **kwargs: Any
     ) -> AsyncLROPoller[_models.VirtualMachineInstance]:
         """The operation to update a virtual machine instance.
 
@@ -561,18 +512,10 @@ class VirtualMachineInstancesOperations:
          Compute machine resource to be extended. Required.
         :type resource_uri: str
         :param virtual_machine_instance: Required.
-        :type virtual_machine_instance: IO
+        :type virtual_machine_instance: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -584,7 +527,7 @@ class VirtualMachineInstancesOperations:
     async def begin_update(
         self,
         resource_uri: str,
-        virtual_machine_instance: Union[_models.VirtualMachineInstanceUpdateRequest, IO],
+        virtual_machine_instance: Union[_models.VirtualMachineInstanceUpdateRequest, IO[bytes]],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.VirtualMachineInstance]:
         """The operation to update a virtual machine instance.
@@ -592,21 +535,10 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :param virtual_machine_instance: Is either a VirtualMachineInstanceUpdateRequest type or a IO
-         type. Required.
+        :param virtual_machine_instance: Is either a VirtualMachineInstanceUpdateRequest type or a
+         IO[bytes] type. Required.
         :type virtual_machine_instance:
-         ~azure.mgmt.azurestackhci.models.VirtualMachineInstanceUpdateRequest or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+         ~azure.mgmt.azurestackhci.models.VirtualMachineInstanceUpdateRequest or IO[bytes]
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -638,7 +570,7 @@ class VirtualMachineInstancesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("VirtualMachineInstance", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -651,15 +583,15 @@ class VirtualMachineInstancesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.VirtualMachineInstance].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_update.metadata = {"url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"}
+        return AsyncLROPoller[_models.VirtualMachineInstance](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     async def _start_initial(self, resource_uri: str, **kwargs: Any) -> Optional[_models.VirtualMachineInstance]:
         error_map = {
@@ -676,19 +608,18 @@ class VirtualMachineInstancesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[Optional[_models.VirtualMachineInstance]] = kwargs.pop("cls", None)
 
-        request = build_start_request(
+        _request = build_start_request(
             resource_uri=resource_uri,
             api_version=api_version,
-            template_url=self._start_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -707,13 +638,9 @@ class VirtualMachineInstancesOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
-        return deserialized
-
-    _start_initial.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/start"
-    }
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def begin_start(self, resource_uri: str, **kwargs: Any) -> AsyncLROPoller[_models.VirtualMachineInstance]:
@@ -722,14 +649,6 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -758,7 +677,7 @@ class VirtualMachineInstancesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("VirtualMachineInstance", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -770,17 +689,15 @@ class VirtualMachineInstancesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.VirtualMachineInstance].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_start.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/start"
-    }
+        return AsyncLROPoller[_models.VirtualMachineInstance](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     async def _stop_initial(self, resource_uri: str, **kwargs: Any) -> Optional[_models.VirtualMachineInstance]:
         error_map = {
@@ -797,19 +714,18 @@ class VirtualMachineInstancesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[Optional[_models.VirtualMachineInstance]] = kwargs.pop("cls", None)
 
-        request = build_stop_request(
+        _request = build_stop_request(
             resource_uri=resource_uri,
             api_version=api_version,
-            template_url=self._stop_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -828,13 +744,9 @@ class VirtualMachineInstancesOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
-        return deserialized
-
-    _stop_initial.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/stop"
-    }
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def begin_stop(self, resource_uri: str, **kwargs: Any) -> AsyncLROPoller[_models.VirtualMachineInstance]:
@@ -843,14 +755,6 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -879,7 +783,7 @@ class VirtualMachineInstancesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("VirtualMachineInstance", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -891,17 +795,15 @@ class VirtualMachineInstancesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.VirtualMachineInstance].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_stop.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/stop"
-    }
+        return AsyncLROPoller[_models.VirtualMachineInstance](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     async def _restart_initial(self, resource_uri: str, **kwargs: Any) -> Optional[_models.VirtualMachineInstance]:
         error_map = {
@@ -918,19 +820,18 @@ class VirtualMachineInstancesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[Optional[_models.VirtualMachineInstance]] = kwargs.pop("cls", None)
 
-        request = build_restart_request(
+        _request = build_restart_request(
             resource_uri=resource_uri,
             api_version=api_version,
-            template_url=self._restart_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -949,13 +850,9 @@ class VirtualMachineInstancesOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
-        return deserialized
-
-    _restart_initial.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/restart"
-    }
+        return deserialized  # type: ignore
 
     @distributed_trace_async
     async def begin_restart(self, resource_uri: str, **kwargs: Any) -> AsyncLROPoller[_models.VirtualMachineInstance]:
@@ -964,14 +861,6 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either VirtualMachineInstance or the result
          of cls(response)
         :rtype:
@@ -1000,7 +889,7 @@ class VirtualMachineInstancesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("VirtualMachineInstance", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1012,17 +901,15 @@ class VirtualMachineInstancesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.VirtualMachineInstance].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_restart.metadata = {
-        "url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/restart"
-    }
+        return AsyncLROPoller[_models.VirtualMachineInstance](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     @distributed_trace
     def list(self, resource_uri: str, **kwargs: Any) -> AsyncIterable["_models.VirtualMachineInstance"]:
@@ -1031,7 +918,6 @@ class VirtualMachineInstancesOperations:
         :param resource_uri: The fully qualified Azure Resource manager identifier of the Hybrid
          Compute machine resource to be extended. Required.
         :type resource_uri: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either VirtualMachineInstance or the result of
          cls(response)
         :rtype:
@@ -1055,15 +941,14 @@ class VirtualMachineInstancesOperations:
         def prepare_request(next_link=None):
             if not next_link:
 
-                request = build_list_request(
+                _request = build_list_request(
                     resource_uri=resource_uri,
                     api_version=api_version,
-                    template_url=self.list.metadata["url"],
                     headers=_headers,
                     params=_params,
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
 
             else:
                 # make call to next link with the client's api-version
@@ -1075,13 +960,13 @@ class VirtualMachineInstancesOperations:
                     }
                 )
                 _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
+                _request = HttpRequest(
                     "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
-                request.method = "GET"
-            return request
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
+                _request.method = "GET"
+            return _request
 
         async def extract_data(pipeline_response):
             deserialized = self._deserialize("VirtualMachineInstanceListResult", pipeline_response)
@@ -1091,11 +976,11 @@ class VirtualMachineInstancesOperations:
             return deserialized.next_link or None, AsyncList(list_of_elem)
 
         async def get_next(next_link=None):
-            request = prepare_request(next_link)
+            _request = prepare_request(next_link)
 
             _stream = False
             pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-                request, stream=_stream, **kwargs
+                _request, stream=_stream, **kwargs
             )
             response = pipeline_response.http_response
 
@@ -1107,5 +992,3 @@ class VirtualMachineInstancesOperations:
             return pipeline_response
 
         return AsyncItemPaged(get_next, extract_data)
-
-    list.metadata = {"url": "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances"}
