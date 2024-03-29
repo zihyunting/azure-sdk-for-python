@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
@@ -70,7 +70,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.InternalNetwork, IO],
+        body: Union[_models.InternalNetwork, IO[bytes]],
         **kwargs: Any
     ) -> _models.InternalNetwork:
         error_map = {
@@ -96,7 +96,7 @@ class InternalNetworksOperations:
         else:
             _json = self._serialize.body(body, "InternalNetwork")
 
-        request = build_create_request(
+        _request = build_create_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
@@ -105,16 +105,15 @@ class InternalNetworksOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._create_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -134,10 +133,6 @@ class InternalNetworksOperations:
             return cls(pipeline_response, deserialized, {})  # type: ignore
 
         return deserialized  # type: ignore
-
-    _create_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
 
     @overload
     async def begin_create(
@@ -167,14 +162,6 @@ class InternalNetworksOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either InternalNetwork or the result of
          cls(response)
         :rtype:
@@ -188,7 +175,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -206,18 +193,10 @@ class InternalNetworksOperations:
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either InternalNetwork or the result of
          cls(response)
         :rtype:
@@ -231,7 +210,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.InternalNetwork, IO],
+        body: Union[_models.InternalNetwork, IO[bytes]],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.InternalNetwork]:
         """Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and
@@ -246,19 +225,8 @@ class InternalNetworksOperations:
         :type l3_isolation_domain_name: str
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
-        :param body: Request payload. Is either a InternalNetwork type or a IO type. Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.InternalNetwork or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :param body: Request payload. Is either a InternalNetwork type or a IO[bytes] type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.InternalNetwork or IO[bytes]
         :return: An instance of AsyncLROPoller that returns either InternalNetwork or the result of
          cls(response)
         :rtype:
@@ -292,7 +260,7 @@ class InternalNetworksOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("InternalNetwork", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -305,17 +273,15 @@ class InternalNetworksOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.InternalNetwork].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_create.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
+        return AsyncLROPoller[_models.InternalNetwork](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     @distributed_trace_async
     async def get(
@@ -332,7 +298,6 @@ class InternalNetworksOperations:
         :type l3_isolation_domain_name: str
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: InternalNetwork or the result of cls(response)
         :rtype: ~azure.mgmt.managednetworkfabric.models.InternalNetwork
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -351,22 +316,21 @@ class InternalNetworksOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.InternalNetwork] = kwargs.pop("cls", None)
 
-        request = build_get_request(
+        _request = build_get_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.get.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -379,20 +343,16 @@ class InternalNetworksOperations:
         deserialized = self._deserialize("InternalNetwork", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    get.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
+        return deserialized  # type: ignore
 
     async def _update_initial(
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.InternalNetworkPatch, IO],
+        body: Union[_models.InternalNetworkPatch, IO[bytes]],
         **kwargs: Any
     ) -> Optional[_models.InternalNetwork]:
         error_map = {
@@ -418,7 +378,7 @@ class InternalNetworksOperations:
         else:
             _json = self._serialize.body(body, "InternalNetworkPatch")
 
-        request = build_update_request(
+        _request = build_update_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
@@ -427,16 +387,15 @@ class InternalNetworksOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -455,13 +414,9 @@ class InternalNetworksOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
-        return deserialized
-
-    _update_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
+        return deserialized  # type: ignore
 
     @overload
     async def begin_update(
@@ -490,14 +445,6 @@ class InternalNetworksOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either InternalNetwork or the result of
          cls(response)
         :rtype:
@@ -511,7 +458,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -528,18 +475,10 @@ class InternalNetworksOperations:
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
         :param body: InternalNetwork properties to update. Only annotations are supported. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either InternalNetwork or the result of
          cls(response)
         :rtype:
@@ -553,7 +492,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.InternalNetworkPatch, IO],
+        body: Union[_models.InternalNetworkPatch, IO[bytes]],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.InternalNetwork]:
         """API to update certain properties of the InternalNetworks resources.
@@ -568,19 +507,8 @@ class InternalNetworksOperations:
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
         :param body: InternalNetwork properties to update. Only annotations are supported. Is either a
-         InternalNetworkPatch type or a IO type. Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.InternalNetworkPatch or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+         InternalNetworkPatch type or a IO[bytes] type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.InternalNetworkPatch or IO[bytes]
         :return: An instance of AsyncLROPoller that returns either InternalNetwork or the result of
          cls(response)
         :rtype:
@@ -614,7 +542,7 @@ class InternalNetworksOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("InternalNetwork", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -626,17 +554,15 @@ class InternalNetworksOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.InternalNetwork].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_update.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
+        return AsyncLROPoller[_models.InternalNetwork](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     async def _delete_initial(  # pylint: disable=inconsistent-return-statements
         self, resource_group_name: str, l3_isolation_domain_name: str, internal_network_name: str, **kwargs: Any
@@ -655,22 +581,21 @@ class InternalNetworksOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[None] = kwargs.pop("cls", None)
 
-        request = build_delete_request(
+        _request = build_delete_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self._delete_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -681,11 +606,7 @@ class InternalNetworksOperations:
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-            return cls(pipeline_response, None, {})
-
-    _delete_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
+            return cls(pipeline_response, None, {})  # type: ignore
 
     @distributed_trace_async
     async def begin_delete(
@@ -702,14 +623,6 @@ class InternalNetworksOperations:
         :type l3_isolation_domain_name: str
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either None or the result of cls(response)
         :rtype: ~azure.core.polling.AsyncLROPoller[None]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -737,7 +650,7 @@ class InternalNetworksOperations:
 
         def get_long_running_output(pipeline_response):  # pylint: disable=inconsistent-return-statements
             if cls:
-                return cls(pipeline_response, None, {})
+                return cls(pipeline_response, None, {})  # type: ignore
 
         if polling is True:
             polling_method: AsyncPollingMethod = cast(
@@ -748,17 +661,13 @@ class InternalNetworksOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[None].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_delete.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-    }
+        return AsyncLROPoller[None](self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     @distributed_trace
     def list_by_l3_isolation_domain(
@@ -773,7 +682,6 @@ class InternalNetworksOperations:
         :type resource_group_name: str
         :param l3_isolation_domain_name: Name of the L3 Isolation Domain. Required.
         :type l3_isolation_domain_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either InternalNetwork or the result of cls(response)
         :rtype:
          ~azure.core.async_paging.AsyncItemPaged[~azure.mgmt.managednetworkfabric.models.InternalNetwork]
@@ -796,17 +704,16 @@ class InternalNetworksOperations:
         def prepare_request(next_link=None):
             if not next_link:
 
-                request = build_list_by_l3_isolation_domain_request(
+                _request = build_list_by_l3_isolation_domain_request(
                     resource_group_name=resource_group_name,
                     l3_isolation_domain_name=l3_isolation_domain_name,
                     subscription_id=self._config.subscription_id,
                     api_version=api_version,
-                    template_url=self.list_by_l3_isolation_domain.metadata["url"],
                     headers=_headers,
                     params=_params,
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
 
             else:
                 # make call to next link with the client's api-version
@@ -818,13 +725,13 @@ class InternalNetworksOperations:
                     }
                 )
                 _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
+                _request = HttpRequest(
                     "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
-                request.method = "GET"
-            return request
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
+                _request.method = "GET"
+            return _request
 
         async def extract_data(pipeline_response):
             deserialized = self._deserialize("InternalNetworksList", pipeline_response)
@@ -834,11 +741,11 @@ class InternalNetworksOperations:
             return deserialized.next_link or None, AsyncList(list_of_elem)
 
         async def get_next(next_link=None):
-            request = prepare_request(next_link)
+            _request = prepare_request(next_link)
 
             _stream = False
             pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-                request, stream=_stream, **kwargs
+                _request, stream=_stream, **kwargs
             )
             response = pipeline_response.http_response
 
@@ -851,16 +758,12 @@ class InternalNetworksOperations:
 
         return AsyncItemPaged(get_next, extract_data)
 
-    list_by_l3_isolation_domain.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks"
-    }
-
     async def _update_administrative_state_initial(
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.UpdateAdministrativeState, IO],
+        body: Union[_models.UpdateAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> _models.CommonPostActionResponseForStateUpdate:
         error_map = {
@@ -886,7 +789,7 @@ class InternalNetworksOperations:
         else:
             _json = self._serialize.body(body, "UpdateAdministrativeState")
 
-        request = build_update_administrative_state_request(
+        _request = build_update_administrative_state_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
@@ -895,16 +798,15 @@ class InternalNetworksOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_administrative_state_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -927,10 +829,6 @@ class InternalNetworksOperations:
             return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
         return deserialized  # type: ignore
-
-    _update_administrative_state_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateAdministrativeState"
-    }
 
     @overload
     async def begin_update_administrative_state(
@@ -959,14 +857,6 @@ class InternalNetworksOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -980,7 +870,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -997,18 +887,10 @@ class InternalNetworksOperations:
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1022,7 +904,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.UpdateAdministrativeState, IO],
+        body: Union[_models.UpdateAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate]:
         """Executes the operation to the underlying resources.
@@ -1036,20 +918,9 @@ class InternalNetworksOperations:
         :type l3_isolation_domain_name: str
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
-        :param body: Request payload. Is either a UpdateAdministrativeState type or a IO type.
+        :param body: Request payload. Is either a UpdateAdministrativeState type or a IO[bytes] type.
          Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateAdministrativeState or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateAdministrativeState or IO[bytes]
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1083,7 +954,7 @@ class InternalNetworksOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1095,24 +966,22 @@ class InternalNetworksOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_update_administrative_state.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateAdministrativeState"
-    }
+        return AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     async def _update_bgp_administrative_state_initial(
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.UpdateAdministrativeState, IO],
+        body: Union[_models.UpdateAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> _models.CommonPostActionResponseForStateUpdate:
         error_map = {
@@ -1138,7 +1007,7 @@ class InternalNetworksOperations:
         else:
             _json = self._serialize.body(body, "UpdateAdministrativeState")
 
-        request = build_update_bgp_administrative_state_request(
+        _request = build_update_bgp_administrative_state_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
@@ -1147,16 +1016,15 @@ class InternalNetworksOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_bgp_administrative_state_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1179,10 +1047,6 @@ class InternalNetworksOperations:
             return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
         return deserialized  # type: ignore
-
-    _update_bgp_administrative_state_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateBgpAdministrativeState"
-    }
 
     @overload
     async def begin_update_bgp_administrative_state(
@@ -1211,14 +1075,6 @@ class InternalNetworksOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1232,7 +1088,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1249,18 +1105,10 @@ class InternalNetworksOperations:
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1274,7 +1122,7 @@ class InternalNetworksOperations:
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.UpdateAdministrativeState, IO],
+        body: Union[_models.UpdateAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate]:
         """Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -1288,20 +1136,9 @@ class InternalNetworksOperations:
         :type l3_isolation_domain_name: str
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
-        :param body: Request payload. Is either a UpdateAdministrativeState type or a IO type.
+        :param body: Request payload. Is either a UpdateAdministrativeState type or a IO[bytes] type.
          Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateAdministrativeState or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateAdministrativeState or IO[bytes]
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1335,7 +1172,7 @@ class InternalNetworksOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1347,24 +1184,22 @@ class InternalNetworksOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
+        return AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
-    begin_update_bgp_administrative_state.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateBgpAdministrativeState"
-    }
-
-    async def _update_static_route_bfd_administrative_state_initial(
+    async def _update_static_route_bfd_administrative_state_initial(  # pylint: disable=name-too-long
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.UpdateAdministrativeState, IO],
+        body: Union[_models.UpdateAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> _models.CommonPostActionResponseForStateUpdate:
         error_map = {
@@ -1390,7 +1225,7 @@ class InternalNetworksOperations:
         else:
             _json = self._serialize.body(body, "UpdateAdministrativeState")
 
-        request = build_update_static_route_bfd_administrative_state_request(
+        _request = build_update_static_route_bfd_administrative_state_request(
             resource_group_name=resource_group_name,
             l3_isolation_domain_name=l3_isolation_domain_name,
             internal_network_name=internal_network_name,
@@ -1399,16 +1234,15 @@ class InternalNetworksOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_static_route_bfd_administrative_state_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = await self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1432,12 +1266,8 @@ class InternalNetworksOperations:
 
         return deserialized  # type: ignore
 
-    _update_static_route_bfd_administrative_state_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateStaticRouteBfdAdministrativeState"
-    }
-
     @overload
-    async def begin_update_static_route_bfd_administrative_state(
+    async def begin_update_static_route_bfd_administrative_state(  # pylint: disable=name-too-long
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
@@ -1463,14 +1293,6 @@ class InternalNetworksOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1479,12 +1301,12 @@ class InternalNetworksOperations:
         """
 
     @overload
-    async def begin_update_static_route_bfd_administrative_state(
+    async def begin_update_static_route_bfd_administrative_state(  # pylint: disable=name-too-long
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1501,18 +1323,10 @@ class InternalNetworksOperations:
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1521,12 +1335,12 @@ class InternalNetworksOperations:
         """
 
     @distributed_trace_async
-    async def begin_update_static_route_bfd_administrative_state(
+    async def begin_update_static_route_bfd_administrative_state(  # pylint: disable=name-too-long
         self,
         resource_group_name: str,
         l3_isolation_domain_name: str,
         internal_network_name: str,
-        body: Union[_models.UpdateAdministrativeState, IO],
+        body: Union[_models.UpdateAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate]:
         """Implements the operation to the underlying resources.
@@ -1540,20 +1354,9 @@ class InternalNetworksOperations:
         :type l3_isolation_domain_name: str
         :param internal_network_name: Name of the Internal Network. Required.
         :type internal_network_name: str
-        :param body: Request payload. Is either a UpdateAdministrativeState type or a IO type.
+        :param body: Request payload. Is either a UpdateAdministrativeState type or a IO[bytes] type.
          Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateAdministrativeState or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be AsyncARMPolling. Pass in False for
-         this operation to not poll, or pass in your own initialized polling object for a personal
-         polling strategy.
-        :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateAdministrativeState or IO[bytes]
         :return: An instance of AsyncLROPoller that returns either
          CommonPostActionResponseForStateUpdate or the result of cls(response)
         :rtype:
@@ -1587,7 +1390,7 @@ class InternalNetworksOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1599,14 +1402,12 @@ class InternalNetworksOperations:
         else:
             polling_method = polling
         if cont_token:
-            return AsyncLROPoller.from_continuation_token(
+            return AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return AsyncLROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_update_static_route_bfd_administrative_state.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateStaticRouteBfdAdministrativeState"
-    }
+        return AsyncLROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )

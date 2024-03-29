@@ -1,4 +1,4 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-statements
 # coding=utf-8
 # --------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
@@ -30,7 +30,7 @@ from azure.mgmt.core.polling.arm_polling import ARMPolling
 
 from .. import models as _models
 from .._serialization import Serializer
-from .._vendor import _convert_request, _format_url_section
+from .._vendor import _convert_request
 
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -62,7 +62,7 @@ def build_create_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -97,7 +97,7 @@ def build_get_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -131,7 +131,7 @@ def build_update_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -166,7 +166,7 @@ def build_delete_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -196,7 +196,7 @@ def build_list_by_resource_group_request(resource_group_name: str, subscription_
         ),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -222,7 +222,7 @@ def build_list_by_subscription_request(subscription_id: str, **kwargs: Any) -> H
         "subscriptionId": _SERIALIZER.url("subscription_id", subscription_id, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -256,7 +256,7 @@ def build_reboot_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -291,7 +291,7 @@ def build_refresh_configuration_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -302,7 +302,7 @@ def build_refresh_configuration_request(
     return HttpRequest(method="POST", url=_url, params=_params, headers=_headers, **kwargs)
 
 
-def build_update_administrative_state_request(
+def build_update_administrative_state_request(  # pylint: disable=name-too-long
     resource_group_name: str, network_device_name: str, subscription_id: str, **kwargs: Any
 ) -> HttpRequest:
     _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
@@ -325,7 +325,7 @@ def build_update_administrative_state_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -361,7 +361,7 @@ def build_upgrade_request(
         "networkDeviceName": _SERIALIZER.url("network_device_name", network_device_name, "str"),
     }
 
-    _url: str = _format_url_section(_url, **path_format_arguments)  # type: ignore
+    _url: str = _url.format(**path_format_arguments)  # type: ignore
 
     # Construct parameters
     _params["api-version"] = _SERIALIZER.query("api_version", api_version, "str")
@@ -394,7 +394,11 @@ class NetworkDevicesOperations:
         self._deserialize = input_args.pop(0) if input_args else kwargs.pop("deserializer")
 
     def _create_initial(
-        self, resource_group_name: str, network_device_name: str, body: Union[_models.NetworkDevice, IO], **kwargs: Any
+        self,
+        resource_group_name: str,
+        network_device_name: str,
+        body: Union[_models.NetworkDevice, IO[bytes]],
+        **kwargs: Any
     ) -> _models.NetworkDevice:
         error_map = {
             401: ClientAuthenticationError,
@@ -419,7 +423,7 @@ class NetworkDevicesOperations:
         else:
             _json = self._serialize.body(body, "NetworkDevice")
 
-        request = build_create_request(
+        _request = build_create_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
@@ -427,16 +431,15 @@ class NetworkDevicesOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._create_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -456,10 +459,6 @@ class NetworkDevicesOperations:
             return cls(pipeline_response, deserialized, {})  # type: ignore
 
         return deserialized  # type: ignore
-
-    _create_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
 
     @overload
     def begin_create(
@@ -485,14 +484,6 @@ class NetworkDevicesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either NetworkDevice or the result of
          cls(response)
         :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
@@ -504,7 +495,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -519,18 +510,10 @@ class NetworkDevicesOperations:
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either NetworkDevice or the result of
          cls(response)
         :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
@@ -539,7 +522,11 @@ class NetworkDevicesOperations:
 
     @distributed_trace
     def begin_create(
-        self, resource_group_name: str, network_device_name: str, body: Union[_models.NetworkDevice, IO], **kwargs: Any
+        self,
+        resource_group_name: str,
+        network_device_name: str,
+        body: Union[_models.NetworkDevice, IO[bytes]],
+        **kwargs: Any
     ) -> LROPoller[_models.NetworkDevice]:
         """Create Network Device.
 
@@ -550,19 +537,8 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :param body: Request payload. Is either a NetworkDevice type or a IO type. Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.NetworkDevice or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :param body: Request payload. Is either a NetworkDevice type or a IO[bytes] type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.NetworkDevice or IO[bytes]
         :return: An instance of LROPoller that returns either NetworkDevice or the result of
          cls(response)
         :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
@@ -594,7 +570,7 @@ class NetworkDevicesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("NetworkDevice", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -606,17 +582,15 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[_models.NetworkDevice].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_create.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
+        return LROPoller[_models.NetworkDevice](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     @distributed_trace
     def get(self, resource_group_name: str, network_device_name: str, **kwargs: Any) -> _models.NetworkDevice:
@@ -629,7 +603,6 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: NetworkDevice or the result of cls(response)
         :rtype: ~azure.mgmt.managednetworkfabric.models.NetworkDevice
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -648,21 +621,20 @@ class NetworkDevicesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.NetworkDevice] = kwargs.pop("cls", None)
 
-        request = build_get_request(
+        _request = build_get_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self.get.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -675,19 +647,15 @@ class NetworkDevicesOperations:
         deserialized = self._deserialize("NetworkDevice", pipeline_response)
 
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})  # type: ignore
 
-        return deserialized
-
-    get.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
+        return deserialized  # type: ignore
 
     def _update_initial(
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: Union[_models.NetworkDevicePatchParameters, IO],
+        body: Union[_models.NetworkDevicePatchParameters, IO[bytes]],
         **kwargs: Any
     ) -> Optional[_models.NetworkDevice]:
         error_map = {
@@ -713,7 +681,7 @@ class NetworkDevicesOperations:
         else:
             _json = self._serialize.body(body, "NetworkDevicePatchParameters")
 
-        request = build_update_request(
+        _request = build_update_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
@@ -721,16 +689,15 @@ class NetworkDevicesOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -749,13 +716,9 @@ class NetworkDevicesOperations:
             response_headers["Location"] = self._deserialize("str", response.headers.get("Location"))
 
         if cls:
-            return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
-        return deserialized
-
-    _update_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
+        return deserialized  # type: ignore
 
     @overload
     def begin_update(
@@ -781,14 +744,6 @@ class NetworkDevicesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either NetworkDevice or the result of
          cls(response)
         :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
@@ -800,7 +755,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -815,18 +770,10 @@ class NetworkDevicesOperations:
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
         :param body: Network Device properties to update. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either NetworkDevice or the result of
          cls(response)
         :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
@@ -838,7 +785,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: Union[_models.NetworkDevicePatchParameters, IO],
+        body: Union[_models.NetworkDevicePatchParameters, IO[bytes]],
         **kwargs: Any
     ) -> LROPoller[_models.NetworkDevice]:
         """Updates a Network Device.
@@ -851,19 +798,8 @@ class NetworkDevicesOperations:
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
         :param body: Network Device properties to update. Is either a NetworkDevicePatchParameters type
-         or a IO type. Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.NetworkDevicePatchParameters or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+         or a IO[bytes] type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.NetworkDevicePatchParameters or IO[bytes]
         :return: An instance of LROPoller that returns either NetworkDevice or the result of
          cls(response)
         :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
@@ -895,7 +831,7 @@ class NetworkDevicesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("NetworkDevice", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -907,17 +843,15 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[_models.NetworkDevice].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_update.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
+        return LROPoller[_models.NetworkDevice](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     def _delete_initial(  # pylint: disable=inconsistent-return-statements
         self, resource_group_name: str, network_device_name: str, **kwargs: Any
@@ -936,21 +870,20 @@ class NetworkDevicesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[None] = kwargs.pop("cls", None)
 
-        request = build_delete_request(
+        _request = build_delete_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self._delete_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -961,11 +894,7 @@ class NetworkDevicesOperations:
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-            return cls(pipeline_response, None, {})
-
-    _delete_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
+            return cls(pipeline_response, None, {})  # type: ignore
 
     @distributed_trace
     def begin_delete(self, resource_group_name: str, network_device_name: str, **kwargs: Any) -> LROPoller[None]:
@@ -978,14 +907,6 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either None or the result of cls(response)
         :rtype: ~azure.core.polling.LROPoller[None]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1012,7 +933,7 @@ class NetworkDevicesOperations:
 
         def get_long_running_output(pipeline_response):  # pylint: disable=inconsistent-return-statements
             if cls:
-                return cls(pipeline_response, None, {})
+                return cls(pipeline_response, None, {})  # type: ignore
 
         if polling is True:
             polling_method: PollingMethod = cast(
@@ -1023,17 +944,13 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[None].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_delete.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-    }
+        return LROPoller[None](self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
 
     @distributed_trace
     def list_by_resource_group(self, resource_group_name: str, **kwargs: Any) -> Iterable["_models.NetworkDevice"]:
@@ -1044,7 +961,6 @@ class NetworkDevicesOperations:
         :param resource_group_name: The name of the resource group. The name is case insensitive.
          Required.
         :type resource_group_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either NetworkDevice or the result of cls(response)
         :rtype: ~azure.core.paging.ItemPaged[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1066,16 +982,15 @@ class NetworkDevicesOperations:
         def prepare_request(next_link=None):
             if not next_link:
 
-                request = build_list_by_resource_group_request(
+                _request = build_list_by_resource_group_request(
                     resource_group_name=resource_group_name,
                     subscription_id=self._config.subscription_id,
                     api_version=api_version,
-                    template_url=self.list_by_resource_group.metadata["url"],
                     headers=_headers,
                     params=_params,
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
 
             else:
                 # make call to next link with the client's api-version
@@ -1087,13 +1002,13 @@ class NetworkDevicesOperations:
                     }
                 )
                 _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
+                _request = HttpRequest(
                     "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
-                request.method = "GET"
-            return request
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
+                _request.method = "GET"
+            return _request
 
         def extract_data(pipeline_response):
             deserialized = self._deserialize("NetworkDevicesListResult", pipeline_response)
@@ -1103,11 +1018,11 @@ class NetworkDevicesOperations:
             return deserialized.next_link or None, iter(list_of_elem)
 
         def get_next(next_link=None):
-            request = prepare_request(next_link)
+            _request = prepare_request(next_link)
 
             _stream = False
             pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-                request, stream=_stream, **kwargs
+                _request, stream=_stream, **kwargs
             )
             response = pipeline_response.http_response
 
@@ -1119,10 +1034,6 @@ class NetworkDevicesOperations:
             return pipeline_response
 
         return ItemPaged(get_next, extract_data)
-
-    list_by_resource_group.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices"
-    }
 
     @distributed_trace
     def list_by_subscription(self, **kwargs: Any) -> Iterable["_models.NetworkDevice"]:
@@ -1130,7 +1041,6 @@ class NetworkDevicesOperations:
 
         List all the Network Device resources in a given subscription.
 
-        :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either NetworkDevice or the result of cls(response)
         :rtype: ~azure.core.paging.ItemPaged[~azure.mgmt.managednetworkfabric.models.NetworkDevice]
         :raises ~azure.core.exceptions.HttpResponseError:
@@ -1152,15 +1062,14 @@ class NetworkDevicesOperations:
         def prepare_request(next_link=None):
             if not next_link:
 
-                request = build_list_by_subscription_request(
+                _request = build_list_by_subscription_request(
                     subscription_id=self._config.subscription_id,
                     api_version=api_version,
-                    template_url=self.list_by_subscription.metadata["url"],
                     headers=_headers,
                     params=_params,
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
 
             else:
                 # make call to next link with the client's api-version
@@ -1172,13 +1081,13 @@ class NetworkDevicesOperations:
                     }
                 )
                 _next_request_params["api-version"] = self._config.api_version
-                request = HttpRequest(
+                _request = HttpRequest(
                     "GET", urllib.parse.urljoin(next_link, _parsed_next_link.path), params=_next_request_params
                 )
-                request = _convert_request(request)
-                request.url = self._client.format_url(request.url)
-                request.method = "GET"
-            return request
+                _request = _convert_request(_request)
+                _request.url = self._client.format_url(_request.url)
+                _request.method = "GET"
+            return _request
 
         def extract_data(pipeline_response):
             deserialized = self._deserialize("NetworkDevicesListResult", pipeline_response)
@@ -1188,11 +1097,11 @@ class NetworkDevicesOperations:
             return deserialized.next_link or None, iter(list_of_elem)
 
         def get_next(next_link=None):
-            request = prepare_request(next_link)
+            _request = prepare_request(next_link)
 
             _stream = False
             pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-                request, stream=_stream, **kwargs
+                _request, stream=_stream, **kwargs
             )
             response = pipeline_response.http_response
 
@@ -1205,15 +1114,11 @@ class NetworkDevicesOperations:
 
         return ItemPaged(get_next, extract_data)
 
-    list_by_subscription.metadata = {
-        "url": "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDevices"
-    }
-
     def _reboot_initial(
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: Union[_models.RebootProperties, IO],
+        body: Union[_models.RebootProperties, IO[bytes]],
         **kwargs: Any
     ) -> _models.CommonPostActionResponseForStateUpdate:
         error_map = {
@@ -1239,7 +1144,7 @@ class NetworkDevicesOperations:
         else:
             _json = self._serialize.body(body, "RebootProperties")
 
-        request = build_reboot_request(
+        _request = build_reboot_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
@@ -1247,16 +1152,15 @@ class NetworkDevicesOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._reboot_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1279,10 +1183,6 @@ class NetworkDevicesOperations:
             return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
         return deserialized  # type: ignore
-
-    _reboot_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/reboot"
-    }
 
     @overload
     def begin_reboot(
@@ -1308,14 +1208,6 @@ class NetworkDevicesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1328,7 +1220,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1343,18 +1235,10 @@ class NetworkDevicesOperations:
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1367,7 +1251,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: Union[_models.RebootProperties, IO],
+        body: Union[_models.RebootProperties, IO[bytes]],
         **kwargs: Any
     ) -> LROPoller[_models.CommonPostActionResponseForStateUpdate]:
         """Implements the operation to the underlying resources.
@@ -1379,19 +1263,8 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :param body: Request payload. Is either a RebootProperties type or a IO type. Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.RebootProperties or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :param body: Request payload. Is either a RebootProperties type or a IO[bytes] type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.RebootProperties or IO[bytes]
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1424,7 +1297,7 @@ class NetworkDevicesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1436,17 +1309,15 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_reboot.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/reboot"
-    }
+        return LROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     def _refresh_configuration_initial(
         self, resource_group_name: str, network_device_name: str, **kwargs: Any
@@ -1465,21 +1336,20 @@ class NetworkDevicesOperations:
         api_version: str = kwargs.pop("api_version", _params.pop("api-version", self._config.api_version))
         cls: ClsType[_models.CommonPostActionResponseForStateUpdate] = kwargs.pop("cls", None)
 
-        request = build_refresh_configuration_request(
+        _request = build_refresh_configuration_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
             api_version=api_version,
-            template_url=self._refresh_configuration_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1503,10 +1373,6 @@ class NetworkDevicesOperations:
 
         return deserialized  # type: ignore
 
-    _refresh_configuration_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/refreshConfiguration"
-    }
-
     @distributed_trace
     def begin_refresh_configuration(
         self, resource_group_name: str, network_device_name: str, **kwargs: Any
@@ -1520,14 +1386,6 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1557,7 +1415,7 @@ class NetworkDevicesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1569,23 +1427,21 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_refresh_configuration.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/refreshConfiguration"
-    }
+        return LROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     def _update_administrative_state_initial(
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: Union[_models.UpdateDeviceAdministrativeState, IO],
+        body: Union[_models.UpdateDeviceAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> _models.CommonPostActionResponseForStateUpdate:
         error_map = {
@@ -1611,7 +1467,7 @@ class NetworkDevicesOperations:
         else:
             _json = self._serialize.body(body, "UpdateDeviceAdministrativeState")
 
-        request = build_update_administrative_state_request(
+        _request = build_update_administrative_state_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
@@ -1619,16 +1475,15 @@ class NetworkDevicesOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._update_administrative_state_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1651,10 +1506,6 @@ class NetworkDevicesOperations:
             return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
         return deserialized  # type: ignore
-
-    _update_administrative_state_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateAdministrativeState"
-    }
 
     @overload
     def begin_update_administrative_state(
@@ -1680,14 +1531,6 @@ class NetworkDevicesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1700,7 +1543,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1715,18 +1558,10 @@ class NetworkDevicesOperations:
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1739,7 +1574,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: Union[_models.UpdateDeviceAdministrativeState, IO],
+        body: Union[_models.UpdateDeviceAdministrativeState, IO[bytes]],
         **kwargs: Any
     ) -> LROPoller[_models.CommonPostActionResponseForStateUpdate]:
         """Implements the operation to the underlying resources.
@@ -1751,20 +1586,10 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :param body: Request payload. Is either a UpdateDeviceAdministrativeState type or a IO type.
-         Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateDeviceAdministrativeState or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :param body: Request payload. Is either a UpdateDeviceAdministrativeState type or a IO[bytes]
+         type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateDeviceAdministrativeState or
+         IO[bytes]
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1797,7 +1622,7 @@ class NetworkDevicesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -1809,20 +1634,22 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_update_administrative_state.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateAdministrativeState"
-    }
+        return LROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     def _upgrade_initial(
-        self, resource_group_name: str, network_device_name: str, body: Union[_models.UpdateVersion, IO], **kwargs: Any
+        self,
+        resource_group_name: str,
+        network_device_name: str,
+        body: Union[_models.UpdateVersion, IO[bytes]],
+        **kwargs: Any
     ) -> _models.CommonPostActionResponseForStateUpdate:
         error_map = {
             401: ClientAuthenticationError,
@@ -1847,7 +1674,7 @@ class NetworkDevicesOperations:
         else:
             _json = self._serialize.body(body, "UpdateVersion")
 
-        request = build_upgrade_request(
+        _request = build_upgrade_request(
             resource_group_name=resource_group_name,
             network_device_name=network_device_name,
             subscription_id=self._config.subscription_id,
@@ -1855,16 +1682,15 @@ class NetworkDevicesOperations:
             content_type=content_type,
             json=_json,
             content=_content,
-            template_url=self._upgrade_initial.metadata["url"],
             headers=_headers,
             params=_params,
         )
-        request = _convert_request(request)
-        request.url = self._client.format_url(request.url)
+        _request = _convert_request(_request)
+        _request.url = self._client.format_url(_request.url)
 
         _stream = False
         pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
-            request, stream=_stream, **kwargs
+            _request, stream=_stream, **kwargs
         )
 
         response = pipeline_response.http_response
@@ -1887,10 +1713,6 @@ class NetworkDevicesOperations:
             return cls(pipeline_response, deserialized, response_headers)  # type: ignore
 
         return deserialized  # type: ignore
-
-    _upgrade_initial.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/upgrade"
-    }
 
     @overload
     def begin_upgrade(
@@ -1916,14 +1738,6 @@ class NetworkDevicesOperations:
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1936,7 +1750,7 @@ class NetworkDevicesOperations:
         self,
         resource_group_name: str,
         network_device_name: str,
-        body: IO,
+        body: IO[bytes],
         *,
         content_type: str = "application/json",
         **kwargs: Any
@@ -1951,18 +1765,10 @@ class NetworkDevicesOperations:
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
         :param body: Request payload. Required.
-        :type body: IO
+        :type body: IO[bytes]
         :keyword content_type: Body Parameter content-type. Content type parameter for binary body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -1972,7 +1778,11 @@ class NetworkDevicesOperations:
 
     @distributed_trace
     def begin_upgrade(
-        self, resource_group_name: str, network_device_name: str, body: Union[_models.UpdateVersion, IO], **kwargs: Any
+        self,
+        resource_group_name: str,
+        network_device_name: str,
+        body: Union[_models.UpdateVersion, IO[bytes]],
+        **kwargs: Any
     ) -> LROPoller[_models.CommonPostActionResponseForStateUpdate]:
         """Implements the operation to the underlying resources.
 
@@ -1983,19 +1793,8 @@ class NetworkDevicesOperations:
         :type resource_group_name: str
         :param network_device_name: Name of the Network Device. Required.
         :type network_device_name: str
-        :param body: Request payload. Is either a UpdateVersion type or a IO type. Required.
-        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateVersion or IO
-        :keyword content_type: Body Parameter content-type. Known values are: 'application/json'.
-         Default value is None.
-        :paramtype content_type: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
-        :keyword polling: By default, your polling method will be ARMPolling. Pass in False for this
-         operation to not poll, or pass in your own initialized polling object for a personal polling
-         strategy.
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
-         Retry-After header is present.
+        :param body: Request payload. Is either a UpdateVersion type or a IO[bytes] type. Required.
+        :type body: ~azure.mgmt.managednetworkfabric.models.UpdateVersion or IO[bytes]
         :return: An instance of LROPoller that returns either CommonPostActionResponseForStateUpdate or
          the result of cls(response)
         :rtype:
@@ -2028,7 +1827,7 @@ class NetworkDevicesOperations:
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize("CommonPostActionResponseForStateUpdate", pipeline_response)
             if cls:
-                return cls(pipeline_response, deserialized, {})
+                return cls(pipeline_response, deserialized, {})  # type: ignore
             return deserialized
 
         if polling is True:
@@ -2040,14 +1839,12 @@ class NetworkDevicesOperations:
         else:
             polling_method = polling
         if cont_token:
-            return LROPoller.from_continuation_token(
+            return LROPoller[_models.CommonPostActionResponseForStateUpdate].from_continuation_token(
                 polling_method=polling_method,
                 continuation_token=cont_token,
                 client=self._client,
                 deserialization_callback=get_long_running_output,
             )
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)  # type: ignore
-
-    begin_upgrade.metadata = {
-        "url": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/upgrade"
-    }
+        return LROPoller[_models.CommonPostActionResponseForStateUpdate](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
