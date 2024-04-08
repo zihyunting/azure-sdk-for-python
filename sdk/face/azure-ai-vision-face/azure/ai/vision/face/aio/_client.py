@@ -131,6 +131,22 @@ class FaceAdministrationClient(
     :paramtype api_version: str or ~azure.ai.vision.face.models.Versions
     :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
      Retry-After header is present.
+
+    .. admonition:: Example:
+
+        .. literalinclude:: ../samples/async/samples_authenticate_async.py
+             :start-after: [START authentication_by_api_key]
+             :end-before: [END authentication_by_api_key]
+             :language: python
+             :dedent: 4
+             :caption: Authenticate via api key.
+
+        .. literalinclude:: ../samples/async/samples_authenticate_async.py
+             :start-after: [START authentication_by_aad_credential]
+             :end-before: [END authentication_by_aad_credential]
+             :language: python
+             :dedent: 4
+             :caption: Authenticate via AAD credential.
     """
 
     def __init__(
