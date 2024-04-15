@@ -46,8 +46,10 @@ from ._models import LivenessResponseBody
 from ._models import LivenessSession
 from ._models import LivenessSessionAuditEntry
 from ._models import LivenessSessionCreationContent
+from ._models import LivenessSessionCreationContentForMultipart
 from ._models import LivenessSessionCreationResult
 from ._models import LivenessSessionItem
+from ._models import LivenessSessionWithVerifyImageCreationContent
 from ._models import LivenessWithVerifyImage
 from ._models import LivenessWithVerifyOutputs
 from ._models import LivenessWithVerifySession
@@ -126,8 +128,10 @@ __all__ = [
     "LivenessSession",
     "LivenessSessionAuditEntry",
     "LivenessSessionCreationContent",
+    "LivenessSessionCreationContentForMultipart",
     "LivenessSessionCreationResult",
     "LivenessSessionItem",
+    "LivenessSessionWithVerifyImageCreationContent",
     "LivenessWithVerifyImage",
     "LivenessWithVerifyOutputs",
     "LivenessWithVerifySession",
