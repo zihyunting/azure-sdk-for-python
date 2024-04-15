@@ -51,6 +51,7 @@ from ._models import SessionAuditEntryRequestInfo
 from ._models import SessionAuditEntryResponseInfo
 
 from ._enums import FaceDetectionModel
+from ._enums import FaceAttributeType
 from ._enums import FaceImageType
 from ._enums import FaceLivenessDecision
 from ._enums import FaceOperationState
@@ -110,6 +111,7 @@ __all__ = [
     "SessionAuditEntryRequestInfo",
     "SessionAuditEntryResponseInfo",
     "FaceDetectionModel",
+    "FaceAttributeType",
     "FaceImageType",
     "FaceLivenessDecision",
     "FaceOperationState",
