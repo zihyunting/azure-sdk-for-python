@@ -9,6 +9,10 @@
 import azure.ai.vision.face.models as models
 
 
+def _assert_is_string_and_not_empty(val: str):
+    assert isinstance(val, str) and bool(val)
+
+
 def _assert_face_rectangle_not_empty(face_rectangle: models.FaceRectangle):
     assert face_rectangle is not None
     assert face_rectangle.top > 0
