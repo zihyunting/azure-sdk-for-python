@@ -35,3 +35,5 @@ class TestAuthenticationAsync(AzureRecordedTestCase):
                 FaceAttributeType.HEAD_POSE, FaceAttributeType.MASK, FaceAttributeType.QUALITY_FOR_RECOGNITION])
 
         assert result is not None
+
+        await client.close()

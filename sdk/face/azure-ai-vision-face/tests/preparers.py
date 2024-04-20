@@ -5,7 +5,6 @@
 # Licensed under the MIT License. See License.txt in the project root for
 # license information.
 # --------------------------------------------------------------------------
-import asyncio
 import inspect
 import functools
 
@@ -40,9 +39,8 @@ class ClientPreparer(AzureMgmtPreparer):
         return kwargs
 
     def remove_resource(self, name, **kwargs):
-        if inspect.iscoroutinefunction(self._client.close):
-            asyncio.run(self._client.close())
-        else:
+        # User has to call `await close()` in the test case if it is a coroutine function.
+        if not inspect.iscoroutinefunction(self._client.close):
             self._client.close()
 
 
