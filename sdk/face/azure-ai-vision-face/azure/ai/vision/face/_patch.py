@@ -6,15 +6,20 @@
 
 Follow our quickstart for examples: https://aka.ms/azsdk/python/dpcodegen/python/customize
 """
-from typing import Any, IO, List, Optional, Union
+from typing import Any, Callable, Dict, IO, List, Optional, TypeVar, Union, cast
 import sys
 
+from azure.core.pipeline import PipelineResponse
+from azure.core.polling import LROPoller, NoPolling, PollingMethod
+from azure.core.polling.base_polling import LROBasePolling
 from azure.core.tracing.decorator import distributed_trace
+from azure.core.rest import HttpRequest, HttpResponse
 
 from . import models as _models
 from ._client import FaceAdministrationClient as FaceAdministrationClientGenerated
 from ._client import FaceClient as FaceClientGenerated
 from ._client import FaceSessionClient as FaceSessionClientGenerated
+from ._model_base import _deserialize
 from ._operations._operations import (
     FaceAdministrationClientOperationsMixin,
     FaceClientOperationsMixin,
@@ -26,7 +31,8 @@ if sys.version_info >= (3, 9):
 else:
     from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
 JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
-_Unset: Any = object()
+T = TypeVar("T")
+ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
 
 class FaceAdministrationClient(FaceAdministrationClientGenerated):
@@ -50,24 +56,23 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
     @distributed_trace
     def create_person(
         self,
-        body: Union[JSON, IO[bytes]] = _Unset,
+        name: str,
         *,
-        name: str = _Unset,
         user_data: Optional[str] = None,
         **kwargs: Any,
-    ) -> _models.CreatePersonResult:
+    ) -> LROPoller[_models.PersonDirectoryPerson]:
         """Creates a new person in a Person Directory. To add face to this person, please call
         PersonDirectory Person - Add Face.
 
-        :param body: Is either a JSON type or a IO[bytes] type. Required.
-        :type body: JSON or IO[bytes]
-        :keyword name: User defined name, maximum length is 128. Required when body is not set.
-        :paramtype name: str
+        :param name: User defined name, maximum length is 128. Required.
+        :type name: str
         :keyword user_data: Optional user defined data. Length should not exceed 16K. Default value is
          None.
         :paramtype user_data: str
-        :return: CreatePersonResult. The CreatePersonResult is compatible with MutableMapping
-        :rtype: ~azure.ai.vision.face.models.CreatePersonResult
+        :return: An instance of LROPoller that returns PersonDirectoryPerson. The PersonDirectoryPerson is compatible
+         with MutableMapping
+        :rtype:
+         ~azure.core.polling.LROPoller[~azure.ai.vision.face.models.PersonDirectoryPerson]
         :raises ~azure.core.exceptions.HttpResponseError:
 
         Example:
@@ -86,12 +91,47 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
                 }
         """
         # TODO
-        return FaceAdministrationClientOperationsMixin._create_person(
-            self,
-            body=body,
-            name=name,
-            user_data=user_data,
-            **kwargs)
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.PersonDirectoryPerson] = kwargs.pop("cls", None)
+        polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
+        lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
+
+        # get response from `create_person`
+        raw_result = FaceAdministrationClientOperationsMixin._create_person(  # type: ignore
+            self, name=name, user_data=user_data, cls=lambda x, y, z: x, headers=_headers, params=_params, **kwargs)
+        kwargs.pop("error_map", None)
+
+        def get_long_running_output(pipeline_response):
+            response_headers = {}
+            response = pipeline_response.http_response
+            response_headers["operation-Location"] = self._deserialize(
+                "str", response.headers.get("operation-Location")
+            )
+
+            deserialized = _deserialize(_models.PersonDirectoryPerson, response.json())
+            if cls:
+                return cls(pipeline_response, deserialized, response_headers)  # type: ignore
+            return deserialized
+
+        path_format_arguments = {
+            "endpoint": self._serialize.url("self._config.endpoint", self._config.endpoint, "str", skip_quote=True),
+            "apiVersion": self._serialize.url("self._config.api_version", self._config.api_version, "str"),
+        }
+
+        if polling is True:
+            polling_method: PollingMethod = cast(
+                PollingMethod, LROBasePolling(lro_delay, path_format_arguments=path_format_arguments, **kwargs)
+            )
+        elif polling is False:
+            polling_method = cast(PollingMethod, NoPolling())
+        else:
+            polling_method = polling
+
+        return LROPoller[_models.PersonDirectoryPerson](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     # TODO
     @distributed_trace
@@ -203,7 +243,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         target_face: Optional[List[int]] = None,
         user_data: Optional[str] = None,
         **kwargs: Any,
-    ) -> _models.AddFaceResult:
+    ) -> LROPoller[_models.PersonDirectoryFace]:
         # pylint: disable=line-too-long
         """Add a face to a person (see PersonDirectory Person - Create) for face identification or
         verification.
@@ -259,8 +299,10 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         :keyword user_data: User-provided data attached to the face. The size limit is 1K. Default
          value is None.
         :paramtype user_data: str
-        :return: AddFaceResult. The AddFaceResult is compatible with MutableMapping
-        :rtype: ~azure.ai.vision.face.models.AddFaceResult
+        :return: An instance of LROPoller that returns PersonDirectoryFace. The PersonDirectoryFace is compatible
+         with MutableMapping
+        :rtype:
+         ~azure.core.polling.LROPoller[~azure.ai.vision.face.models.PersonDirectoryFace]
         :raises ~azure.core.exceptions.HttpResponseError:
 
         Example:
@@ -274,28 +316,63 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
                 }
         """
         # TODO
-        return FaceAdministrationClientOperationsMixin._add_person_face(
-            self,
-            person_id,
-            recognition_model,
-            image_content,
-            target_face=target_face,
-            detection_model=detection_model,
-            user_data=user_data,
-            **kwargs)
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.PersonDirectoryFace] = kwargs.pop("cls", None)
+        polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
+        lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
+
+        # get response from `add_person_face`
+        raw_result = FaceAdministrationClientOperationsMixin._add_person_face(  # type: ignore
+            self, person_id, recognition_model, image_content,
+            target_face=target_face, detection_model=detection_model, user_data=user_data,
+            cls=lambda x, y, z: x, headers=_headers, params=_params, **kwargs)
+        kwargs.pop("error_map", None)
+
+        print(f"response: {raw_result.http_response.json()}, response_headers: {raw_result.http_response.headers}")
+
+        def get_long_running_output(pipeline_response):
+            response_headers = {}
+            response = pipeline_response.http_response
+            response_headers["operation-Location"] = self._deserialize(
+                "str", response.headers.get("operation-Location")
+            )
+
+            deserialized = _deserialize(_models.PersonDirectoryFace, response.json())
+            if cls:
+                return cls(pipeline_response, deserialized, response_headers)  # type: ignore
+            return deserialized
+
+        path_format_arguments = {
+            "endpoint": self._serialize.url("self._config.endpoint", self._config.endpoint, "str", skip_quote=True),
+            "apiVersion": self._serialize.url("self._config.api_version", self._config.api_version, "str"),
+        }
+
+        if polling is True:
+            polling_method: PollingMethod = cast(
+                PollingMethod, LROBasePolling(lro_delay, path_format_arguments=path_format_arguments, **kwargs)
+            )
+        elif polling is False:
+            polling_method = cast(PollingMethod, NoPolling())
+        else:
+            polling_method = polling
+
+        return LROPoller[_models.PersonDirectoryFace](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     # TODO
     @distributed_trace
     def create_dynamic_person_group(  # pylint: disable=inconsistent-return-statements
         self,
         dynamic_person_group_id: str,
-        body: Union[JSON, IO[bytes]] = _Unset,
+        name: str,
         *,
-        name: str = _Unset,
         add_person_ids: Optional[List[str]] = None,
         user_data: Optional[str] = None,
         **kwargs: Any,
-    ) -> None:
+    ) -> LROPoller[_models.DynamicPersonGroup]:
         """Creates a new Dynamic Person Group with specified dynamicPersonGroupId, name, and user-provided
         userData.
 
@@ -318,10 +395,8 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
 
         :param dynamic_person_group_id: ID of the dynamic person group. Required.
         :type dynamic_person_group_id: str
-        :param body: Is either a JSON type or a IO[bytes] type. Required.
-        :type body: JSON or IO[bytes]
-        :keyword name: User defined name, maximum length is 128. Required when body is not set.
-        :paramtype name: str
+        :param name: User defined name, maximum length is 128. Required.
+        :type name: str
         :keyword add_person_ids: Array of personIds created by PersonDirectory Person - Create to be
          added. Default value is None.
         :paramtype add_person_ids: list[str]
@@ -347,23 +422,56 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
                 }
         """
         # TODO
-        return FaceAdministrationClientOperationsMixin._create_dynamic_person_group(
-            self,
-            dynamic_person_group_id,
-            body=body,
-            name=name,
-            add_person_ids=add_person_ids,
-            user_data=user_data,
-            **kwargs)
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.DynamicPersonGroup] = kwargs.pop("cls", None)
+        polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
+        lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
+
+        # get response from `add_person_face`
+        raw_result = FaceAdministrationClientOperationsMixin._create_dynamic_person_group(  # type: ignore
+            self, dynamic_person_group_id, name=name, add_person_ids=add_person_ids, user_data=user_data,
+            cls=lambda x, y, z: x, headers=_headers, params=_params, **kwargs)
+        kwargs.pop("error_map", None)
+
+        def get_long_running_output(pipeline_response):
+            response_headers = {}
+            response = pipeline_response.http_response
+            response_headers["operation-Location"] = self._deserialize(
+                "str", response.headers.get("operation-Location")
+            )
+
+            deserialized = _deserialize(_models.DynamicPersonGroup, response.json())
+            if cls:
+                return cls(pipeline_response, deserialized, response_headers)  # type: ignore
+            return deserialized
+
+        path_format_arguments = {
+            "endpoint": self._serialize.url("self._config.endpoint", self._config.endpoint, "str", skip_quote=True),
+            "apiVersion": self._serialize.url("self._config.api_version", self._config.api_version, "str"),
+        }
+
+        if raw_result.http_response.status_code == 200 or polling is False:
+            polling_method = cast(PollingMethod, NoPolling())
+        elif polling is True:
+            polling_method: PollingMethod = cast(
+                PollingMethod, LROBasePolling(lro_delay, path_format_arguments=path_format_arguments, **kwargs)
+            )
+        else:
+            polling_method = polling
+
+        return LROPoller[_models.DynamicPersonGroup](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     # TODO
     @distributed_trace
     def update_dynamic_person_group(  # pylint: disable=inconsistent-return-statements
         self,
         dynamic_person_group_id: str,
-        body: Union[JSON, IO[bytes]] = _Unset,
+        name: str,
         *,
-        name: str = _Unset,
         add_person_ids: Optional[List[str]] = None,
         remove_person_ids: Optional[List[str]] = None,
         user_data: Optional[str] = None,
@@ -376,10 +484,8 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
 
         :param dynamic_person_group_id: ID of the dynamic person group. Required.
         :type dynamic_person_group_id: str
-        :param body: Is either a JSON type or a IO[bytes] type. Required.
-        :type body: JSON or IO[bytes]
-        :keyword name: User defined name, maximum length is 128.
-        :paramtype name: str
+        :param name: User defined name, maximum length is 128. Required.
+        :type name: str
         :keyword add_person_ids: Array of personIds created by PersonDirectory Person - Create to be
          added. Default value is None.
         :paramtype add_person_ids: list[str]
@@ -415,7 +521,6 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         return FaceAdministrationClientOperationsMixin._update_dynamic_person_group(
             self,
             dynamic_person_group_id,
-            body=body,
             name=name,
             add_person_ids=add_person_ids,
             remove_person_ids=remove_person_ids,

@@ -26,7 +26,6 @@ if sys.version_info >= (3, 9):
 else:
     from typing import MutableMapping  # type: ignore  # pylint: disable=ungrouped-imports
 JSON = MutableMapping[str, Any]  # pylint: disable=unsubscriptable-object
-_Unset: Any = object()
 
 
 class FaceAdministrationClient(FaceAdministrationClientGenerated):
@@ -50,19 +49,16 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
     @distributed_trace_async
     async def create_person(
         self,
-        body: Union[JSON, IO[bytes]] = _Unset,
+        name: str,
         *,
-        name: str = _Unset,
         user_data: Optional[str] = None,
         **kwargs: Any,
     ) -> _models.CreatePersonResult:
         """Creates a new person in a Person Directory. To add face to this person, please call
         PersonDirectory Person - Add Face.
 
-        :param body: Is either a JSON type or a IO[bytes] type. Required.
-        :type body: JSON or IO[bytes]
-        :keyword name: User defined name, maximum length is 128. Required when body is not set.
-        :paramtype name: str
+        :param name: User defined name, maximum length is 128. Required.
+        :type name: str
         :keyword user_data: Optional user defined data. Length should not exceed 16K. Default value is
          None.
         :paramtype user_data: str
@@ -88,7 +84,6 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         # TODO
         return await FaceAdministrationClientOperationsMixin._create_person(
             self,
-            body=body,
             name=name,
             user_data=user_data,
             **kwargs)
@@ -289,9 +284,8 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
     async def create_dynamic_person_group(  # pylint: disable=inconsistent-return-statements
         self,
         dynamic_person_group_id: str,
-        body: Union[JSON, IO[bytes]] = _Unset,
+        name: str,
         *,
-        name: str = _Unset,
         add_person_ids: Optional[List[str]] = None,
         user_data: Optional[str] = None,
         **kwargs: Any,
@@ -318,10 +312,8 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
 
         :param dynamic_person_group_id: ID of the dynamic person group. Required.
         :type dynamic_person_group_id: str
-        :param body: Is either a JSON type or a IO[bytes] type. Required.
-        :type body: JSON or IO[bytes]
-        :keyword name: User defined name, maximum length is 128. Required when body is not set.
-        :paramtype name: str
+        :param name: User defined name, maximum length is 128. Required.
+        :type name: str
         :keyword add_person_ids: Array of personIds created by PersonDirectory Person - Create to be
          added. Default value is None.
         :paramtype add_person_ids: list[str]
@@ -350,7 +342,6 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         return await FaceAdministrationClientOperationsMixin._create_dynamic_person_group(
             self,
             dynamic_person_group_id,
-            body=body,
             name=name,
             add_person_ids=add_person_ids,
             user_data=user_data,
@@ -361,9 +352,8 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
     async def update_dynamic_person_group(  # pylint: disable=inconsistent-return-statements
         self,
         dynamic_person_group_id: str,
-        body: Union[JSON, IO[bytes]] = _Unset,
+        name: str,
         *,
-        name: str = _Unset,
         add_person_ids: Optional[List[str]] = None,
         remove_person_ids: Optional[List[str]] = None,
         user_data: Optional[str] = None,
@@ -376,10 +366,8 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
 
         :param dynamic_person_group_id: ID of the dynamic person group. Required.
         :type dynamic_person_group_id: str
-        :param body: Is either a JSON type or a IO[bytes] type. Required.
-        :type body: JSON or IO[bytes]
-        :keyword name: User defined name, maximum length is 128.
-        :paramtype name: str
+        :param name: User defined name, maximum length is 128. Required.
+        :type name: str
         :keyword add_person_ids: Array of personIds created by PersonDirectory Person - Create to be
          added. Default value is None.
         :paramtype add_person_ids: list[str]
@@ -415,7 +403,6 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         return await FaceAdministrationClientOperationsMixin._update_dynamic_person_group(
             self,
             dynamic_person_group_id,
-            body=body,
             name=name,
             add_person_ids=add_person_ids,
             remove_person_ids=remove_person_ids,
