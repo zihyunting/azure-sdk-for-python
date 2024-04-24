@@ -15,6 +15,8 @@ from azure.core.polling.base_polling import LROBasePolling
 from azure.core.tracing.decorator import distributed_trace
 from azure.core.rest import HttpRequest, HttpResponse
 
+from azure.core.polling.base_polling import _failed, OperationFailed, _raise_if_bad_http_status_and_method
+
 from . import models as _models
 from ._client import FaceAdministrationClient as FaceAdministrationClientGenerated
 from ._client import FaceClient as FaceClientGenerated
@@ -35,6 +37,48 @@ T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
 
+class FacePollingMethod(LROBasePolling):
+    _operation_status_response = None
+
+    def __init__(self, *args, **kwargs):
+        # self._cont_token_response = kwargs.pop("cont_token_response")
+        super().__init__(*args, **kwargs)
+
+    def _poll(self) -> None:
+        """Poll status of operation so long as operation is incomplete and
+        we have an endpoint to query.
+
+        :raises: OperationFailed if operation status 'Failed' or 'Canceled'.
+        :raises: BadStatus if response status invalid.
+        :raises: BadResponse if response invalid.
+        """
+        print("Customized polling method is running")
+        if not self.finished():
+            self.update_status()
+        while not self.finished():
+            self._delay()
+            self.update_status()
+
+        if _failed(self.status()):
+            raise OperationFailed("Operation failed or canceled")
+
+        '''
+        final_get_url = self._operation.get_final_get_url(self._pipeline_response)
+        if final_get_url:
+            self._pipeline_response = self.request_status(final_get_url)
+            _raise_if_bad_http_status_and_method(self._pipeline_response.http_response)
+        '''
+
+    def update_status(self) -> None:
+        """Update the current status of the LRO."""
+        self._pipeline_response = self.request_status(self._operation.get_polling_url())
+        self._operation_status_response = self._pipeline_response.http_response
+        _raise_if_bad_http_status_and_method(self._pipeline_response.http_response)
+        self._status = self._operation.get_status(self._pipeline_response)
+
+    def get_operation_status_response(self):
+        return self._operation_status_response
+
 class FaceAdministrationClient(FaceAdministrationClientGenerated):
     """FaceAdministrationClient.
 
@@ -51,6 +95,85 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
     :keyword int polling_interval: Default waiting time between two polls for LRO operations if no
      Retry-After header is present.
     """
+    # FIXME - Test
+    @distributed_trace
+    def create_person3(
+        self,
+        name: str,
+        *,
+        user_data: Optional[str] = None,
+        **kwargs: Any,
+    ) -> LROPoller[_models.FaceOperationStatus]:
+        lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
+
+        path_format_arguments = {
+            "endpoint": self._serialize.url("self._config.endpoint", self._config.endpoint, "str", skip_quote=True),
+            "apiVersion": self._serialize.url("self._config.api_version", self._config.api_version, "str"),
+        }
+
+        polling_method: PollingMethod = cast(
+                PollingMethod, FacePollingMethod(lro_delay, path_format_arguments=path_format_arguments, **kwargs))
+        return self.create_person2(name, user_data=user_data, polling=polling_method, **kwargs)
+
+    @distributed_trace
+    def create_person2(
+        self,
+        name: str,
+        *,
+        user_data: Optional[str] = None,
+        **kwargs: Any,
+    ) -> LROPoller[_models.FaceOperationStatus]:
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[_models.FaceOperationStatus] = kwargs.pop("cls", None)
+        polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
+        lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
+        cont_token: Optional[str] = kwargs.pop("continuation_token", None)
+        if cont_token is None:
+            raw_result = self._create_person(  # type: ignore
+                name=name, user_data=user_data, cls=lambda x, y, z: x, headers=_headers, params=_params, **kwargs)
+
+        print(f"raw_result: {raw_result.http_response}, headers: {raw_result.http_response.headers}")
+
+        kwargs.pop("error_map", None)
+
+        def get_long_running_output(pipeline_response):
+            response_headers = {}
+            response = pipeline_response.http_response
+            response_headers["operation-Location"] = self._deserialize(
+                "str", response.headers.get("operation-Location")
+            )
+
+            deserialized = _deserialize(_models.FaceOperationStatus, response.json())
+            if cls:
+                return cls(pipeline_response, deserialized, response_headers)  # type: ignore
+            return deserialized
+
+        path_format_arguments = {
+            "endpoint": self._serialize.url("self._config.endpoint", self._config.endpoint, "str", skip_quote=True),
+            "apiVersion": self._serialize.url("self._config.api_version", self._config.api_version, "str"),
+        }
+
+        if polling is True:
+            polling_method: PollingMethod = cast(
+                PollingMethod, LROBasePolling(lro_delay, path_format_arguments=path_format_arguments, **kwargs)
+            )
+        elif polling is False:
+            polling_method = cast(PollingMethod, NoPolling())
+        else:
+            polling_method = polling
+        if cont_token:
+            return LROPoller[_models.FaceOperationStatus].from_continuation_token(
+                polling_method=polling_method,
+                continuation_token=cont_token,
+                client=self._client,
+                deserialization_callback=get_long_running_output,
+            )
+        print(f"Polling method: {polling_method}")
+        return LROPoller[_models.FaceOperationStatus](
+            self._client, raw_result, get_long_running_output, polling_method  # type: ignore
+        )
 
     # TODO
     @distributed_trace
@@ -60,7 +183,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         *,
         user_data: Optional[str] = None,
         **kwargs: Any,
-    ) -> LROPoller[_models.PersonDirectoryPerson]:
+    ) -> LROPoller[_models.CreatePersonResult]:
         """Creates a new person in a Person Directory. To add face to this person, please call
         PersonDirectory Person - Add Face.
 
@@ -69,10 +192,10 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         :keyword user_data: Optional user defined data. Length should not exceed 16K. Default value is
          None.
         :paramtype user_data: str
-        :return: An instance of LROPoller that returns PersonDirectoryPerson. The PersonDirectoryPerson is compatible
+        :return: An instance of LROPoller that returns CreatePersonResult. The CreatePersonResult is compatible
          with MutableMapping
         :rtype:
-         ~azure.core.polling.LROPoller[~azure.ai.vision.face.models.PersonDirectoryPerson]
+         ~azure.core.polling.LROPoller[~azure.ai.vision.face.models.CreatePersonResult]
         :raises ~azure.core.exceptions.HttpResponseError:
 
         Example:
@@ -94,7 +217,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.PersonDirectoryPerson] = kwargs.pop("cls", None)
+        cls: ClsType[_models.CreatePersonResult] = kwargs.pop("cls", None)
         polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
         lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
 
@@ -104,15 +227,12 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         kwargs.pop("error_map", None)
 
         def get_long_running_output(pipeline_response):
-            response_headers = {}
+            return None
             response = pipeline_response.http_response
-            response_headers["operation-Location"] = self._deserialize(
-                "str", response.headers.get("operation-Location")
-            )
+            deserialized = _deserialize(_models.CreatePersonResult, response.json())
 
-            deserialized = _deserialize(_models.PersonDirectoryPerson, response.json())
             if cls:
-                return cls(pipeline_response, deserialized, response_headers)  # type: ignore
+                return cls(pipeline_response, deserialized)  # type: ignore
             return deserialized
 
         path_format_arguments = {
@@ -129,7 +249,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         else:
             polling_method = polling
 
-        return LROPoller[_models.PersonDirectoryPerson](
+        return LROPoller[_models.CreatePersonResult](
             self._client, raw_result, get_long_running_output, polling_method  # type: ignore
         )
 
@@ -372,7 +492,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         add_person_ids: Optional[List[str]] = None,
         user_data: Optional[str] = None,
         **kwargs: Any,
-    ) -> LROPoller[_models.DynamicPersonGroup]:
+    ) -> LROPoller[None]:
         """Creates a new Dynamic Person Group with specified dynamicPersonGroupId, name, and user-provided
         userData.
 
@@ -425,7 +545,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[_models.DynamicPersonGroup] = kwargs.pop("cls", None)
+        cls: ClsType[None] = kwargs.pop("cls", None)
         polling: Union[bool, PollingMethod] = kwargs.pop("polling", True)
         lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
 
@@ -442,10 +562,11 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
                 "str", response.headers.get("operation-Location")
             )
 
-            deserialized = _deserialize(_models.DynamicPersonGroup, response.json())
-            if cls:
-                return cls(pipeline_response, deserialized, response_headers)  # type: ignore
-            return deserialized
+            # deserialized = _deserialize(_models.DynamicPersonGroup, response.json())
+            # if cls:
+            #     return cls(pipeline_response, deserialized, response_headers)  # type: ignore
+            # return deserialized
+            return None
 
         path_format_arguments = {
             "endpoint": self._serialize.url("self._config.endpoint", self._config.endpoint, "str", skip_quote=True),
@@ -461,7 +582,7 @@ class FaceAdministrationClient(FaceAdministrationClientGenerated):
         else:
             polling_method = polling
 
-        return LROPoller[_models.DynamicPersonGroup](
+        return LROPoller[None](
             self._client, raw_result, get_long_running_output, polling_method  # type: ignore
         )
 

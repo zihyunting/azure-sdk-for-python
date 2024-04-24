@@ -27,9 +27,10 @@ USAGE:
     5) AZURE_CLIENT_SECRET - the client secret for the registered application
 """
 import os
-import time
 
+from typing import cast
 from dotenv import find_dotenv, load_dotenv
+
 
 from _shared.constants import (
     CONFIGURATION_NAME_FACE_API_ACCOUNT_KEY,
@@ -49,14 +50,47 @@ class FaceTest():
         self.key = os.getenv(CONFIGURATION_NAME_FACE_API_ACCOUNT_KEY, DEFAULT_FACE_API_ACCOUNT_KEY)
         self.logger = get_logger("sample_authentication")
 
-    def test_pd(self):
+    def test_pd_create_person(self):
         from azure.core.credentials import AzureKeyCredential
         from azure.ai.vision.face import FaceAdministrationClient
 
         with FaceAdministrationClient(endpoint=self.endpoint, credential=AzureKeyCredential(self.key)) as face_client:
             polling = face_client.create_person(name="pdtest1", polling_interval=30)
-            polling_result = polling.result()
-            print(f"Polling result: {polling_result}, type: {type(polling_result)}")
+            print(f"Get poller, status: {polling.status()}, result: {polling.result(0.0)}, operation status: {polling.polling_method().get_operation_status_response()}")
+            print(f"Get poller, status: {polling.status()}, result: {polling.result(30)}, operation status: {polling.polling_method().get_operation_status_response()}")
+            polling.wait()
+            print(f"Get result, status: {polling.status()}, done: {polling.done()}, result: {polling.result()}, typeOfResult: {type(polling.result())}, operation status: {polling.polling_method().get_operation_status_response()}")
+
+            result = polling.result()
+            face_client.delete_person(result.person_id)
+
+    def test_pd_create_person3(self):
+        from azure.core.credentials import AzureKeyCredential
+        from azure.ai.vision.face import FaceAdministrationClient
+
+        with FaceAdministrationClient(endpoint=self.endpoint, credential=AzureKeyCredential(self.key)) as face_client:
+            # polling = face_client.create_person2(name="pdtest1", polling_interval=30, polling=FacePollingMethod)
+            polling = face_client.create_person3(
+                # name="pdtest1", polling_interval=30, headers={"apim-subscription-id": "test", "apim-product-id": "s0"},
+                name="pdtest1", polling_interval=30,
+                # polling=cast(PollingMethod, FacePollingMethod(30))
+            )
+            print(f"Get poller, Operation status: {polling.status()}, result: {polling.result(0.0)}, operation status: {polling.polling_method().get_operation_status_response()}")
+            print(f"Get poller, Operation status: {polling.status()}, result: {polling.result(30)}")
+            polling.wait()
+            print(f"Get result, status: {polling.status()}, done: {polling.done()}, result: {polling.result()}, typeOfResult: {type(polling.result())}, operation status: {polling.polling_method().get_operation_status_response()}")
+
+
+    def test_pd_delete_person(self):
+        from azure.core.credentials import AzureKeyCredential
+        from azure.ai.vision.face import FaceAdministrationClient
+
+        with FaceAdministrationClient(endpoint=self.endpoint, credential=AzureKeyCredential(self.key)) as face_client:
+            person_id = "b21b6fde-e17c-45d2-873e-0de6e9f90ece"
+            polling = face_client.begin_delete_person(person_id)
+            print(f"Get poller, status: {polling.status()}, result: {polling.result(0.0)}")
+            polling.wait()
+            print(f"Get result, status: {polling.status()}, done: {polling.done()}, result: {polling.result()}, typeOfResult: {type(polling.result())}")
 
     def test_pd_add_face(self):
         from azure.core.credentials import AzureKeyCredential
@@ -115,11 +149,9 @@ class FaceTest():
             """
 
             polling = face_client.begin_train_large_face_list(large_face_list_id="lfltest1")
-            print("Get poller")
-            time.sleep(10)
-            print("Get result")
-            polling_result = polling.result()
-            print(f"Polling result: {polling_result}, type: {type(polling_result)}")
+            print(f"Get poller, status: {polling.status()}, result: {polling.result(0.0)}")
+            polling.wait()
+            print(f"Get result, status: {polling.status()}, done: {polling.done()}, result: {polling.result()}, typeOfResult: {type(polling.result())}")
 
             # Polling shouldn't be False!
             '''
@@ -132,8 +164,10 @@ class FaceTest():
 
 if __name__ == "__main__":
     sample = FaceTest()
-    # sample.test_pd()
+    # sample.test_pd_create_person()
+    sample.test_pd_create_person3()
+    # sample.test_pd_delete_person()
     # sample.test_pd_add_face()
-    sample.test_create_dynamic_person_group()
+    # sample.test_create_dynamic_person_group()
     # sample.test_create_dynamic_person_group_with_persons()
     # sample.test_training()
