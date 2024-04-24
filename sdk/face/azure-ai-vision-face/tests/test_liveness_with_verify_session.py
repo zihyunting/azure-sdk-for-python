@@ -53,6 +53,7 @@ class TestLivenessWithVerifySession(AzureRecordedTestCase):
 
         return variables
 
+    @pytest.mark.live_test_only  # It's hard to sanitize the multipart form-data request.
     @FacePreparer()
     @FaceSessionClientPreparer()
     @recorded_by_proxy
