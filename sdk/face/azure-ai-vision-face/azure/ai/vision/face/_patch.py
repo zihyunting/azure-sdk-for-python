@@ -1474,7 +1474,10 @@ class FaceSessionClient(FaceSessionClientGenerated):
     # TODO
     @distributed_trace
     def create_liveness_with_verify_session(
-        self, body: Union[_models.LivenessSessionCreationContent, JSON, IO[bytes]], **kwargs: Any
+        self,
+        body: Union[_models.LivenessSessionCreationContent, JSON, IO[bytes]],
+        verify_image: bytes = None,
+        **kwargs: Any
     ) -> _models.LivenessSessionCreationResult:
         # pylint: disable=line-too-long
         """Create a new liveness session with verify. Client device submits VerifyImage during the
@@ -1519,6 +1522,8 @@ class FaceSessionClient(FaceSessionClientGenerated):
         :param body: Is one of the following types: LivenessSessionCreationContent, JSON, IO[bytes]
          Required.
         :type body: ~azure.ai.vision.face.models.LivenessSessionCreationContent or JSON or IO[bytes]
+        :param verify_image: The image for verify.
+        :type verify_image: bytes
         :return: LivenessSessionCreationResult. The LivenessSessionCreationResult is compatible with
          MutableMapping
         :rtype: ~azure.ai.vision.face.models.LivenessSessionCreationResult
@@ -1559,108 +1564,15 @@ class FaceSessionClient(FaceSessionClientGenerated):
                 }
         """
         # TODO
+        if verify_image is not None:
+            request_body = _models.LivenessSessionWithVerifyImageCreationContent(
+                parameters=cast(_models._models.LivenessSessionCreationContentForMultipart, body),
+                verify_image=("verify-image", verify_image)
+            )
+            return FaceSessionClientOperationsMixin._create_liveness_with_verify_session_with_verify_image(
+                self, request_body, **kwargs)
+
         return FaceSessionClientOperationsMixin._create_liveness_with_verify_session(
-            self, body, **kwargs)
-
-    # TODO
-    @distributed_trace
-    def create_liveness_with_verify_session_with_verify_image(  # pylint: disable=protected-access,name-too-long
-        self, body: Union[_models._models.LivenessSessionWithVerifyImageCreationContent, JSON], **kwargs: Any
-    ) -> _models._models.LivenessSessionWithVerifyCreationResult:
-        # pylint: disable=line-too-long
-        """Create a new liveness session with verify. Provide the verify image during session creation.
-
-        A session is best for client device scenarios where developers want to authorize a client
-        device to perform only a liveness detection without granting full access to their resource.
-        Created sessions have a limited life span and only authorize clients to perform the desired
-        action before access is expired.
-
-        Permissions includes...
-        >
-        *
-
-
-        * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-        * A token lifetime of 10 minutes.
-
-        ..
-
-           [!NOTE]
-
-           *
-
-
-           * Client access can be revoked by deleting the session using the Delete Liveness With Verify
-        Session operation.
-           * To retrieve a result, use the Get Liveness With Verify Session.
-           * To audit the individual requests that a client has made to your resource, use the List
-        Liveness With Verify Session Audit Entries.
-
-
-        Recommended Option: VerifyImage is provided during session creation.
-
-        :param body: Is either a LivenessSessionWithVerifyImageCreationContent type or a JSON type.
-         Required.
-        :type body: ~azure.ai.vision.face.models.LivenessSessionWithVerifyImageCreationContent or JSON
-        :return: LivenessSessionWithVerifyCreationResult. The LivenessSessionWithVerifyCreationResult
-         is compatible with MutableMapping
-        :rtype: ~azure.ai.vision.face.models.LivenessSessionWithVerifyCreationResult
-        :raises ~azure.core.exceptions.HttpResponseError:
-
-        Example:
-            .. code-block:: python
-
-                # JSON input template you can fill out and use as your body input.
-                body = {
-                    "Parameters": {
-                        "livenessOperationMode": "str",  # Type of liveness mode the client
-                          should follow. Required. "Passive"
-                        "authTokenTimeToLiveInSeconds": 0,  # Optional. Seconds the session
-                          should last for. Range is 60 to 86400 seconds. Default value is 600.
-                        "deviceCorrelationId": "str",  # Optional. Unique Guid per each
-                          end-user device. This is to provide rate limiting and anti-hammering. If
-                          'deviceCorrelationIdSetInClient' is true in this request, this
-                          'deviceCorrelationId' must be null.
-                        "deviceCorrelationIdSetInClient": bool,  # Optional. Whether or not
-                          to allow client to set their own 'deviceCorrelationId' via the Vision SDK.
-                          Default is false, and 'deviceCorrelationId' must be set in this request body.
-                        "sendResultsToClient": bool  # Optional. Whether or not to allow a
-                          '200 - Success' response body to be sent to the client, which may be
-                          undesirable for security reasons. Default is false, clients will receive a
-                          '204 - NoContent' empty body response. Regardless of selection, calling
-                          Session GetResult will always contain a response body enabling business logic
-                          to be implemented.
-                    },
-                    "VerifyImage": filetype
-                }
-
-                # response body for status code(s): 200
-                response == {
-                    "authToken": "str",  # Bearer token to provide authentication for the Vision
-                      SDK running on a client application. This Bearer token has limited permissions to
-                      perform only the required action and expires after the TTL time. It is also
-                      auditable. Required.
-                    "sessionId": "str",  # The unique session ID of the created session. It will
-                      expire 48 hours after it was created or may be deleted sooner using the
-                      corresponding Session DELETE operation. Required.
-                    "verifyImage": {
-                        "faceRectangle": {
-                            "height": 0,  # The height of the rectangle, in pixels.
-                              Required.
-                            "left": 0,  # The distance from the left edge if the image to
-                              the left edge of the rectangle, in pixels. Required.
-                            "top": 0,  # The distance from the top edge if the image to
-                              the top edge of the rectangle, in pixels. Required.
-                            "width": 0  # The width of the rectangle, in pixels.
-                              Required.
-                        },
-                        "qualityForRecognition": "str"  # Quality of face image for
-                          recognition. Required. Known values are: "low", "medium", and "high".
-                    }
-                }
-        """
-        # TODO
-        return FaceSessionClientOperationsMixin._create_liveness_with_verify_session_with_verify_image(
             self, body, **kwargs)
 
 

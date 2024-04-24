@@ -48,8 +48,7 @@ class DetectLivenessWithVerify():
         from azure.ai.vision.face import FaceSessionClient
         from azure.ai.vision.face.models import (
             LivenessOperationMode,
-            LivenessSessionCreationContentForMultipart,
-            LivenessSessionWithVerifyImageCreationContent)
+            LivenessSessionCreationContent)
 
         with FaceSessionClient(endpoint=self.endpoint, credential=AzureKeyCredential(self.key)) as face_session_client:
             from pathlib import Path
@@ -61,13 +60,12 @@ class DetectLivenessWithVerify():
             # Create a session.
             self.logger.info("Create a new liveness with verify session with verify image.")
 
-            created_session = face_session_client.create_liveness_with_verify_session_with_verify_image(
-                LivenessSessionWithVerifyImageCreationContent(
-                    parameters=LivenessSessionCreationContentForMultipart(
-                        liveness_operation_mode=LivenessOperationMode.PASSIVE,
-                        device_correlation_id=str(uuid.uuid4()),
-                        send_results_to_client=False),
-                    verify_image=("verify_image.jpg", file_content)))
+            created_session = face_session_client.create_liveness_with_verify_session(
+                LivenessSessionCreationContent(
+                    liveness_operation_mode=LivenessOperationMode.PASSIVE,
+                    device_correlation_id=str(uuid.uuid4()),
+                    send_results_to_client=False),
+                verify_image=file_content)
             self.logger.info(f"Result: {beautify_json(created_session.as_dict())}")
 
             # Get the liveness detection and verification result.
