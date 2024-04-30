@@ -160,14 +160,207 @@ Sample code snippets are provided to illustrate using long-running operations [b
 The following section provides several code snippets covering some of the most common Face tasks, including:
 
 * [Detecting faces in an image](#face-detection "Face Detection")
-* [Identifing the specific query face from a LargePersonGroup](#face-recognition-from-largepersongroup "Face Recognition from LargePersonGroup")
+* [Identifing the specific face from a LargePersonGroup](#face-recognition-from-largepersongroup "Face Recognition from LargePersonGroup")
 * [Determining if a face in an video is real (live) or fake (spoof)](#liveness-detection "Liveness Detection")
 
 ### Face Detection
+Detect faces and analyze them from an binary data.
+
+```python
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.vision.face import FaceClient
+from azure.ai.vision.face.models import (
+    FaceDetectionModel, FaceRecognitionModel, FaceAttributeTypeDetection03, FaceAttributeTypeRecognition04)
+
+endpoint = "<your endpoint>"
+key = "<your api key>"
+
+with FaceClient(endpoint=endpoint, credential=AzureKeyCredential(key)) as face_client:
+    sample_file_path = "<your image file>"
+    with open(sample_file_path, "rb") as fd:
+        file_content = fd.read()
+
+    result = face_client.detect(
+        file_content,
+        FaceDetectionModel.DETECTION_03,
+        FaceRecognitionModel.RECOGNITION_04,
+        True,  # return_face_id
+        return_face_attributes=[
+            FaceAttributeTypeDetection03.HEAD_POSE,
+            FaceAttributeTypeDetection03.MASK,
+            FaceAttributeTypeRecognition04.QUALITY_FOR_RECOGNITION],
+        return_face_landmarks=True,
+        return_recognition_model=True,
+        face_id_time_to_live=120)
+
+    print(f"Detect faces from the file: {sample_file_path}")
+    for idx, face in enumerate(result):
+        print(f"----- Detection result: #{idx+1} -----")
+        print(f"Face: {face.as_dict()}")
+```
 
 ### Face Recognition from LargePersonGroup
+Identify a face against a defined LargePersonGroup.
+
+First, we have to use `FaceAdministrationClient` to create a LargePersonGroup, add a few Person to it,
+and then register faces with these Person.
+
+```python
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.vision.face import FaceAdministrationClient, FaceClient
+from azure.ai.vision.face.models import (FaceDetectionModel, FaceRecognitionModel)
+
+
+def _read_file_content(file_path: str):
+    with open(file_path, "rb") as fd:
+        file_content = fd.read()
+
+    return file_content
+
+
+endpoint = "<your endpoint>"
+key = "<your api key>"
+
+large_person_group_id = "lpg_family"
+
+with FaceAdministrationClient(endpoint=endpoint, credential=AzureKeyCredential(key)) as face_admin_client:
+    print(f"Create a large person group with id: {large_person_group_id}")
+    face_admin_client.create_large_person_group(
+        large_person_group_id, name="My Family", recognition_model=FaceRecognitionModel.RECOGNITION_04)
+
+    print("Create a Person Bill and add a face to him.")
+    bill_person_id = face_admin_client.create_large_person_group_person(
+        large_person_group_id, name="Bill", user_data="Dad").person_id
+    bill_image_file_path = "./samples/images/Family1-Dad1.jpg"
+    face_admin_client.add_large_person_group_person_face(
+        large_person_group_id,
+        bill_person_id,
+        _read_file_content(bill_image_file_path),
+        detection_model=FaceDetectionModel.DETECTION_03,
+        user_data="Dad-0001")
+
+    print("Create a Person Clare and add a face to her.")
+    clare_person_id = face_admin_client.create_large_person_group_person(
+        large_person_group_id, name="Clare", user_data="Mom").person_id
+    clare_image_file_path = "./samples/images/Family1-Mom1.jpg"
+    face_admin_client.add_large_person_group_person_face(
+        large_person_group_id,
+        clare_person_id,
+        _read_file_content(clare_image_file_path),
+        detection_model=FaceDetectionModel.DETECTION_03,
+        user_data="Mom-0001")
+```
+
+Before doing the identification, we need to train the LargePersonGroup first.
+```python
+    print(f"Start to train the large person group: {large_person_group_id}.")
+    poller = face_admin_client.begin_train_large_person_group(large_person_group_id)
+
+    # Wait for the train operation to be completed.
+    # If the training status isn't succeed, an exception will be thrown from the poller.
+    training_result = poller.result()
+```
+
+When the training operation is completed successfully, we can identify the faces in this LargePersonGroup throught
+`FaceClient`.
+```python
+with FaceClient(endpoint=endpoint, credential=AzureKeyCredential(key)) as face_client:
+    # Detect the face from the target image.
+    target_image_file_path = "./samples/images/identification1.jpg"
+    detect_result = face_client.detect(
+        _read_file_content(target_image_file_path),
+        detection_model=FaceDetectionModel.DETECTION_03,
+        recognition_model=FaceRecognitionModel.RECOGNITION_04,
+        return_face_id=True)
+    target_face_ids = list(f.face_id for f in detect_result)
+
+    # Identify the faces in the large person group.
+    result = face_client.identify_from_large_person_group(
+        face_ids=target_face_ids, large_person_group_id=large_person_group_id)
+    for idx, r in enumerate(result):
+        print(f"----- Identification result: #{idx+1} -----")
+        print(f"{r.as_dict()}")
+```
+
+Finally, use `FaceAdministrationClient` to remove the large person group if you don't need it anymore.
+```python
+with FaceAdministrationClient(endpoint=endpoint, credential=AzureKeyCredential(key)) as face_admin_client:
+    print(f"Delete the large person group: {large_person_group_id}")
+    face_admin_client.delete_large_person_group(large_person_group_id)
+```
 
 ### Liveness detection
+Face Liveness detection can be used to determine if a face in an input video stream is real (live) or fake (spoof).
+The goal of liveness detection is to ensure that the system is interacting with a physically present live person at
+the time of authentication. The whole process of authentication is called a session.
+
+There're two different components in the authentication: a mobile application and an app server/orchestrator.
+Before uploading the video stream, the app server has to create a session, and then the mobile client could upload
+the payload with a `session authorization token` to call the liveness detection. The app server can query for the
+liveness detection result and audit logs anytime untill the session is deleted.
+
+The Liveness detection operation can not only confirm if the input is live or spoof, but also verify whether the input
+belongs to the expected person's face, which is called **liveness detection with face verification**. For the detail
+information, please refer to the [tutorial][liveness_tutorial].
+
+We'll only demonstrates how to create, query, delete a session and get the audit logs here. For how to perform a
+liveness detection, please see the sample of [mobile applications][integrate_liveness_into_mobile_application].
+
+Here is an example to create and get the liveness detection result of a session.
+```python
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.vision.face import FaceSessionClient
+from azure.ai.vision.face.models import LivenessSessionCreationContent, LivenessOperationMode
+
+endpoint = "<your endpoint>"
+key = "<your api key>"
+
+with FaceSessionClient(endpoint=endpoint, credential=AzureKeyCredential(key)) as face_session_client:
+    # Create a session.
+    print("Create a new liveness session.")
+    created_session = face_session_client.create_liveness_session(
+        LivenessSessionCreationContent(
+            liveness_operation_mode=LivenessOperationMode.PASSIVE,
+            device_correlation_id=str(uuid.uuid4()),
+            send_results_to_client=False))
+    print(f"Result: {created_session}")
+
+    # Get the liveness detection result.
+    print("Get the liveness detection result.")
+    liveness_result = face_session_client.get_liveness_session_result(created_session.session_id)
+    print(f"Result: {liveness_result}")
+```
+
+Here is another example for the liveness detection with face verification.
+```python
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.vision.face import FaceSessionClient
+from azure.ai.vision.face.models import LivenessOperationMode, LivenessSessionCreationContent
+
+endpoint = "<your endpoint>"
+key = "<your api key>"
+
+with FaceSessionClient(endpoint=endpoint, credential=AzureKeyCredential(key)) as face_session_client:
+    sample_file_path = "<your verify image file>"
+    with open(sample_file_path, "rb") as fd:
+        file_content = fd.read()
+
+    # Create a session.
+    print("Create a new liveness with verify session with verify image.")
+
+    created_session = face_session_client.create_liveness_with_verify_session(
+        LivenessSessionCreationContent(
+            liveness_operation_mode=LivenessOperationMode.PASSIVE,
+            device_correlation_id=str(uuid.uuid4()),
+            send_results_to_client=False),
+        verify_image=file_content)
+    print(f"Result: {created_session}")
+
+    # Get the liveness detection and verification result.
+    print("Get the liveness detection and verification result.")
+    liveness_result = face_session_client.get_liveness_with_verify_session_result(created_session.session_id)
+    print(f"Result: {liveness_result}")
+```
 
 ## Troubleshooting
 
@@ -260,6 +453,9 @@ additional questions or comments.
 [azure_sdk_python_default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 
+[liveness_tutorial]: https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/tutorials/liveness
+[integrate_liveness_into_mobile_application]: https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/tutorials/liveness#integrate-liveness-into-mobile-application
+
 [python_azure_core_exceptions]: https://aka.ms/azsdk/python/core/docs#module-azure.core.exceptions
 [face_errors]: https://aka.ms/face-error-codes-and-messages
 [python_logging]: https://docs.python.org/3/library/logging.html
@@ -272,5 +468,3 @@ additional questions or comments.
 [azure_identity_pip]: https://pypi.org/project/azure-identity/
 [default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [pip]: https://pypi.org/project/pip/
-
-
